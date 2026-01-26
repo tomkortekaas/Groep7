@@ -1109,8 +1109,8 @@ const EuropeExplorer = ({ onBack }) => {
 
             return (
               <Marker key={item.id} coordinates={item.coordinates}>
-                <ellipse rx={25} ry={15} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
-                <polygon points="-15,6 -8,-5 -2,3 5,-8 11,1 17,6" fill={fill} stroke={stroke} strokeWidth={1.5} strokeLinejoin="round" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                <ellipse rx={30} ry={20} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1000 }} />
+                <polygon points="-15,6 -8,-5 -2,3 5,-8 11,1 17,6" fill={fill} stroke={stroke} strokeWidth={1.5} strokeLinejoin="round" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1001 }} />
               </Marker>
             );
           })}
@@ -1124,8 +1124,8 @@ const EuropeExplorer = ({ onBack }) => {
 
             return (
               <Marker key={item.id} coordinates={item.coordinates}>
-                <circle r={18} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
-                <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                <circle r={25} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1000 }} />
+                <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1001 }} />
               </Marker>
             );
           })}
