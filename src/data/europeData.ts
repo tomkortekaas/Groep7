@@ -231,7 +231,7 @@ export const europeData: GeoItem[] = [
     dutchName: "Brussel",
     englishName: "Brussels",
     emoji: "🍟",
-    coordinates: [4.35, 50.85],
+    coordinates: [4.5, 50.8],
     countryId: "belgium",
     description: "De hoofdstad van België en het bestuurscentrum van de Europese Unie.",
     funFacts: [
