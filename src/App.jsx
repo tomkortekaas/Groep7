@@ -1115,20 +1115,39 @@ const EuropeExplorer = ({ onBack }) => {
             );
           })}
 
-          {/* Capitals & Waters */}
-          {(gameMode === 'recon' ? filteredData : europeData).filter(i => i.category === 'capital' || i.category === 'water').map(item => {
-            const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
-            const isWrong = wrongAnswer === item.id;
-            const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : item.category === 'capital' ? '#fbbf24' : '#60a5fa';
-            const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : item.category === 'capital' ? '#d97706' : '#2563eb';
+          {/* Waters (render first, so capitals are clickable on top) */}
+          {(gameMode === 'recon' ? filteredData : europeData)
+            .filter(i => i.category === 'water')
+            .map(item => {
+              const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
+              const isWrong = wrongAnswer === item.id;
+              const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#60a5fa';
+              const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#2563eb';
 
-            return (
-              <Marker key={item.id} coordinates={item.coordinates}>
-                <circle r={25} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1000 }} />
-                <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1001 }} />
-              </Marker>
-            );
-          })}
+              return (
+                <Marker key={item.id} coordinates={item.coordinates}>
+                  <circle r={18} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                </Marker>
+              );
+            })}
+
+          {/* Capitals (render last, on top of waters) */}
+          {(gameMode === 'recon' ? filteredData : europeData)
+            .filter(i => i.category === 'capital')
+            .map(item => {
+              const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
+              const isWrong = wrongAnswer === item.id;
+              const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#fbbf24';
+              const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#d97706';
+
+              return (
+                <Marker key={item.id} coordinates={item.coordinates}>
+                  <circle r={25} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                </Marker>
+              );
+            })}
         </ComposableMap>
 
         {/* Centered popup modal for recon mode */}
