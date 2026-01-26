@@ -1090,11 +1090,11 @@ const EuropeExplorer = ({ onBack }) => {
                       fill={isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#d8b4fe' : '#c4b5fd'}
                       stroke={isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#7c3aed'}
                       strokeWidth={1.5}
-                      style={{ default: { outline: 'none', cursor: 'pointer' }, hover: { outline: 'none', fill: '#ddd6fe' }, pressed: { outline: 'none' } }}
+                      style={{ default: { outline: 'none', cursor: 'pointer', pointerEvents: 'auto' }, hover: { outline: 'none', fill: '#ddd6fe' }, pressed: { outline: 'none' } }}
                     />
                   );
                 }
-                return <Geography key={geo.rsmKey} geography={geo} fill="#e8f5e0" stroke="#b0c4a8" strokeWidth={0.5} style={{ default: { outline: 'none' }, hover: { outline: 'none' }, pressed: { outline: 'none' } }} />;
+                return <Geography key={geo.rsmKey} geography={geo} fill="#e8f5e0" stroke="#b0c4a8" strokeWidth={0.5} style={{ default: { outline: 'none', pointerEvents: 'none' }, hover: { outline: 'none' }, pressed: { outline: 'none' } }} />;
               })
             }
           </Geographies>
