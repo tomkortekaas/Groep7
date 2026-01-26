@@ -1,6 +1,7 @@
 {
   "name": "engels-siem",
   "version": "1.0.0",
+  "type": "module",
   "description": "Engels woordjes oefenen voor Siem",
   "scripts": {
     "dev": "vite",
