@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
+import { europeData, getRandomFunFact, getCountryForCapital, wikiSearchTerms } from './data/europeData';
 
 // Unit 2 woordenlijst - Engels voor Siem
 const defaultWords = [
@@ -82,7 +84,7 @@ const BigButton = ({ onClick, children, color, className = '' }) => (
 );
 
 const StartScreen = ({ onStart, onManageWords }) => (
-  <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex items-center justify-center p-8">
+  <div className="screen-scroll safe-area-pad bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex items-center justify-center p-8">
     <div className="text-center w-full max-w-lg">
       <div className="mb-8">
         <span className="text-9xl block animate-bounce">📚</span>
@@ -115,8 +117,12 @@ const StartScreen = ({ onStart, onManageWords }) => (
         <BigButton onClick={() => onStart('test')} color="bg-gradient-to-r from-amber-400 to-orange-500">
           <span className="text-4xl">🏆</span> Overhoren
         </BigButton>
-        
-        <button 
+
+        <BigButton onClick={() => onStart('europe')} color="bg-gradient-to-r from-slate-600 to-emerald-700">
+          <span className="text-4xl">🗺️</span> Europe Explorer
+        </BigButton>
+
+        <button
           onClick={onManageWords} 
           className="w-full max-w-md py-4 px-8 bg-white/80 text-orange-600 text-xl font-bold rounded-3xl shadow-lg 
           active:scale-95 transition-all border-3 border-orange-200 mt-6 flex items-center justify-center gap-3"
@@ -146,15 +152,24 @@ const LearnMode = ({ words, onBack }) => {
   const [shuffledWords, setShuffledWords] = useState([]);
   const [direction, setDirection] = useState('nl-en');
   
-  useEffect(() => { setShuffledWords(shuffleArray(words)); }, [words]);
+  useEffect(() => { 
+    setShuffledWords(shuffleArray(words)); 
+  }, [words]);
+  
   if (shuffledWords.length === 0) return null;
   
   const currentWord = shuffledWords[currentIndex];
-  const nextCard = () => { setIsFlipped(false); setTimeout(() => setCurrentIndex((p) => (p + 1) % shuffledWords.length), 200); };
-  const prevCard = () => { setIsFlipped(false); setTimeout(() => setCurrentIndex((p) => (p - 1 + shuffledWords.length) % shuffledWords.length), 200); };
+  const nextCard = () => { 
+    setIsFlipped(false); 
+    setTimeout(() => setCurrentIndex((p) => (p + 1) % shuffledWords.length), 200); 
+  };
+  const prevCard = () => { 
+    setIsFlipped(false); 
+    setTimeout(() => setCurrentIndex((p) => (p - 1 + shuffledWords.length) % shuffledWords.length), 200); 
+  };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-teal-50 to-cyan-100 flex flex-col items-center justify-center p-6">
+    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-emerald-100 via-teal-50 to-cyan-100 flex flex-col items-center justify-center p-6">
       <BackButton onClick={onBack} color="text-teal-600" />
       
       <div className="text-center mb-6">
@@ -239,7 +254,7 @@ const PracticeMode = ({ words, onBack, direction }) => {
   const borderColor = isNlToEn ? 'border-indigo-200' : 'border-purple-200';
   
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${bgColor} flex flex-col items-center justify-center p-6`}>
+    <div className={`screen-scroll safe-area-pad bg-gradient-to-br ${bgColor} flex flex-col items-center justify-center p-6`}>
       <BackButton onClick={onBack} color={textColor} />
       
       <div className="text-center mb-6">
@@ -254,10 +269,10 @@ const PracticeMode = ({ words, onBack, direction }) => {
       <div className={`bg-white/95 rounded-3xl shadow-2xl p-8 w-full max-w-lg border-4 ${borderColor}`}>
         <div className="text-center mb-6">
           <span className="text-6xl mb-4 block">{currentWord.emoji}</span>
-          <span className="text-4xl mb-3 block">{isNlToEn ? '🇳🇱' : '🇬🇧'}</span>
-          <p className={`text-3xl font-bold ${isNlToEn ? 'text-indigo-700' : 'text-purple-700'}`} style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-            {questionWord}
-          </p>
+          <div className={`inline-block px-5 py-2 rounded-full text-lg font-bold mb-4 ${isNlToEn ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
+            {isNlToEn ? '🇳🇱 → 🇬🇧' : '🇬🇧 → 🇳🇱'}
+          </div>
+          <p className="text-3xl font-bold text-orange-700" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>{questionWord}</p>
         </div>
 
         {showHint && (
@@ -273,8 +288,8 @@ const PracticeMode = ({ words, onBack, direction }) => {
           onKeyDown={(e) => e.key === 'Enter' && checkAnswer()} 
           placeholder={isNlToEn ? "Typ Engels..." : "Typ Nederlands..."}
           className={`w-full text-2xl p-5 rounded-2xl border-4 text-center font-bold mb-4 ${
-            feedback === 'correct' ? 'border-green-400 bg-green-50 text-green-600' : 
-            feedback === 'wrong' ? 'border-red-400 bg-red-50 text-red-600 animate-shake' : 
+            feedback === 'correct' ? 'border-green-400 bg-green-50' : 
+            feedback === 'wrong' ? 'border-red-400 bg-red-50' : 
             borderColor
           }`}
           style={{ fontSize: '24px', touchAction: 'manipulation' }}
@@ -367,7 +382,7 @@ const SentenceMode = ({ words, onBack }) => {
   
   if (feedback === 'finished') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100 flex flex-col items-center justify-center p-6">
+      <div className="screen-scroll safe-area-pad bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100 flex flex-col items-center justify-center p-6">
         <Confetti />
         <div className="bg-white/95 rounded-3xl shadow-2xl p-8 w-full max-w-lg border-4 border-pink-200 text-center">
           <span className="text-8xl mb-6 block">🎉</span>
@@ -390,7 +405,7 @@ const SentenceMode = ({ words, onBack }) => {
   }
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100 flex flex-col items-center justify-center p-6">
+    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100 flex flex-col items-center justify-center p-6">
       <BackButton onClick={onBack} color="text-pink-600" />
       
       <div className="text-center mb-6">
@@ -497,7 +512,7 @@ const TestMode = ({ words, onBack }) => {
     const percentage = Math.round((score / shuffledQuestions.length) * 100);
     const emoji = percentage >= 80 ? '🏆' : percentage >= 60 ? '⭐' : percentage >= 40 ? '👍' : '💪';
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex flex-col items-center justify-center p-6">
+      <div className="screen-scroll safe-area-pad bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex flex-col items-center justify-center p-6">
         {percentage >= 80 && <Confetti />}
         <div className="bg-white/95 rounded-3xl shadow-2xl p-8 w-full max-w-lg border-4 border-orange-200 text-center">
           <span className="text-8xl mb-6 block animate-bounce">{emoji}</span>
@@ -530,7 +545,7 @@ const TestMode = ({ words, onBack }) => {
   const isNlToEn = currentQuestion.direction === 'nl-en';
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex flex-col items-center justify-center p-6">
+    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex flex-col items-center justify-center p-6">
       <BackButton onClick={onBack} color="text-orange-600" />
       
       <div className="absolute top-6 right-6 px-6 py-4 bg-white/90 text-orange-600 font-bold rounded-2xl shadow-lg text-xl">
@@ -620,7 +635,7 @@ const ManageWords = ({ words, setWords, onBack }) => {
   const editWord = (index) => { setNewDutch(words[index].dutch); setNewEnglish(words[index].english); setNewSentence(words[index].sentence || ''); setNewEmoji(words[index].emoji || '📚'); setEditIndex(index); };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 p-6 overflow-auto">
+    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 p-6">
       <BackButton onClick={onBack} color="text-orange-600" />
       
       <div className="max-w-2xl mx-auto pt-20">
@@ -674,6 +689,582 @@ const ManageWords = ({ words, setWords, onBack }) => {
   );
 };
 
+// Europe Explorer
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
+
+const EuropeExplorer = ({ onBack }) => {
+  // Core state
+  const [gameMode, setGameMode] = useState('menu');
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [lang, setLang] = useState('nl');
+  const [filter, setFilter] = useState('all');
+
+  // Mission state
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [score, setScore] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [feedback, setFeedback] = useState(null);
+  const [questionQueue, setQuestionQueue] = useState([]);
+  const [missionComplete, setMissionComplete] = useState(false);
+  const [wrongAnswer, setWrongAnswer] = useState(null);
+  const [currentFunFact, setCurrentFunFact] = useState(null);
+
+  // Helper to get random fun fact - uses imported function from europeData.ts
+
+  // Wikipedia state
+  const [wikiInfo, setWikiInfo] = useState(null);
+  const [wikiLoading, setWikiLoading] = useState(false);
+  const [showWiki, setShowWiki] = useState(false);
+  const wikiCache = React.useRef({});
+
+  // Collection state - track collected stickers
+  const [collectedStickers, setCollectedStickers] = useState(new Set());
+
+  // Translations
+  const t = lang === 'nl' ? {
+    title: 'Europe Explorer',
+    subtitle: 'Aardrijkskunde Missie',
+    recon: 'Verkenning',
+    mission: 'Start Missie',
+    reconShort: 'Verken',
+    missionShort: 'Missie',
+    countries: 'Landen',
+    capitals: 'Hoofdsteden',
+    waters: 'Wateren',
+    mountains: 'Gebergten',
+    back: '← Terug',
+    correct: '✓ Goed zo!',
+    wrong: '✗ Probeer opnieuw!',
+    missionComplete: 'Missie Voltooid!',
+    score: 'Score',
+    menu: '← Menu',
+    again: '🔄 Opnieuw',
+    country: 'Land',
+    capital: 'Hoofdstad',
+    water: 'Water',
+    mountainType: 'Gebergte',
+    capitalOf: 'Hoofdstad van',
+    loading: 'Laden...',
+    moreInfo: 'Meer info',
+    close: 'Sluiten',
+    collected: 'Verzameld',
+    stickerBook: 'Stickerverzameling',
+  } : {
+    title: 'Europe Explorer',
+    subtitle: 'Geography Mission',
+    recon: 'Reconnaissance',
+    mission: 'Start Mission',
+    reconShort: 'Recon',
+    missionShort: 'Mission',
+    countries: 'Countries',
+    capitals: 'Capitals',
+    waters: 'Waters',
+    mountains: 'Mountains',
+    back: '← Back',
+    correct: '✓ Correct!',
+    wrong: '✗ Try again!',
+    missionComplete: 'Mission Complete!',
+    score: 'Score',
+    menu: '← Menu',
+    again: '🔄 Again',
+    country: 'Country',
+    capital: 'Capital',
+    water: 'Water',
+    mountainType: 'Mountains',
+    capitalOf: 'Capital of',
+    loading: 'Loading...',
+    moreInfo: 'More info',
+    close: 'Close',
+    collected: 'Collected',
+    stickerBook: 'Sticker Collection',
+  };
+
+  const filteredData = filter === 'all' ? europeData : europeData.filter(d => d.category === filter);
+
+  // Fetch Wikipedia info with fun facts (for recon mode)
+  const fetchWikiInfo = async (item) => {
+    const cacheKey = `${item.id}-${lang}`;
+    if (wikiCache.current[cacheKey]) {
+      // Get a fresh random fun fact even from cache
+      const cached = wikiCache.current[cacheKey];
+      setWikiInfo({ ...cached, funFact: getRandomFunFact(item.id) });
+      return;
+    }
+
+    setWikiLoading(true);
+    setWikiInfo(null);
+
+    try {
+      const wikiLang = lang === 'nl' ? 'nl' : 'en';
+      // Use custom search term if available, otherwise use default name
+      const customTerm = wikiSearchTerms[item.id]?.[lang];
+      const searchTerm = customTerm || (lang === 'nl' ? item.dutchName : item.englishName);
+      const url = `https://${wikiLang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchTerm)}`;
+
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        const info = {
+          title: data.title,
+          extract: data.extract,
+          thumbnail: data.thumbnail?.source,
+          funFact: getRandomFunFact(item.id),
+        };
+        // Cache without funFact so we can pick fresh random fact each time
+        wikiCache.current[cacheKey] = { title: data.title, extract: data.extract, thumbnail: data.thumbnail?.source };
+        setWikiInfo(info);
+      } else {
+        // If Wikipedia fails, still show fun fact
+        const funFact = getRandomFunFact(item.id);
+        if (funFact) {
+          const info = { title: lang === 'nl' ? item.dutchName : item.englishName, extract: null, thumbnail: null, funFact };
+          setWikiInfo(info);
+        }
+      }
+    } catch (err) {
+      console.log('Wiki fetch failed:', err);
+      // If fetch fails, still show fun fact
+      const funFact = getRandomFunFact(item.id);
+      if (funFact) {
+        const info = { title: lang === 'nl' ? item.dutchName : item.englishName, extract: null, thumbnail: null, funFact };
+        setWikiInfo(info);
+      }
+    }
+    setWikiLoading(false);
+  };
+
+  const generateQuestions = () => {
+    return shuffleArray(europeData.map(item => {
+      if (item.category === 'country') {
+        return { target: item, text: lang === 'nl' ? `Vind ${item.dutchName}!` : `Find ${item.englishName}!` };
+      } else if (item.category === 'capital') {
+        const country = getCountryForCapital(item.id);
+        const countryName = country ? (lang === 'nl' ? country.dutchName : country.englishName) : '';
+        return { target: item, text: lang === 'nl' ? `Vind de hoofdstad van ${countryName}!` : `Find the capital of ${countryName}!` };
+      } else {
+        return { target: item, text: lang === 'nl' ? `Vind: ${item.dutchName}!` : `Find: ${item.englishName}!` };
+      }
+    }));
+  };
+
+  const startMission = () => {
+    const questions = generateQuestions();
+    setQuestionQueue(questions);
+    setCurrentQuestion(questions[0]);
+    setScore(0);
+    setTotalQuestions(questions.length);
+    setFeedback(null);
+    setMissionComplete(false);
+    setGameMode('mission');
+  };
+
+  const handleMarkerClick = (item) => {
+    if (gameMode === 'recon') {
+      if (selectedItem?.id === item.id) {
+        setSelectedItem(null);
+        setShowWiki(false);
+        setWikiInfo(null);
+      } else {
+        setSelectedItem(item);
+        setShowWiki(false);
+        setWikiInfo(null);
+      }
+    } else if (gameMode === 'mission' && currentQuestion) {
+      if (item.id === currentQuestion.target.id) {
+        // Correct answer - add to collection and show fun fact
+        setFeedback('correct');
+        setScore(s => s + 1);
+        setCollectedStickers(prev => new Set([...prev, item.id]));
+        setCurrentFunFact(getRandomFunFact(item.id));
+        setTimeout(() => {
+          const nextIdx = questionQueue.indexOf(currentQuestion) + 1;
+          if (nextIdx >= questionQueue.length) {
+            setMissionComplete(true);
+          } else {
+            setCurrentQuestion(questionQueue[nextIdx]);
+          }
+          setFeedback(null);
+          setWrongAnswer(null);
+          setCurrentFunFact(null);
+        }, 3000);
+      } else {
+        setFeedback('wrong');
+        setWrongAnswer(item.id);
+        setTimeout(() => { setFeedback(null); setWrongAnswer(null); }, 600);
+      }
+    }
+  };
+
+  // Country name lookup for Geography coloring
+  const countryNameMap = React.useMemo(() => {
+    const map = {};
+    europeData.filter(d => d.category === 'country').forEach(c => { map[c.englishName] = c; });
+    return map;
+  }, []);
+
+
+  // Menu screen
+  if (gameMode === 'menu') {
+    return (
+      <div className="screen-scroll safe-area-pad bg-gradient-to-br from-slate-800 via-slate-700 to-emerald-900 flex flex-col items-center justify-center p-6">
+        <BackButton onClick={onBack} color="text-emerald-400" />
+
+        {/* Language toggle */}
+        <div className="absolute top-6 right-6 flex bg-white/10 rounded-full p-1">
+          <button
+            onClick={() => setLang('nl')}
+            className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${lang === 'nl' ? 'bg-white text-slate-800' : 'text-white/70'}`}
+            style={{ fontFamily: 'Nunito, sans-serif', touchAction: 'manipulation' }}
+          >NL</button>
+          <button
+            onClick={() => setLang('en')}
+            className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all ${lang === 'en' ? 'bg-white text-slate-800' : 'text-white/70'}`}
+            style={{ fontFamily: 'Nunito, sans-serif', touchAction: 'manipulation' }}
+          >EN</button>
+        </div>
+
+        <div className="text-center mb-8">
+          <span className="text-8xl block mb-4">🗺️</span>
+          <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300 mb-3" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+            {t.title}
+          </h1>
+          <p className="text-xl text-emerald-200" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            {t.subtitle}
+          </p>
+        </div>
+        <div className="space-y-4 flex flex-col items-center w-full max-w-md">
+          <BigButton onClick={() => setGameMode('recon')} color="bg-gradient-to-r from-cyan-500 to-blue-600">
+            <span className="text-4xl">🔍</span> {t.recon}
+          </BigButton>
+          <BigButton onClick={startMission} color="bg-gradient-to-r from-orange-500 to-red-600">
+            <span className="text-4xl">🎯</span> {t.mission}
+          </BigButton>
+        </div>
+        <div className="mt-8 grid grid-cols-4 gap-3 text-center">
+          <div className="bg-white/10 rounded-2xl p-3">
+            <span className="text-2xl block">🌍</span>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">14 {t.countries}</p>
+          </div>
+          <div className="bg-white/10 rounded-2xl p-3">
+            <span className="text-2xl block">🏛️</span>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">14 {t.capitals}</p>
+          </div>
+          <div className="bg-white/10 rounded-2xl p-3">
+            <span className="text-2xl block">🌊</span>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">12 {t.waters}</p>
+          </div>
+          <div className="bg-white/10 rounded-2xl p-3">
+            <span className="text-2xl block">⛰️</span>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">4 {t.mountains}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Mission complete screen
+  if (missionComplete) {
+    const percentage = Math.round((score / totalQuestions) * 100);
+    const emoji = percentage >= 80 ? '🏆' : percentage >= 60 ? '⭐' : percentage >= 40 ? '👍' : '💪';
+    return (
+      <div className="screen-scroll safe-area-pad bg-gradient-to-br from-slate-800 via-slate-700 to-emerald-900 flex flex-col items-center justify-center p-6">
+        {percentage >= 80 && <Confetti />}
+        <div className="bg-white/95 rounded-3xl shadow-2xl p-8 w-full max-w-lg border-4 border-emerald-300 text-center">
+          <span className="text-8xl mb-4 block animate-bounce">{emoji}</span>
+          <h2 className="text-4xl font-black text-emerald-700 mb-4" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+            {t.missionComplete}
+          </h2>
+          <p className="text-2xl text-emerald-600 mb-4">
+            {t.score}: <span className="font-bold">{score}</span> / <span className="font-bold">{totalQuestions}</span>
+          </p>
+          <div className="w-full bg-emerald-100 rounded-full h-6 mb-4">
+            <div className="h-6 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-500 transition-all duration-1000" style={{ width: `${percentage}%` }} />
+          </div>
+          <p className="text-3xl font-bold text-emerald-600 mb-6">{percentage}%</p>
+          <div className="flex gap-4">
+            <button onClick={() => setGameMode('menu')} className="flex-1 py-5 px-4 bg-gray-200 text-gray-600 font-bold rounded-2xl text-xl shadow-lg active:scale-95 transition-all" style={{ touchAction: 'manipulation' }}>
+              {t.menu}
+            </button>
+            <button onClick={startMission} className="flex-1 py-5 px-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl text-xl shadow-lg active:scale-95 transition-all" style={{ touchAction: 'manipulation' }}>
+              {t.again}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Map view (recon or mission)
+  return (
+    <div className="screen-fixed safe-area-pad bg-gradient-to-br from-slate-800 via-slate-700 to-emerald-900 flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 py-2 shrink-0">
+        <button
+          onClick={() => { setGameMode('menu'); setSelectedItem(null); setFeedback(null); }}
+          className="px-3 py-2 bg-white/20 text-white font-bold rounded-xl active:scale-95 transition-all text-sm"
+          style={{ touchAction: 'manipulation', minHeight: '44px' }}
+        >
+          {t.back}
+        </button>
+        <h2 className="text-lg font-black text-white" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+          {gameMode === 'recon' ? `🔍 ${t.reconShort}` : `🎯 ${t.missionShort}`}
+        </h2>
+        {gameMode === 'mission' && (
+          <div className="px-3 py-2 bg-white/20 text-white font-bold rounded-xl text-sm" style={{ minHeight: '44px', display: 'flex', alignItems: 'center' }}>
+            {score}/{totalQuestions}
+          </div>
+        )}
+        {gameMode === 'recon' && (
+          <div className="flex gap-1">
+            {[['all', 'All'], ['country', '🌍'], ['capital', '🏛️'], ['water', '🌊'], ['mountain', '⛰️']].map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => { setFilter(key); setSelectedItem(null); }}
+                className={`px-2 py-1.5 rounded-lg font-bold text-xs transition-all active:scale-95 ${filter === key ? 'bg-white text-slate-800' : 'bg-white/20 text-white'}`}
+                style={{ touchAction: 'manipulation', minHeight: '36px' }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Mission question */}
+      {gameMode === 'mission' && currentQuestion && (
+        <div className={`mx-3 mb-2 rounded-xl text-center shrink-0 overflow-hidden ${
+          feedback === 'correct' ? 'bg-green-500 text-white' :
+          feedback === 'wrong' ? 'bg-red-500 text-white animate-shake' :
+          'bg-white/20 text-white'
+        }`}>
+          <div className="p-3 text-base font-bold" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+            {feedback === 'correct' ? t.correct : feedback === 'wrong' ? t.wrong : currentQuestion.text}
+          </div>
+          {feedback === 'correct' && currentFunFact && (
+            <div className="px-3 pb-3 pt-0">
+              <div className="bg-white/20 rounded-lg p-2 text-sm font-medium" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                {currentFunFact}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Progress bar */}
+      {gameMode === 'mission' && (
+        <div className="px-3 mb-2 shrink-0">
+          <div className="w-full bg-white/20 rounded-full h-2">
+            <div className="h-2 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all" style={{ width: `${(questionQueue.indexOf(currentQuestion) / totalQuestions) * 100}%` }} />
+          </div>
+        </div>
+      )}
+
+      {/* Main content area - flex row for map and sticker book */}
+      <div className="flex-1 min-h-0 flex gap-3 px-3 pb-3">
+        {/* Map container */}
+        <div className="relative flex-1 min-h-0 rounded-xl shadow-xl border-2 border-slate-600 overflow-hidden" style={{ backgroundColor: '#a8d5e2' }}>
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{ center: [15, 52], scale: 700 }}
+          style={{ width: '100%', height: '100%' }}
+          width={800}
+          height={600}
+        >
+          {/* Countries */}
+          <Geographies geography={GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const countryItem = countryNameMap[geo.properties.name];
+                const show = filter === 'all' || filter === 'country';
+
+                if (countryItem && show) {
+                  const isCorrect = feedback === 'correct' && countryItem.id === currentQuestion?.target.id;
+                  const isWrong = wrongAnswer === countryItem.id;
+                  const isSelected = selectedItem?.id === countryItem.id;
+
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      onClick={() => handleMarkerClick(countryItem)}
+                      fill={isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#d8b4fe' : '#c4b5fd'}
+                      stroke={isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#7c3aed'}
+                      strokeWidth={1.5}
+                      style={{ default: { outline: 'none', cursor: 'pointer' }, hover: { outline: 'none', fill: '#ddd6fe' }, pressed: { outline: 'none' } }}
+                    />
+                  );
+                }
+                return <Geography key={geo.rsmKey} geography={geo} fill="#e8f5e0" stroke="#b0c4a8" strokeWidth={0.5} style={{ default: { outline: 'none' }, hover: { outline: 'none' }, pressed: { outline: 'none' } }} />;
+              })
+            }
+          </Geographies>
+
+          {/* Mountains */}
+          {(gameMode === 'recon' ? filteredData : europeData).filter(i => i.category === 'mountain').map(item => {
+            const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
+            const isWrong = wrongAnswer === item.id;
+            const isSelected = selectedItem?.id === item.id;
+            const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#6ee7b7' : '#34d39988';
+            const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#059669';
+
+            return (
+              <Marker key={item.id} coordinates={item.coordinates}>
+                <ellipse rx={25} ry={15} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                <polygon points="-15,6 -8,-5 -2,3 5,-8 11,1 17,6" fill={fill} stroke={stroke} strokeWidth={1.5} strokeLinejoin="round" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+              </Marker>
+            );
+          })}
+
+          {/* Capitals & Waters */}
+          {(gameMode === 'recon' ? filteredData : europeData).filter(i => i.category === 'capital' || i.category === 'water').map(item => {
+            const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
+            const isWrong = wrongAnswer === item.id;
+            const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : item.category === 'capital' ? '#fbbf24' : '#60a5fa';
+            const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : item.category === 'capital' ? '#d97706' : '#2563eb';
+
+            return (
+              <Marker key={item.id} coordinates={item.coordinates}>
+                <circle r={18} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+              </Marker>
+            );
+          })}
+        </ComposableMap>
+
+        {/* Centered popup modal for recon mode */}
+        {gameMode === 'recon' && selectedItem && (
+          <div
+            className="absolute inset-0 flex items-center justify-center z-30 p-4"
+            onClick={() => { setSelectedItem(null); setShowWiki(false); setWikiInfo(null); }}
+          >
+            <div
+              className="bg-slate-900 text-white rounded-2xl shadow-2xl overflow-hidden animate-pop-in w-full max-w-sm"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center gap-3 p-4 bg-slate-800">
+                <span className="text-4xl">{selectedItem.emoji}</span>
+                <div className="flex-1">
+                  <p className="font-black text-xl" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+                    {lang === 'nl' ? selectedItem.dutchName : selectedItem.englishName}
+                  </p>
+                  <p className="text-sm text-slate-400">
+                    {selectedItem.category === 'capital' && (() => {
+                      const country = getCountryForCapital(selectedItem.id);
+                      return `${t.capitalOf} ${country ? (lang === 'nl' ? country.dutchName : country.englishName) : ''}`;
+                    })()}
+                    {selectedItem.category === 'country' && t.country}
+                    {selectedItem.category === 'water' && t.water}
+                    {selectedItem.category === 'mountain' && t.mountainType}
+                  </p>
+                </div>
+                <button
+                  onClick={() => { setSelectedItem(null); setShowWiki(false); setWikiInfo(null); }}
+                  className="w-10 h-10 bg-slate-700 text-white rounded-full flex items-center justify-center text-xl font-bold active:scale-95"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Info button */}
+              <div className="p-4 border-t border-slate-700">
+                <button
+                  onClick={() => { if (!showWiki) { setShowWiki(true); fetchWikiInfo(selectedItem); } else { setShowWiki(false); } }}
+                  className="w-full py-3 bg-cyan-600 text-white rounded-xl font-bold text-lg flex items-center justify-center gap-2 active:scale-95"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  <span className="w-6 h-6 bg-white text-cyan-600 rounded-full flex items-center justify-center text-sm font-black">i</span>
+                  {showWiki ? t.close : t.moreInfo}
+                </button>
+              </div>
+
+              {/* Wikipedia content - no fun facts in recon mode, only in quiz */}
+              {showWiki && (
+                <div className="p-4 text-sm text-slate-300 max-h-72 overflow-y-auto border-t border-slate-700">
+                  {wikiLoading && <p className="text-center py-6 text-lg">{t.loading}</p>}
+                  {!wikiLoading && wikiInfo && (
+                    <>
+                      {wikiInfo.thumbnail && (
+                        <img src={wikiInfo.thumbnail} alt="" className="w-full h-32 object-cover rounded-lg mb-3" />
+                      )}
+                      {wikiInfo.extract && (
+                        <p className="leading-relaxed text-slate-400">{wikiInfo.extract}</p>
+                      )}
+                    </>
+                  )}
+                  {!wikiLoading && !wikiInfo && <p className="text-center py-6 text-slate-500">No info available</p>}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Legend */}
+        {gameMode === 'recon' && !selectedItem && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 bg-slate-800/80 rounded-full px-3 py-1.5">
+            {[['bg-purple-400', 'border-purple-600', t.countries], ['bg-amber-400', 'border-amber-600', t.capitals], ['bg-blue-400', 'border-blue-600', t.waters], ['bg-emerald-400', 'border-emerald-600', t.mountains]].map(([bg, border, label]) => (
+              <div key={label} className="flex items-center gap-1 text-white/90">
+                <div className={`w-2.5 h-2.5 rounded-full ${bg} border ${border}`} />
+                <span className="text-xs font-bold">{label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        </div>
+
+        {/* Sticker Book - Right sidebar */}
+        {gameMode === 'mission' && (
+          <div className="w-64 min-h-0 bg-slate-900 rounded-xl shadow-xl border-2 border-slate-600 overflow-hidden flex flex-col">
+            <div className="p-4 bg-slate-800 border-b border-slate-700 shrink-0">
+              <h3 className="font-black text-base text-white" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+                📖 {t.stickerBook}
+              </h3>
+              <p className="text-sm text-slate-400 mt-1">
+                {collectedStickers.size}/{europeData.length} {t.collected}
+              </p>
+            </div>
+            <div className="flex-1 overflow-y-auto p-3 grid grid-cols-4 gap-2">
+              {europeData.map(item => (
+                <div
+                  key={item.id}
+                  className={`aspect-square rounded-lg flex items-center justify-center text-2xl font-bold border-2 transition-all ${
+                    collectedStickers.has(item.id)
+                      ? 'bg-slate-700 border-cyan-400 shadow-lg shadow-cyan-400/50'
+                      : 'bg-slate-800 border-slate-600'
+                  }`}
+                  title={collectedStickers.has(item.id) ? (lang === 'nl' ? item.dutchName : item.englishName) : '???'}
+                >
+                  {collectedStickers.has(item.id) ? item.emoji : '❓'}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Centered popup for correct answer */}
+      {gameMode === 'mission' && feedback === 'correct' && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <div className="bg-gradient-to-br from-green-400 to-emerald-500 text-white rounded-3xl shadow-2xl p-8 animate-pop-in text-center max-w-sm">
+            <div className="text-6xl mb-4">🎉</div>
+            <p className="text-2xl font-black mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+              {t.correct}
+            </p>
+            {currentFunFact && (
+              <p className="text-sm mt-4 text-white/90 leading-relaxed">
+                {currentFunFact}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {feedback === 'correct' && <Confetti />}
+    </div>
+  );
+}
+
 export default function App() {
   const [mode, setMode] = useState('start');
   const [words, setWords] = useState(defaultWords);
@@ -686,6 +1277,7 @@ export default function App() {
       {mode === 'practice-en-nl' && <PracticeMode words={words} onBack={() => setMode('start')} direction="en-nl" />}
       {mode === 'sentences' && <SentenceMode words={words} onBack={() => setMode('start')} />}
       {mode === 'test' && <TestMode words={words} onBack={() => setMode('start')} />}
+      {mode === 'europe' && <EuropeExplorer onBack={() => setMode('start')} />}
       {mode === 'manage' && <ManageWords words={words} setWords={setWords} onBack={() => setMode('start')} />}
     </>
   );
