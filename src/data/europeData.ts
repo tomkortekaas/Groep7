@@ -293,10 +293,14 @@ export const europeData: GeoItem[] = [
     emoji: "💃",
     coordinates: [-3.7, 40.42],
     countryId: "spain",
-    description: "De hoofdstad van Spanje, bekend om elegante boulevards en rijke Europese kunst.",
+    description: "De hoofdstad van Spanje, bekend om elegante boulevards, rijke Europese kunst en een bruisend nachtleven. De stad is sinds de late jaren '70 het centrum van de culturele beweging 'La Movida'.",
     funFacts: [
-      "Madrid is de hoogst gelegen hoofdstad van Europa.",
-      "Het is de enige hoofdstad in Europa gesticht door Moslims (Magerit).",
+      "Madrid is de hoogst gelegen hoofdstad van Europa (ongeveer 667 meter boven zeeniveau).",
+      "De naam Madrid komt mogelijk van het Arabische 'majrā' wat 'waterstroom' of 'bron' betekent.",
+      "Het is de enige hoofdstad in Europa die door Moslims is gesticht (als 'Magerit' in de 9e eeuw).",
+      "Madrid staat bekend om zijn bruisende nachtleven met bars en clubs die open blijven tot 6 uur 's ochtends.",
+      "De 'cocido madrileño' (een kikkererwtenstoof) is een van de meest emblematische gerechten van de stad.",
+      "Bocata de calamares (inktvis sandwich) is een typische Madrileense culinaire specialiteit.",
       "Het koninklijk paleis in Madrid is het grootste van West-Europa."
     ]
   },
@@ -583,11 +587,14 @@ export const europeData: GeoItem[] = [
     englishName: "Volga River",
     emoji: "🐟",
     coordinates: [45.0, 54.0],
-    description: "De langste rivier van Europa, die door Rusland naar de Kaspische Zee stroomt.",
+    description: "De langste rivier van Europa (3.531 km), de belangrijkste waterweg van Rusland en de historische wieg van de Russische staat.",
     funFacts: [
-      "In Rusland noemen ze de rivier liefkozend 'Moeder Volga'.",
-      "De rivier bevriest in de winter voor een groot deel.",
-      "De Volga-delta is de grootste rivierdelta van Europa."
+      "In Rusland noemen ze de rivier liefkozend 'Moeder Volga' en het is een nationaal symbool.",
+      "De Volga is verbonden met de Baltische Zee, Witte Zee, Zee van Azov en Zwarte Zee via kanalen.",
+      "Grote steden aan de Volga zijn onder andere Moskou (via kanaal), Nizhny Novgorod, Kazan en Volgograd.",
+      "De rivier wordt voor scheepvaart verbreed met grote dammen en sluiten uit de Stalin-tijd.",
+      "De Volga-delta is de grootste rivierdelta van Europa en mondt uit in de Kaspische Zee.",
+      "Tot 60% van het water komt uit smeltende sneeuw, de rest uit grondwater en regenval."
     ]
   },
 
