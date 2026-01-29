@@ -711,6 +711,21 @@ const EuropeExplorer = ({ onBack }) => {
 
   // Helper to get random fun fact - uses imported function from europeData.ts
 
+  // Function to continue to next question after user clicks fun fact
+  const handleContinueToNext = () => {
+    if (gameMode === 'mission' && currentQuestion) {
+      const nextIdx = questionQueue.indexOf(currentQuestion) + 1;
+      if (nextIdx >= questionQueue.length) {
+        setMissionComplete(true);
+      } else {
+        setCurrentQuestion(questionQueue[nextIdx]);
+      }
+      setFeedback(null);
+      setWrongAnswer(null);
+      setCurrentFunFact(null);
+    }
+  };
+
   // Wikipedia state
   const [wikiInfo, setWikiInfo] = useState(null);
   const [wikiLoading, setWikiLoading] = useState(false);
@@ -774,6 +789,7 @@ const EuropeExplorer = ({ onBack }) => {
     zoomOut: 'Uitzoomen',
     zoomReset: 'Reset',
     zoomTip: 'Knijp om te zoomen',
+    clickToContinue: 'Klik om verder te gaan',
   } : {
     title: 'Europe Explorer',
     subtitle: 'Geography Mission',
@@ -806,6 +822,7 @@ const EuropeExplorer = ({ onBack }) => {
     zoomOut: 'Zoom out',
     zoomReset: 'Reset',
     zoomTip: 'Pinch to zoom',
+    clickToContinue: 'Click to continue',
   };
 
   const filteredData = filter === 'all' ? europeData : europeData.filter(d => d.category === filter);
@@ -906,17 +923,6 @@ const EuropeExplorer = ({ onBack }) => {
         setScore(s => s + 1);
         setCollectedStickers(prev => new Set([...prev, item.id]));
         setCurrentFunFact(getRandomFunFact(item.id));
-        setTimeout(() => {
-          const nextIdx = questionQueue.indexOf(currentQuestion) + 1;
-          if (nextIdx >= questionQueue.length) {
-            setMissionComplete(true);
-          } else {
-            setCurrentQuestion(questionQueue[nextIdx]);
-          }
-          setFeedback(null);
-          setWrongAnswer(null);
-          setCurrentFunFact(null);
-        }, 3000);
       } else {
         setFeedback('wrong');
         setWrongAnswer(item.id);
@@ -1072,7 +1078,12 @@ const EuropeExplorer = ({ onBack }) => {
           </div>
           {feedback === 'correct' && currentFunFact && (
             <div className="px-3 pb-3 pt-0">
-              <div className="bg-white/20 rounded-lg p-2 text-sm font-medium" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <div 
+                className="bg-white/20 rounded-lg p-2 text-sm font-medium cursor-pointer active:scale-95 transition-all" 
+                style={{ fontFamily: 'Nunito, sans-serif' }}
+                onClick={handleContinueToNext}
+                title={t.clickToContinue}
+              >
                 {currentFunFact}
               </div>
             </div>
