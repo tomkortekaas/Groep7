@@ -1306,22 +1306,26 @@ const EuropeExplorer = ({ onBack }) => {
                 </button>
               </div>
 
-              {/* Description and fun facts */}
-              <div className="p-4 text-sm text-slate-300 border-t border-slate-700">
+              {/* Description and Wikipedia info */}
+              <div className="p-4 text-sm text-slate-300 max-h-72 overflow-y-auto border-t border-slate-700">
                 {selectedItem.description && (
                   <p className="mb-4 leading-relaxed text-slate-400">{selectedItem.description}</p>
                 )}
-                {selectedItem.funFacts && selectedItem.funFacts.length > 0 && (
-                  <div>
-                    <p className="font-bold text-white mb-2">💡 {t.funFacts || 'Fun Facts'}:</p>
-                    <ul className="space-y-2">
-                      {selectedItem.funFacts.map((fact, idx) => (
-                        <li key={idx} className="text-xs text-slate-400 pl-3 border-l-2 border-cyan-500">
-                          {fact}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                {showWiki && (
+                  <>
+                    {wikiLoading && <p className="text-center py-6 text-lg">{t.loading}</p>}
+                    {!wikiLoading && wikiInfo && (
+                      <>
+                        {wikiInfo.thumbnail && (
+                          <img src={wikiInfo.thumbnail} alt="" className="w-full h-32 object-cover rounded-lg mb-3" />
+                        )}
+                        {wikiInfo.extract && (
+                          <p className="leading-relaxed text-slate-400">{wikiInfo.extract}</p>
+                        )}
+                      </>
+                    )}
+                    {!wikiLoading && !wikiInfo && <p className="text-center py-6 text-slate-500">No info available</p>}
+                  </>
                 )}
               </div>
 
