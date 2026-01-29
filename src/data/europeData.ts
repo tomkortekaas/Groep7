@@ -19,11 +19,16 @@ export const europeData: GeoItem[] = [
     englishName: "The Netherlands",
     emoji: "🇳🇱",
     coordinates: [5.3, 52.1],
-    description: "Een land bekend om zijn vlakke landschap, grachten, tulpenvelden en molens.",
+    description: "Een land in Noordwest-Europa, bekend om zijn vlakke landschap, uitgestrekte polders, historische grachtensteden en als 'de poort tot Europa' met de haven van Rotterdam, de grootste haven van Europa.",
     funFacts: [
-      "Wist je dat ongeveer een derde van Nederland onder zeeniveau ligt?",
-      "Nederlanders zijn gemiddeld de langste mensen ter wereld.",
-      "Er zijn meer fietsen dan mensen in Nederland!"
+      "Ongeveer 26% van Nederland ligt onder zeeniveau en is beschermd door dijken en duinen.",
+      "De haven van Rotterdam is de grootste haven van Europa en een van de drukste ter wereld.",
+      "Nederland telt meer dan 1.000 molens, waarvan er nog ongeveer 1.100 overeind staan.",
+      "Het land is 's werelds grootste exporteur van tulpen en andere bloembollen.",
+      "Nederlanders zijn gemiddeld de langste mensen ter wereld (mannen 184 cm, vrouwen 170 cm).",
+      "Er zijn meer fietsen dan inwoners: ongeveer 23 miljoen fietsen op 17 miljoen mensen.",
+      "De Nederlandse taak wordt gesproken door ongeveer 24 miljoen mensen wereldwijd.",
+      "Het Rijksmuseum in Amsterdam herbergt meer dan 8.000 kunstobjecten, waaronder De Nachtwacht van Rembrandt."
     ]
   },
   {
