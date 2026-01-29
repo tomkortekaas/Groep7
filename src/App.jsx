@@ -1068,11 +1068,18 @@ const EuropeExplorer = ({ onBack }) => {
 
       {/* Mission question */}
       {gameMode === 'mission' && currentQuestion && (
-        <div className={`mx-3 mb-2 rounded-xl text-center shrink-0 overflow-hidden ${
+        <div 
+          className={`mx-3 mb-2 rounded-xl text-center shrink-0 overflow-hidden pointer-events-auto ${
           feedback === 'correct' ? 'bg-green-500 text-white' :
           feedback === 'wrong' ? 'bg-red-500 text-white animate-shake' :
           'bg-white/20 text-white'
-        }`}>
+        }`}
+          onClick={(e) => {
+            if (feedback === 'correct' && currentFunFact && e.target === e.currentTarget) {
+              handleContinueToNext();
+            }
+          }}
+        >
           <div className="p-3 text-base font-bold" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
             {feedback === 'correct' ? t.correct : feedback === 'wrong' ? t.wrong : currentQuestion.text}
           </div>
@@ -1377,8 +1384,14 @@ const EuropeExplorer = ({ onBack }) => {
 
       {/* Centered popup for correct answer */}
       {gameMode === 'mission' && feedback === 'correct' && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-          <div className="bg-gradient-to-br from-green-400 to-emerald-500 text-white rounded-3xl shadow-2xl p-8 animate-pop-in text-center max-w-sm relative pointer-events-auto">
+        <div 
+          className="fixed inset-0 flex items-center justify-center z-50 pointer-events-auto"
+          onClick={handleContinueToNext}
+        >
+          <div 
+            className="bg-gradient-to-br from-green-400 to-emerald-500 text-white rounded-3xl shadow-2xl p-8 animate-pop-in text-center max-w-sm relative pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={handleContinueToNext}
               className="absolute top-2 right-2 w-8 h-8 bg-white/20 hover:bg-white/30 text-white rounded-full flex items-center justify-center text-lg font-bold transition-colors"
