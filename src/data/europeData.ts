@@ -516,7 +516,7 @@ export const europeData: GeoItem[] = [
     dutchName: "Theems",
     englishName: "River Thames",
     emoji: "🌉",
-    coordinates: [0.9, 51.45],
+    coordinates: [-0.5, 51.48],
     description: "Een belangrijke rivier in Zuid-Engeland die dwars door Londen stroomt.",
     funFacts: [
       "Meer dan 200 bruggen kruisen de rivier de Theems.",
@@ -530,7 +530,7 @@ export const europeData: GeoItem[] = [
     dutchName: "Seine",
     englishName: "Seine River",
     emoji: "🎨",
-    coordinates: [1.0, 49.0],
+    coordinates: [2.0, 48.6],
     description: "Een beroemde rivier in Noord-Frankrijk die door het hart van Parijs stroomt.",
     funFacts: [
       "De as van Jeanne d'Arc zou in de Seine zijn gestrooid.",
@@ -572,7 +572,7 @@ export const europeData: GeoItem[] = [
     dutchName: "Schelde",
     englishName: "Scheldt River",
     emoji: "🚢",
-    coordinates: [4.3, 51.3],
+    coordinates: [4.0, 51.15],
     description: "Een rivier die door Noord-Frankrijk, West-België en Zuidwest-Nederland stroomt.",
     funFacts: [
       "De Schelde is al eeuwenlang cruciaal voor de handel in Antwerpen.",

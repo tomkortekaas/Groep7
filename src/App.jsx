@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
 import { europeData, getRandomFunFact, getCountryForCapital, wikiSearchTerms } from './data/europeData';
 
 // Unit 2 woordenlijst - Engels voor Siem
@@ -720,6 +720,27 @@ const EuropeExplorer = ({ onBack }) => {
   // Collection state - track collected stickers
   const [collectedStickers, setCollectedStickers] = useState(new Set());
 
+  // Zoom state for map
+  const [position, setPosition] = useState({ coordinates: [15, 52], zoom: 1 });
+
+  const handleZoomIn = useCallback(() => {
+    if (position.zoom >= 8) return;
+    setPosition(pos => ({ ...pos, zoom: pos.zoom * 1.5 }));
+  }, [position.zoom]);
+
+  const handleZoomOut = useCallback(() => {
+    if (position.zoom <= 1) return;
+    setPosition(pos => ({ ...pos, zoom: pos.zoom / 1.5 }));
+  }, [position.zoom]);
+
+  const handleZoomReset = useCallback(() => {
+    setPosition({ coordinates: [15, 52], zoom: 1 });
+  }, []);
+
+  const handleMoveEnd = useCallback((position) => {
+    setPosition(position);
+  }, []);
+
   // Translations
   const t = lang === 'nl' ? {
     title: 'Europe Explorer',
@@ -749,6 +770,10 @@ const EuropeExplorer = ({ onBack }) => {
     close: 'Sluiten',
     collected: 'Verzameld',
     stickerBook: 'Stickerverzameling',
+    zoomIn: 'Inzoomen',
+    zoomOut: 'Uitzoomen',
+    zoomReset: 'Reset',
+    zoomTip: 'Knijp om te zoomen',
   } : {
     title: 'Europe Explorer',
     subtitle: 'Geography Mission',
@@ -777,6 +802,10 @@ const EuropeExplorer = ({ onBack }) => {
     close: 'Close',
     collected: 'Collected',
     stickerBook: 'Sticker Collection',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    zoomReset: 'Reset',
+    zoomTip: 'Pinch to zoom',
   };
 
   const filteredData = filter === 'all' ? europeData : europeData.filter(d => d.category === filter);
@@ -855,6 +884,7 @@ const EuropeExplorer = ({ onBack }) => {
     setTotalQuestions(questions.length);
     setFeedback(null);
     setMissionComplete(false);
+    setPosition({ coordinates: [15, 52], zoom: 1 }); // Reset zoom
     setGameMode('mission');
   };
 
@@ -1000,7 +1030,7 @@ const EuropeExplorer = ({ onBack }) => {
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 shrink-0">
         <button
-          onClick={() => { setGameMode('menu'); setSelectedItem(null); setFeedback(null); }}
+          onClick={() => { setGameMode('menu'); setSelectedItem(null); setFeedback(null); setPosition({ coordinates: [15, 52], zoom: 1 }); }}
           className="px-3 py-2 bg-white/20 text-white font-bold rounded-xl active:scale-95 transition-all text-sm"
           style={{ touchAction: 'manipulation', minHeight: '44px' }}
         >
@@ -1066,10 +1096,17 @@ const EuropeExplorer = ({ onBack }) => {
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{ center: [15, 52], scale: 700 }}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '100%', height: '100%', touchAction: 'none' }}
           width={800}
           height={600}
         >
+          <ZoomableGroup
+            zoom={position.zoom}
+            center={position.coordinates}
+            onMoveEnd={handleMoveEnd}
+            minZoom={1}
+            maxZoom={8}
+          >
           {/* Countries */}
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
@@ -1106,11 +1143,17 @@ const EuropeExplorer = ({ onBack }) => {
             const isSelected = selectedItem?.id === item.id;
             const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#6ee7b7' : '#34d39988';
             const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#059669';
+            // Scale inversely with zoom
+            const scale = 1 / position.zoom;
+            const touchRx = Math.max(10, 30 * scale);
+            const touchRy = Math.max(7, 20 * scale);
 
             return (
               <Marker key={item.id} coordinates={item.coordinates}>
-                <ellipse rx={30} ry={20} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1000 }} />
-                <polygon points="-15,6 -8,-5 -2,3 5,-8 11,1 17,6" fill={fill} stroke={stroke} strokeWidth={1.5} strokeLinejoin="round" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer', zIndex: 1001 }} />
+                <ellipse rx={touchRx} ry={touchRy} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                <g transform={`scale(${scale})`}>
+                  <polygon points="-15,6 -8,-5 -2,3 5,-8 11,1 17,6" fill={fill} stroke={stroke} strokeWidth={1.5} strokeLinejoin="round" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                </g>
               </Marker>
             );
           })}
@@ -1123,11 +1166,18 @@ const EuropeExplorer = ({ onBack }) => {
               const isWrong = wrongAnswer === item.id;
               const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#60a5fa';
               const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#2563eb';
+              // Scale inversely with zoom - keeps apparent screen size constant
+              const scale = 1 / position.zoom;
+              // Touch target: large enough to tap, but scales down to reduce overlap
+              const touchRadius = Math.max(4, 12 * scale);
+              // Visual marker: stays visible at all zoom levels
+              const markerRadius = Math.max(2, (isCorrect ? 8 : 5) * scale);
+              const strokeW = Math.max(0.5, 1.5 * scale);
 
               return (
                 <Marker key={item.id} coordinates={item.coordinates}>
-                  <circle r={18} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
-                  <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={touchRadius} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
                 </Marker>
               );
             })}
@@ -1140,15 +1190,62 @@ const EuropeExplorer = ({ onBack }) => {
               const isWrong = wrongAnswer === item.id;
               const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#fbbf24';
               const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#d97706';
+              // Scale inversely with zoom - keeps apparent screen size constant
+              const scale = 1 / position.zoom;
+              // Touch target: large enough to tap, but scales down to reduce overlap
+              const touchRadius = Math.max(4, 15 * scale);
+              // Visual marker: stays visible at all zoom levels
+              const markerRadius = Math.max(2, (isCorrect ? 8 : 5) * scale);
+              const strokeW = Math.max(0.5, 1.5 * scale);
 
               return (
                 <Marker key={item.id} coordinates={item.coordinates}>
-                  <circle r={25} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
-                  <circle r={isCorrect ? 10 : 6} fill={fill} stroke={stroke} strokeWidth={2} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={touchRadius} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
                 </Marker>
               );
             })}
+          </ZoomableGroup>
         </ComposableMap>
+
+        {/* Zoom controls */}
+        <div className="absolute bottom-3 left-3 flex flex-col gap-2 z-20">
+          <button
+            onClick={handleZoomIn}
+            disabled={position.zoom >= 8}
+            className="w-12 h-12 bg-white/90 text-slate-700 rounded-xl shadow-lg flex items-center justify-center text-2xl font-bold active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ touchAction: 'manipulation' }}
+            title={t.zoomIn}
+          >
+            +
+          </button>
+          <button
+            onClick={handleZoomOut}
+            disabled={position.zoom <= 1}
+            className="w-12 h-12 bg-white/90 text-slate-700 rounded-xl shadow-lg flex items-center justify-center text-2xl font-bold active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+            style={{ touchAction: 'manipulation' }}
+            title={t.zoomOut}
+          >
+            −
+          </button>
+          {position.zoom > 1 && (
+            <button
+              onClick={handleZoomReset}
+              className="w-12 h-12 bg-orange-500 text-white rounded-xl shadow-lg flex items-center justify-center text-sm font-bold active:scale-95"
+              style={{ touchAction: 'manipulation' }}
+              title={t.zoomReset}
+            >
+              ↺
+            </button>
+          )}
+        </div>
+
+        {/* Zoom tip for first-time users */}
+        {position.zoom === 1 && gameMode !== 'menu' && (
+          <div className="absolute bottom-3 left-20 bg-slate-800/80 text-white text-xs px-3 py-2 rounded-lg">
+            👆 {t.zoomTip}
+          </div>
+        )}
 
         {/* Centered popup modal for recon mode */}
         {gameMode === 'recon' && selectedItem && (
