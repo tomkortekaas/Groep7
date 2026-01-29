@@ -850,8 +850,9 @@ const EuropeExplorer = ({ onBack }) => {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        // Ensure extract has at least 2 paragraphs by combining with description if needed
+        // Ensure we have at least 2 paragraphs (approximately 400+ characters)
         let extract = data.extract || '';
+        
         // Remove duplicate content from extract if it's too similar to description
         if (extract && item.description) {
           const descWords = item.description.toLowerCase().split(' ').slice(0, 5).join(' ');
@@ -860,8 +861,31 @@ const EuropeExplorer = ({ onBack }) => {
             // Extract starts with description, remove the overlap
             extract = extract.replace(new RegExp(`^${item.description.split(' ').slice(0, 3).join(' ')}`, 'i'), '').trim();
           }
-          if (extract.length < 300) {
+        }
+        
+        // Ensure minimum content (2 paragraphs)
+        const targetLength = 400; // Approximately 2 paragraphs
+        if (extract.length < targetLength) {
+          // Add description if extract is too short
+          if (item.description) {
             extract = extract ? `${extract}\n\n${item.description}` : item.description;
+          }
+          
+          // If still too short, add fun facts as additional content
+          if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0) {
+            const additionalFacts = item.funFacts.slice(0, 2).join(' ');
+            extract = extract ? `${extract}\n\n💡 Extra info: ${additionalFacts}` : `💡 Extra info: ${additionalFacts}`;
+          }
+          
+          // If still too short, add generic content
+          if (extract.length < targetLength) {
+            const categoryInfo = {
+              country: `Dit ${lang === 'nl' ? 'land' : 'country'} is een belangrijk geografisch gebied in Europa.`,
+              capital: `Deze ${lang === 'nl' ? 'hoofdstad' : 'capital'} is een cultureel en administratief centrum.`,
+              water: `Deze ${lang === 'nl' ? 'waterweg' : 'waterway'} speelt een cruciale rol in de regio.`,
+              mountain: `Dit ${lang === 'nl' ? 'gebergte' : 'mountain'} is een opvallend geografisch kenmerk.`
+            };
+            extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
           }
         }
         const info = {
@@ -874,10 +898,30 @@ const EuropeExplorer = ({ onBack }) => {
         wikiCache.current[cacheKey] = { title: data.title, extract: extract, thumbnail: data.thumbnail?.source };
         setWikiInfo(info);
       } else {
-        // If Wikipedia fails, show description as fallback
+        // If Wikipedia fails, create comprehensive fallback content
+        let extract = item.description || '';
+        const targetLength = 400;
+        
+        // Add fun facts if extract is too short
+        if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0) {
+          const additionalFacts = item.funFacts.slice(0, 3).join(' ');
+          extract = extract ? `${extract}\n\n💡 Extra info: ${additionalFacts}` : `💡 Extra info: ${additionalFacts}`;
+        }
+        
+        // Add generic content if still too short
+        if (extract.length < targetLength) {
+          const categoryInfo = {
+            country: `Dit ${lang === 'nl' ? 'land' : 'country'} is een belangrijk geografisch gebied in Europa met een rijke geschiedenis en cultuur.`,
+            capital: `Deze ${lang === 'nl' ? 'hoofdstad' : 'capital'} is een cultureel en administratief centrum met veel historische bezienswaardigheden.`,
+            water: `Deze ${lang === 'nl' ? 'waterweg' : 'waterway'} speelt een cruciale rol in de regio en heeft belangrijke ecologische waarde.`,
+            mountain: `Dit ${lang === 'nl' ? 'gebergte' : 'mountain'} is een opvallend geografisch kenmerk met unieke flora en fauna.`
+          };
+          extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
+        }
+        
         const info = { 
           title: lang === 'nl' ? item.dutchName : item.englishName, 
-          extract: item.description || null, 
+          extract: extract, 
           thumbnail: null, 
           funFact: getRandomFunFact(item.id) 
         };
@@ -885,10 +929,30 @@ const EuropeExplorer = ({ onBack }) => {
       }
     } catch (err) {
       console.log('Wiki fetch failed:', err);
-      // If fetch fails, show description as fallback
+      // If fetch fails, create comprehensive fallback content
+      let extract = item.description || '';
+      const targetLength = 400;
+      
+      // Add fun facts if extract is too short
+      if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0) {
+        const additionalFacts = item.funFacts.slice(0, 3).join(' ');
+        extract = extract ? `${extract}\n\n💡 Extra info: ${additionalFacts}` : `💡 Extra info: ${additionalFacts}`;
+      }
+      
+      // Add generic content if still too short
+      if (extract.length < targetLength) {
+        const categoryInfo = {
+          country: `Dit ${lang === 'nl' ? 'land' : 'country'} is een belangrijk geografisch gebied in Europa met een rijke geschiedenis en cultuur.`,
+          capital: `Deze ${lang === 'nl' ? 'hoofdstad' : 'capital'} is een cultureel en administratief centrum met veel historische bezienswaardigheden.`,
+          water: `Deze ${lang === 'nl' ? 'waterweg' : 'waterway'} speelt een cruciale rol in de regio en heeft belangrijke ecologische waarde.`,
+          mountain: `Dit ${lang === 'nl' ? 'gebergte' : 'mountain'} is een opvallend geografisch kenmerk met unieke flora en fauna.`
+        };
+        extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
+      }
+      
       const info = { 
         title: lang === 'nl' ? item.dutchName : item.englishName, 
-        extract: item.description || null, 
+        extract: extract, 
         thumbnail: null, 
         funFact: getRandomFunFact(item.id) 
       };
