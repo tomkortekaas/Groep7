@@ -865,21 +865,25 @@ const EuropeExplorer = ({ onBack }) => {
         wikiCache.current[cacheKey] = { title: data.title, extract: extract, thumbnail: data.thumbnail?.source };
         setWikiInfo(info);
       } else {
-        // If Wikipedia fails, still show fun fact
-        const funFact = getRandomFunFact(item.id);
-        if (funFact) {
-          const info = { title: lang === 'nl' ? item.dutchName : item.englishName, extract: null, thumbnail: null, funFact };
-          setWikiInfo(info);
-        }
+        // If Wikipedia fails, show description as fallback
+        const info = { 
+          title: lang === 'nl' ? item.dutchName : item.englishName, 
+          extract: item.description || null, 
+          thumbnail: null, 
+          funFact: getRandomFunFact(item.id) 
+        };
+        setWikiInfo(info);
       }
     } catch (err) {
       console.log('Wiki fetch failed:', err);
-      // If fetch fails, still show fun fact
-      const funFact = getRandomFunFact(item.id);
-      if (funFact) {
-        const info = { title: lang === 'nl' ? item.dutchName : item.englishName, extract: null, thumbnail: null, funFact };
-        setWikiInfo(info);
-      }
+      // If fetch fails, show description as fallback
+      const info = { 
+        title: lang === 'nl' ? item.dutchName : item.englishName, 
+        extract: item.description || null, 
+        thumbnail: null, 
+        funFact: getRandomFunFact(item.id) 
+      };
+      setWikiInfo(info);
     }
     setWikiLoading(false);
   };
