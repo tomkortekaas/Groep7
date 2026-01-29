@@ -1141,21 +1141,16 @@ const EuropeExplorer = ({ onBack }) => {
                   const isCorrect = feedback === 'correct' && countryItem.id === currentQuestion?.target.id;
                   const isWrong = wrongAnswer === countryItem.id;
                   const isSelected = selectedItem?.id === countryItem.id;
-                  
-                  // Specific color for Netherlands
-                  const isNetherlands = countryItem.id === 'netherlands';
-                  const defaultColor = isNetherlands ? '#9333ea' : '#c4b5fd'; // Purple for Netherlands, light purple for others
-                  const defaultStroke = isNetherlands ? '#7c3aed' : '#7c3aed';
 
                   return (
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
                       onClick={() => handleMarkerClick(countryItem)}
-                      fill={isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#d8b4fe' : defaultColor}
-                      stroke={isCorrect ? '#16a34a' : isWrong ? '#dc2626' : defaultStroke}
+                      fill={isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#d8b4fe' : '#c4b5fd'}
+                      stroke={isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#7c3aed'}
                       strokeWidth={1.5}
-                      style={{ default: { outline: 'none', cursor: 'pointer', pointerEvents: 'auto' }, hover: { outline: 'none', fill: isNetherlands ? '#a855f7' : '#ddd6fe' }, pressed: { outline: 'none' } }}
+                      style={{ default: { outline: 'none', cursor: 'pointer', pointerEvents: 'auto' }, hover: { outline: 'none', fill: '#ddd6fe' }, pressed: { outline: 'none' } }}
                     />
                   );
                 }

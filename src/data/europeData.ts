@@ -16,7 +16,7 @@ export const europeData: GeoItem[] = [
     id: "netherlands",
     category: "country",
     dutchName: "Nederland",
-    englishName: "The Netherlands",
+    englishName: "Netherlands",
     emoji: "🇳🇱",
     coordinates: [5.3, 52.1],
     description: "Een land in Noordwest-Europa, bekend om zijn vlakke landschap, uitgestrekte polders, historische grachtensteden en als 'de poort tot Europa' met de haven van Rotterdam, de grootste haven van Europa.",
