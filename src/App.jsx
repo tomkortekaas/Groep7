@@ -1078,13 +1078,18 @@ const EuropeExplorer = ({ onBack }) => {
           </div>
           {feedback === 'correct' && currentFunFact && (
             <div className="px-3 pb-3 pt-0">
-              <div 
-                className="bg-white/20 rounded-lg p-2 text-sm font-medium cursor-pointer active:scale-95 transition-all" 
-                style={{ fontFamily: 'Nunito, sans-serif' }}
-                onClick={handleContinueToNext}
-                title={t.clickToContinue}
-              >
-                {currentFunFact}
+              <div className="bg-white/20 rounded-lg p-2 text-sm font-medium relative" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                <button
+                  onClick={handleContinueToNext}
+                  className="absolute top-1 right-1 w-6 h-6 bg-white/30 hover:bg-white/50 text-white rounded-full flex items-center justify-center text-xs font-bold transition-colors"
+                  title={t.clickToContinue}
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  ✕
+                </button>
+                <div className="pr-8">
+                  {currentFunFact}
+                </div>
               </div>
             </div>
           )}
@@ -1373,7 +1378,15 @@ const EuropeExplorer = ({ onBack }) => {
       {/* Centered popup for correct answer */}
       {gameMode === 'mission' && feedback === 'correct' && (
         <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
-          <div className="bg-gradient-to-br from-green-400 to-emerald-500 text-white rounded-3xl shadow-2xl p-8 animate-pop-in text-center max-w-sm">
+          <div className="bg-gradient-to-br from-green-400 to-emerald-500 text-white rounded-3xl shadow-2xl p-8 animate-pop-in text-center max-w-sm relative pointer-events-auto">
+            <button
+              onClick={handleContinueToNext}
+              className="absolute top-2 right-2 w-8 h-8 bg-white/20 hover:bg-white/30 text-white rounded-full flex items-center justify-center text-lg font-bold transition-colors"
+              title={t.clickToContinue}
+              style={{ touchAction: 'manipulation' }}
+            >
+              ✕
+            </button>
             <div className="text-6xl mb-4">🎉</div>
             <p className="text-2xl font-black mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
               {t.correct}
