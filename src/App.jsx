@@ -850,14 +850,19 @@ const EuropeExplorer = ({ onBack }) => {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
+        // Ensure extract has at least 2 paragraphs by combining with description if needed
+        let extract = data.extract || '';
+        if (extract.length < 300 && item.description) {
+          extract = extract ? `${extract}\n\n${item.description}` : item.description;
+        }
         const info = {
           title: data.title,
-          extract: data.extract,
+          extract: extract,
           thumbnail: data.thumbnail?.source,
           funFact: getRandomFunFact(item.id),
         };
         // Cache without funFact so we can pick fresh random fact each time
-        wikiCache.current[cacheKey] = { title: data.title, extract: data.extract, thumbnail: data.thumbnail?.source };
+        wikiCache.current[cacheKey] = { title: data.title, extract: extract, thumbnail: data.thumbnail?.source };
         setWikiInfo(info);
       } else {
         // If Wikipedia fails, still show fun fact
@@ -1340,24 +1345,6 @@ const EuropeExplorer = ({ onBack }) => {
                   {showWiki ? t.close : t.moreInfo}
                 </button>
               </div>
-
-              {/* Wikipedia content - no fun facts in recon mode, only in quiz */}
-              {showWiki && (
-                <div className="p-4 text-sm text-slate-300 max-h-72 overflow-y-auto border-t border-slate-700">
-                  {wikiLoading && <p className="text-center py-6 text-lg">{t.loading}</p>}
-                  {!wikiLoading && wikiInfo && (
-                    <>
-                      {wikiInfo.thumbnail && (
-                        <img src={wikiInfo.thumbnail} alt="" className="w-full h-32 object-cover rounded-lg mb-3" />
-                      )}
-                      {wikiInfo.extract && (
-                        <p className="leading-relaxed text-slate-400">{wikiInfo.extract}</p>
-                      )}
-                    </>
-                  )}
-                  {!wikiLoading && !wikiInfo && <p className="text-center py-6 text-slate-500">No info available</p>}
-                </div>
-              )}
             </div>
           </div>
         )}
