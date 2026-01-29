@@ -852,8 +852,17 @@ const EuropeExplorer = ({ onBack }) => {
         const data = await response.json();
         // Ensure extract has at least 2 paragraphs by combining with description if needed
         let extract = data.extract || '';
-        if (extract.length < 300 && item.description) {
-          extract = extract ? `${extract}\n\n${item.description}` : item.description;
+        // Remove duplicate content from extract if it's too similar to description
+        if (extract && item.description) {
+          const descWords = item.description.toLowerCase().split(' ').slice(0, 5).join(' ');
+          const extractStart = extract.toLowerCase().split(' ').slice(0, 5).join(' ');
+          if (extractStart === descWords) {
+            // Extract starts with description, remove the overlap
+            extract = extract.replace(new RegExp(`^${item.description.split(' ').slice(0, 3).join(' ')}`, 'i'), '').trim();
+          }
+          if (extract.length < 300) {
+            extract = extract ? `${extract}\n\n${item.description}` : item.description;
+          }
         }
         const info = {
           title: data.title,
@@ -1317,8 +1326,8 @@ const EuropeExplorer = ({ onBack }) => {
 
               {/* Description and Wikipedia info */}
               <div className="p-4 text-sm text-slate-300 max-h-72 overflow-y-auto border-t border-slate-700">
-                {selectedItem.description && (
-                  <p className="mb-4 leading-relaxed text-slate-400">{selectedItem.description}</p>
+                {selectedItem.description && !showWiki && (
+                  <p className="leading-relaxed text-slate-400">{selectedItem.description}</p>
                 )}
                 {showWiki && (
                   <>
