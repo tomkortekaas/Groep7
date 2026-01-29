@@ -1306,6 +1306,25 @@ const EuropeExplorer = ({ onBack }) => {
                 </button>
               </div>
 
+              {/* Description and fun facts */}
+              <div className="p-4 text-sm text-slate-300 border-t border-slate-700">
+                {selectedItem.description && (
+                  <p className="mb-4 leading-relaxed text-slate-400">{selectedItem.description}</p>
+                )}
+                {selectedItem.funFacts && selectedItem.funFacts.length > 0 && (
+                  <div>
+                    <p className="font-bold text-white mb-2">💡 {t.funFacts || 'Fun Facts'}:</p>
+                    <ul className="space-y-2">
+                      {selectedItem.funFacts.map((fact, idx) => (
+                        <li key={idx} className="text-xs text-slate-400 pl-3 border-l-2 border-cyan-500">
+                          {fact}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
               {/* Info button */}
               <div className="p-4 border-t border-slate-700">
                 <button
