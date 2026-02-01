@@ -83,49 +83,73 @@ const BigButton = ({ onClick, children, color, className = '' }) => (
   </button>
 );
 
-const StartScreen = ({ onStart, onManageWords }) => (
+const StartScreen = ({ onStart }) => (
   <div className="screen-scroll safe-area-pad bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex items-center justify-center p-8">
     <div className="text-center w-full max-w-lg">
       <div className="mb-8">
         <span className="text-9xl block animate-bounce">📚</span>
       </div>
-      <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 mb-4" 
+      <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 mb-4"
           style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-        Unit 2 - Engels
+        Siem's Leer App
       </h1>
       <p className="text-2xl text-orange-700 mb-10" style={{ fontFamily: 'Nunito, sans-serif' }}>
-        Oefen je woordjes voor de toets!
+        Kies wat je wilt oefenen!
       </p>
-      
-      <div className="space-y-4 flex flex-col items-center">
-        <BigButton onClick={() => onStart('learn')} color="bg-gradient-to-r from-emerald-400 to-teal-500">
-          <span className="text-4xl">🎓</span> Leren
-        </BigButton>
-        
-        <BigButton onClick={() => onStart('practice-nl-en')} color="bg-gradient-to-r from-blue-400 to-indigo-500">
-          <span className="text-3xl">🇳🇱➡️🇬🇧</span> NL → EN
-        </BigButton>
-        
-        <BigButton onClick={() => onStart('practice-en-nl')} color="bg-gradient-to-r from-indigo-400 to-purple-500">
-          <span className="text-3xl">🇬🇧➡️🇳🇱</span> EN → NL
-        </BigButton>
-        
-        <BigButton onClick={() => onStart('sentences')} color="bg-gradient-to-r from-pink-400 to-rose-500">
-          <span className="text-4xl">✍️</span> Zinnen Maken
-        </BigButton>
-        
-        <BigButton onClick={() => onStart('test')} color="bg-gradient-to-r from-amber-400 to-orange-500">
-          <span className="text-4xl">🏆</span> Overhoren
+
+      <div className="space-y-6 flex flex-col items-center">
+        <BigButton onClick={() => onStart('english-menu')} color="bg-gradient-to-r from-blue-500 to-indigo-600">
+          <span className="text-4xl">🇬🇧</span> Engels Leren
         </BigButton>
 
         <BigButton onClick={() => onStart('europe')} color="bg-gradient-to-r from-slate-600 to-emerald-700">
           <span className="text-4xl">🗺️</span> Europe Explorer
         </BigButton>
+      </div>
+    </div>
+  </div>
+);
+
+const EnglishMenu = ({ onStart, onBack, onManageWords }) => (
+  <div className="screen-scroll safe-area-pad bg-gradient-to-br from-blue-100 via-indigo-50 to-purple-100 flex items-center justify-center p-8">
+    <BackButton onClick={onBack} color="text-indigo-600" />
+    <div className="text-center w-full max-w-lg">
+      <div className="mb-6">
+        <span className="text-8xl block">🇬🇧</span>
+      </div>
+      <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 mb-2"
+          style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+        Engels Leren
+      </h1>
+      <p className="text-xl text-indigo-600 mb-8" style={{ fontFamily: 'Nunito, sans-serif' }}>
+        Unit 2 - Oefen je woordjes!
+      </p>
+
+      <div className="space-y-4 flex flex-col items-center">
+        <BigButton onClick={() => onStart('learn')} color="bg-gradient-to-r from-emerald-400 to-teal-500">
+          <span className="text-4xl">🎓</span> Leren
+        </BigButton>
+
+        <BigButton onClick={() => onStart('practice-nl-en')} color="bg-gradient-to-r from-blue-400 to-indigo-500">
+          <span className="text-3xl">🇳🇱➡️🇬🇧</span> NL → EN
+        </BigButton>
+
+        <BigButton onClick={() => onStart('practice-en-nl')} color="bg-gradient-to-r from-indigo-400 to-purple-500">
+          <span className="text-3xl">🇬🇧➡️🇳🇱</span> EN → NL
+        </BigButton>
+
+        <BigButton onClick={() => onStart('sentences')} color="bg-gradient-to-r from-pink-400 to-rose-500">
+          <span className="text-4xl">✍️</span> Zinnen Maken
+        </BigButton>
+
+        <BigButton onClick={() => onStart('test')} color="bg-gradient-to-r from-amber-400 to-orange-500">
+          <span className="text-4xl">🏆</span> Overhoren
+        </BigButton>
 
         <button
-          onClick={onManageWords} 
-          className="w-full max-w-md py-4 px-8 bg-white/80 text-orange-600 text-xl font-bold rounded-3xl shadow-lg 
-          active:scale-95 transition-all border-3 border-orange-200 mt-6 flex items-center justify-center gap-3"
+          onClick={onManageWords}
+          className="w-full max-w-md py-4 px-8 bg-white/80 text-indigo-600 text-xl font-bold rounded-3xl shadow-lg
+          active:scale-95 transition-all border-3 border-indigo-200 mt-4 flex items-center justify-center gap-3"
           style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive', minHeight: '70px', touchAction: 'manipulation' }}
         >
           <span className="text-3xl">⚙️</span> Woordjes Beheren
@@ -709,6 +733,11 @@ const EuropeExplorer = ({ onBack }) => {
   const [wrongAnswer, setWrongAnswer] = useState(null);
   const [currentFunFact, setCurrentFunFact] = useState(null);
 
+  // Type Quiz state
+  const [typeQuizInput, setTypeQuizInput] = useState('');
+  const [typeQuizHighlightedItem, setTypeQuizHighlightedItem] = useState(null);
+  const [lastQuizMode, setLastQuizMode] = useState('mission'); // Track which quiz was played
+
   // Helper to get random fun fact - uses imported function from europeData.ts
 
   // Function to continue to next question after user clicks fun fact
@@ -790,6 +819,12 @@ const EuropeExplorer = ({ onBack }) => {
     zoomReset: 'Reset',
     zoomTip: 'Knijp om te zoomen',
     clickToContinue: 'Klik om verder te gaan',
+    typeQuiz: 'Typ Quiz',
+    typeQuizShort: 'Typ',
+    whatIsThis: 'Wat is dit?',
+    typeAnswer: 'Typ je antwoord...',
+    check: 'Check',
+    skip: 'Sla over',
   } : {
     title: 'Europe Explorer',
     subtitle: 'Geography Mission',
@@ -823,6 +858,12 @@ const EuropeExplorer = ({ onBack }) => {
     zoomReset: 'Reset',
     zoomTip: 'Pinch to zoom',
     clickToContinue: 'Click to continue',
+    typeQuiz: 'Type Quiz',
+    typeQuizShort: 'Type',
+    whatIsThis: 'What is this?',
+    typeAnswer: 'Type your answer...',
+    check: 'Check',
+    skip: 'Skip',
   };
 
   const filteredData = filter === 'all' ? europeData : europeData.filter(d => d.category === filter);
@@ -984,7 +1025,69 @@ const EuropeExplorer = ({ onBack }) => {
     setFeedback(null);
     setMissionComplete(false);
     setPosition({ coordinates: [15, 52], zoom: 1 }); // Reset zoom
+    setLastQuizMode('mission');
     setGameMode('mission');
+  };
+
+  const startTypeQuiz = () => {
+    const shuffled = shuffleArray([...europeData]);
+    setQuestionQueue(shuffled);
+    setTypeQuizHighlightedItem(shuffled[0]);
+    setScore(0);
+    setTotalQuestions(shuffled.length);
+    setFeedback(null);
+    setMissionComplete(false);
+    setTypeQuizInput('');
+    setPosition({ coordinates: [15, 52], zoom: 1 }); // Reset zoom
+    setLastQuizMode('typeQuiz');
+    setGameMode('typeQuiz');
+  };
+
+  const checkTypeQuizAnswer = () => {
+    if (!typeQuizHighlightedItem || !typeQuizInput.trim()) return;
+
+    const userAnswer = typeQuizInput.toLowerCase().trim();
+    const dutchName = typeQuizHighlightedItem.dutchName.toLowerCase();
+    const englishName = typeQuizHighlightedItem.englishName.toLowerCase();
+
+    // Accept both Dutch and English names
+    const isCorrect = userAnswer === dutchName || userAnswer === englishName;
+
+    if (isCorrect) {
+      setFeedback('correct');
+      setScore(s => s + 1);
+      setCollectedStickers(prev => new Set([...prev, typeQuizHighlightedItem.id]));
+      setCurrentFunFact(getRandomFunFact(typeQuizHighlightedItem.id));
+    } else {
+      setFeedback('wrong');
+      // Show correct answer briefly then move on
+      setTimeout(() => {
+        handleTypeQuizNext();
+      }, 2000);
+    }
+  };
+
+  const handleTypeQuizNext = () => {
+    const currentIdx = questionQueue.indexOf(typeQuizHighlightedItem);
+    if (currentIdx + 1 >= questionQueue.length) {
+      setMissionComplete(true);
+    } else {
+      setTypeQuizHighlightedItem(questionQueue[currentIdx + 1]);
+    }
+    setFeedback(null);
+    setTypeQuizInput('');
+    setCurrentFunFact(null);
+  };
+
+  const skipTypeQuizQuestion = () => {
+    const currentIdx = questionQueue.indexOf(typeQuizHighlightedItem);
+    if (currentIdx + 1 >= questionQueue.length) {
+      setMissionComplete(true);
+    } else {
+      setTypeQuizHighlightedItem(questionQueue[currentIdx + 1]);
+    }
+    setFeedback(null);
+    setTypeQuizInput('');
   };
 
   const handleMarkerClick = (item) => {
@@ -1077,6 +1180,9 @@ const EuropeExplorer = ({ onBack }) => {
           <BigButton onClick={startMission} color="bg-gradient-to-r from-orange-500 to-red-600">
             <span className="text-4xl">🎯</span> {t.mission}
           </BigButton>
+          <BigButton onClick={startTypeQuiz} color="bg-gradient-to-r from-purple-500 to-pink-600">
+            <span className="text-4xl">⌨️</span> {t.typeQuiz}
+          </BigButton>
         </div>
         <div className="mt-8 grid grid-cols-4 gap-3 text-center">
           <div className="bg-white/10 rounded-2xl p-3">
@@ -1104,26 +1210,34 @@ const EuropeExplorer = ({ onBack }) => {
   if (missionComplete) {
     const percentage = Math.round((score / totalQuestions) * 100);
     const emoji = percentage >= 80 ? '🏆' : percentage >= 60 ? '⭐' : percentage >= 40 ? '👍' : '💪';
+    const isTypeQuiz = lastQuizMode === 'typeQuiz';
+    const borderColor = isTypeQuiz ? 'border-purple-300' : 'border-emerald-300';
+    const textColor = isTypeQuiz ? 'text-purple-700' : 'text-emerald-700';
+    const textColorLight = isTypeQuiz ? 'text-purple-600' : 'text-emerald-600';
+    const bgGradient = isTypeQuiz ? 'from-purple-100' : 'from-emerald-100';
+    const barGradient = isTypeQuiz ? 'from-purple-400 to-pink-500' : 'from-emerald-400 to-cyan-500';
+    const buttonGradient = isTypeQuiz ? 'from-purple-500 to-pink-500' : 'from-orange-500 to-red-500';
+
     return (
       <div className="screen-scroll safe-area-pad bg-gradient-to-br from-slate-800 via-slate-700 to-emerald-900 flex flex-col items-center justify-center p-6">
         {percentage >= 80 && <Confetti />}
-        <div className="bg-white/95 rounded-3xl shadow-2xl p-8 w-full max-w-lg border-4 border-emerald-300 text-center">
+        <div className={`bg-white/95 rounded-3xl shadow-2xl p-8 w-full max-w-lg border-4 ${borderColor} text-center`}>
           <span className="text-8xl mb-4 block animate-bounce">{emoji}</span>
-          <h2 className="text-4xl font-black text-emerald-700 mb-4" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+          <h2 className={`text-4xl font-black ${textColor} mb-4`} style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
             {t.missionComplete}
           </h2>
-          <p className="text-2xl text-emerald-600 mb-4">
+          <p className={`text-2xl ${textColorLight} mb-4`}>
             {t.score}: <span className="font-bold">{score}</span> / <span className="font-bold">{totalQuestions}</span>
           </p>
-          <div className="w-full bg-emerald-100 rounded-full h-6 mb-4">
-            <div className="h-6 rounded-full bg-gradient-to-r from-emerald-400 to-cyan-500 transition-all duration-1000" style={{ width: `${percentage}%` }} />
+          <div className={`w-full bg-${bgGradient} rounded-full h-6 mb-4`} style={{ backgroundColor: isTypeQuiz ? '#f3e8ff' : '#d1fae5' }}>
+            <div className={`h-6 rounded-full bg-gradient-to-r ${barGradient} transition-all duration-1000`} style={{ width: `${percentage}%` }} />
           </div>
-          <p className="text-3xl font-bold text-emerald-600 mb-6">{percentage}%</p>
+          <p className={`text-3xl font-bold ${textColorLight} mb-6`}>{percentage}%</p>
           <div className="flex gap-4">
             <button onClick={() => setGameMode('menu')} className="flex-1 py-5 px-4 bg-gray-200 text-gray-600 font-bold rounded-2xl text-xl shadow-lg active:scale-95 transition-all" style={{ touchAction: 'manipulation' }}>
               {t.menu}
             </button>
-            <button onClick={startMission} className="flex-1 py-5 px-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-2xl text-xl shadow-lg active:scale-95 transition-all" style={{ touchAction: 'manipulation' }}>
+            <button onClick={isTypeQuiz ? startTypeQuiz : startMission} className={`flex-1 py-5 px-4 bg-gradient-to-r ${buttonGradient} text-white font-bold rounded-2xl text-xl shadow-lg active:scale-95 transition-all`} style={{ touchAction: 'manipulation' }}>
               {t.again}
             </button>
           </div>
@@ -1145,9 +1259,9 @@ const EuropeExplorer = ({ onBack }) => {
           {t.back}
         </button>
         <h2 className="text-lg font-black text-white" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-          {gameMode === 'recon' ? `🔍 ${t.reconShort}` : `🎯 ${t.missionShort}`}
+          {gameMode === 'recon' ? `🔍 ${t.reconShort}` : gameMode === 'typeQuiz' ? `⌨️ ${t.typeQuizShort}` : `🎯 ${t.missionShort}`}
         </h2>
-        {gameMode === 'mission' && (
+        {(gameMode === 'mission' || gameMode === 'typeQuiz') && (
           <div className="px-3 py-2 bg-white/20 text-white font-bold rounded-xl text-sm" style={{ minHeight: '44px', display: 'flex', alignItems: 'center' }}>
             {score}/{totalQuestions}
           </div>
@@ -1214,6 +1328,65 @@ const EuropeExplorer = ({ onBack }) => {
         </div>
       )}
 
+      {/* Type Quiz input section */}
+      {gameMode === 'typeQuiz' && typeQuizHighlightedItem && (
+        <div className="mx-3 mb-2 shrink-0">
+          {/* Progress bar */}
+          <div className="w-full bg-white/20 rounded-full h-2 mb-2">
+            <div className="h-2 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 transition-all" style={{ width: `${(questionQueue.indexOf(typeQuizHighlightedItem) / totalQuestions) * 100}%` }} />
+          </div>
+
+          {/* Question and input */}
+          <div className={`rounded-xl p-4 ${
+            feedback === 'correct' ? 'bg-green-500' :
+            feedback === 'wrong' ? 'bg-red-500' :
+            'bg-white/20'
+          }`}>
+            <p className="text-white text-center font-bold mb-3" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+              {feedback === 'correct' ? t.correct :
+               feedback === 'wrong' ? `${t.wrong} ${lang === 'nl' ? typeQuizHighlightedItem.dutchName : typeQuizHighlightedItem.englishName}` :
+               `${t.whatIsThis} ${typeQuizHighlightedItem.emoji}`}
+            </p>
+
+            {feedback !== 'correct' && (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={typeQuizInput}
+                  onChange={(e) => setTypeQuizInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && checkTypeQuizAnswer()}
+                  placeholder={t.typeAnswer}
+                  disabled={feedback === 'wrong'}
+                  className="flex-1 px-4 py-3 rounded-xl text-lg font-bold text-center border-2 border-white/30 bg-white/90 text-slate-800"
+                  style={{ touchAction: 'manipulation' }}
+                  autoFocus
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
+                />
+                <button
+                  onClick={checkTypeQuizAnswer}
+                  disabled={feedback === 'wrong'}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl active:scale-95 transition-all disabled:opacity-50"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  {t.check}
+                </button>
+                <button
+                  onClick={skipTypeQuizQuestion}
+                  disabled={feedback === 'wrong'}
+                  className="px-4 py-3 bg-white/30 text-white font-bold rounded-xl active:scale-95 transition-all disabled:opacity-50"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  →
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Main content area - flex row for map and sticker book */}
       <div className="flex-1 min-h-0 flex gap-3 px-3 pb-3">
         {/* Map container */}
@@ -1243,16 +1416,20 @@ const EuropeExplorer = ({ onBack }) => {
                   const isCorrect = feedback === 'correct' && countryItem.id === currentQuestion?.target.id;
                   const isWrong = wrongAnswer === countryItem.id;
                   const isSelected = selectedItem?.id === countryItem.id;
+                  // Type Quiz highlighting
+                  const isTypeQuizHighlight = gameMode === 'typeQuiz' && countryItem.id === typeQuizHighlightedItem?.id;
+                  const isTypeQuizCorrect = gameMode === 'typeQuiz' && feedback === 'correct' && countryItem.id === typeQuizHighlightedItem?.id;
+                  const isTypeQuizWrong = gameMode === 'typeQuiz' && feedback === 'wrong' && countryItem.id === typeQuizHighlightedItem?.id;
 
                   return (
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
                       onClick={() => handleMarkerClick(countryItem)}
-                      fill={isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#d8b4fe' : '#c4b5fd'}
-                      stroke={isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#7c3aed'}
-                      strokeWidth={1.5}
-                      style={{ default: { outline: 'none', cursor: 'pointer', pointerEvents: 'auto' }, hover: { outline: 'none', fill: '#ddd6fe' }, pressed: { outline: 'none' } }}
+                      fill={isTypeQuizCorrect ? '#86efac' : isTypeQuizWrong ? '#fca5a5' : isTypeQuizHighlight ? '#f0abfc' : isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#d8b4fe' : '#c4b5fd'}
+                      stroke={isTypeQuizCorrect ? '#16a34a' : isTypeQuizWrong ? '#dc2626' : isTypeQuizHighlight ? '#d946ef' : isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#7c3aed'}
+                      strokeWidth={isTypeQuizHighlight ? 3 : 1.5}
+                      style={{ default: { outline: 'none', cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer', pointerEvents: gameMode === 'typeQuiz' ? 'none' : 'auto' }, hover: { outline: 'none', fill: gameMode === 'typeQuiz' ? undefined : '#ddd6fe' }, pressed: { outline: 'none' } }}
                     />
                   );
                 }
@@ -1266,18 +1443,25 @@ const EuropeExplorer = ({ onBack }) => {
             const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
             const isWrong = wrongAnswer === item.id;
             const isSelected = selectedItem?.id === item.id;
-            const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#6ee7b7' : '#34d39988';
-            const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#059669';
+            // Type Quiz highlighting
+            const isTypeQuizHighlight = gameMode === 'typeQuiz' && item.id === typeQuizHighlightedItem?.id;
+            const isTypeQuizCorrect = gameMode === 'typeQuiz' && feedback === 'correct' && item.id === typeQuizHighlightedItem?.id;
+            const isTypeQuizWrong = gameMode === 'typeQuiz' && feedback === 'wrong' && item.id === typeQuizHighlightedItem?.id;
+
+            const fill = isTypeQuizCorrect ? '#86efac' : isTypeQuizWrong ? '#fca5a5' : isTypeQuizHighlight ? '#f0abfc' : isCorrect ? '#86efac' : isWrong ? '#fca5a5' : isSelected ? '#6ee7b7' : '#34d39988';
+            const stroke = isTypeQuizCorrect ? '#16a34a' : isTypeQuizWrong ? '#dc2626' : isTypeQuizHighlight ? '#d946ef' : isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#059669';
             // Scale inversely with zoom
             const scale = 1 / position.zoom;
             const touchRx = Math.max(10, 30 * scale);
             const touchRy = Math.max(7, 20 * scale);
+            // Make highlighted item larger
+            const highlightScale = isTypeQuizHighlight ? 1.5 : 1;
 
             return (
               <Marker key={item.id} coordinates={item.coordinates}>
-                <ellipse rx={touchRx} ry={touchRy} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
-                <g transform={`scale(${scale})`}>
-                  <polygon points="-15,6 -8,-5 -2,3 5,-8 11,1 17,6" fill={fill} stroke={stroke} strokeWidth={1.5} strokeLinejoin="round" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                <ellipse rx={touchRx} ry={touchRy} fill="transparent" onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
+                <g transform={`scale(${scale * highlightScale})`}>
+                  <polygon points="-15,6 -8,-5 -2,3 5,-8 11,1 17,6" fill={fill} stroke={stroke} strokeWidth={isTypeQuizHighlight ? 2.5 : 1.5} strokeLinejoin="round" onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
                 </g>
               </Marker>
             );
@@ -1289,20 +1473,25 @@ const EuropeExplorer = ({ onBack }) => {
             .map(item => {
               const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
               const isWrong = wrongAnswer === item.id;
-              const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#60a5fa';
-              const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#2563eb';
+              // Type Quiz highlighting
+              const isTypeQuizHighlight = gameMode === 'typeQuiz' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizCorrect = gameMode === 'typeQuiz' && feedback === 'correct' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizWrong = gameMode === 'typeQuiz' && feedback === 'wrong' && item.id === typeQuizHighlightedItem?.id;
+
+              const fill = isTypeQuizCorrect ? '#86efac' : isTypeQuizWrong ? '#fca5a5' : isTypeQuizHighlight ? '#f0abfc' : isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#60a5fa';
+              const stroke = isTypeQuizCorrect ? '#16a34a' : isTypeQuizWrong ? '#dc2626' : isTypeQuizHighlight ? '#d946ef' : isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#2563eb';
               // Scale inversely with zoom - keeps apparent screen size constant
               const scale = 1 / position.zoom;
               // Touch target: large enough to tap, but scales down to reduce overlap
               const touchRadius = Math.max(4, 12 * scale);
-              // Visual marker: stays visible at all zoom levels
-              const markerRadius = Math.max(2, (isCorrect ? 8 : 5) * scale);
-              const strokeW = Math.max(0.5, 1.5 * scale);
+              // Visual marker: stays visible at all zoom levels - larger for highlighted items
+              const markerRadius = Math.max(2, ((isTypeQuizHighlight || isCorrect) ? 10 : 5) * scale);
+              const strokeW = Math.max(0.5, (isTypeQuizHighlight ? 2.5 : 1.5) * scale);
 
               return (
                 <Marker key={item.id} coordinates={item.coordinates}>
-                  <circle r={touchRadius} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
-                  <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={touchRadius} fill="transparent" onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
+                  <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
                 </Marker>
               );
             })}
@@ -1313,20 +1502,25 @@ const EuropeExplorer = ({ onBack }) => {
             .map(item => {
               const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
               const isWrong = wrongAnswer === item.id;
-              const fill = isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#fbbf24';
-              const stroke = isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#d97706';
+              // Type Quiz highlighting
+              const isTypeQuizHighlight = gameMode === 'typeQuiz' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizCorrect = gameMode === 'typeQuiz' && feedback === 'correct' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizWrong = gameMode === 'typeQuiz' && feedback === 'wrong' && item.id === typeQuizHighlightedItem?.id;
+
+              const fill = isTypeQuizCorrect ? '#86efac' : isTypeQuizWrong ? '#fca5a5' : isTypeQuizHighlight ? '#f0abfc' : isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#fbbf24';
+              const stroke = isTypeQuizCorrect ? '#16a34a' : isTypeQuizWrong ? '#dc2626' : isTypeQuizHighlight ? '#d946ef' : isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#d97706';
               // Scale inversely with zoom - keeps apparent screen size constant
               const scale = 1 / position.zoom;
               // Touch target: large enough to tap, but scales down to reduce overlap
               const touchRadius = Math.max(4, 15 * scale);
-              // Visual marker: stays visible at all zoom levels
-              const markerRadius = Math.max(2, (isCorrect ? 8 : 5) * scale);
-              const strokeW = Math.max(0.5, 1.5 * scale);
+              // Visual marker: stays visible at all zoom levels - larger for highlighted items
+              const markerRadius = Math.max(2, ((isTypeQuizHighlight || isCorrect) ? 10 : 5) * scale);
+              const strokeW = Math.max(0.5, (isTypeQuizHighlight ? 2.5 : 1.5) * scale);
 
               return (
                 <Marker key={item.id} coordinates={item.coordinates}>
-                  <circle r={touchRadius} fill="transparent" onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
-                  <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => handleMarkerClick(item)} style={{ cursor: 'pointer' }} />
+                  <circle r={touchRadius} fill="transparent" onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
+                  <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
                 </Marker>
               );
             })}
@@ -1460,7 +1654,7 @@ const EuropeExplorer = ({ onBack }) => {
         </div>
 
         {/* Sticker Book - Right sidebar */}
-        {gameMode === 'mission' && (
+        {(gameMode === 'mission' || gameMode === 'typeQuiz') && (
           <div className="w-64 min-h-0 bg-slate-900 rounded-xl shadow-xl border-2 border-slate-600 overflow-hidden flex flex-col">
             <div className="p-4 bg-slate-800 border-b border-slate-700 shrink-0">
               <h3 className="font-black text-base text-white" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
@@ -1489,13 +1683,13 @@ const EuropeExplorer = ({ onBack }) => {
         )}
       </div>
 
-      {/* Centered popup for correct answer */}
+      {/* Centered popup for correct answer - mission mode */}
       {gameMode === 'mission' && feedback === 'correct' && (
-        <div 
+        <div
           className="fixed inset-0 flex items-center justify-center z-50 pointer-events-auto"
           onClick={handleContinueToNext}
         >
-          <div 
+          <div
             className="bg-gradient-to-br from-green-400 to-emerald-500 text-white rounded-3xl shadow-2xl p-8 animate-pop-in text-center max-w-sm relative pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
@@ -1520,7 +1714,41 @@ const EuropeExplorer = ({ onBack }) => {
         </div>
       )}
 
-      {feedback === 'correct' && <Confetti />}
+      {/* Centered popup for correct answer - type quiz mode */}
+      {gameMode === 'typeQuiz' && feedback === 'correct' && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50 pointer-events-auto"
+          onClick={handleTypeQuizNext}
+        >
+          <div
+            className="bg-gradient-to-br from-purple-400 to-pink-500 text-white rounded-3xl shadow-2xl p-8 animate-pop-in text-center max-w-sm relative pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={handleTypeQuizNext}
+              className="absolute top-2 right-2 w-8 h-8 bg-white/20 hover:bg-white/30 text-white rounded-full flex items-center justify-center text-lg font-bold transition-colors"
+              title={t.clickToContinue}
+              style={{ touchAction: 'manipulation' }}
+            >
+              ✕
+            </button>
+            <div className="text-6xl mb-4">🎉</div>
+            <p className="text-2xl font-black mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+              {t.correct}
+            </p>
+            <p className="text-lg font-bold mb-2">
+              {lang === 'nl' ? typeQuizHighlightedItem?.dutchName : typeQuizHighlightedItem?.englishName}
+            </p>
+            {currentFunFact && (
+              <p className="text-sm mt-4 text-white/90 leading-relaxed">
+                {currentFunFact}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {(gameMode === 'mission' || gameMode === 'typeQuiz') && feedback === 'correct' && <Confetti />}
     </div>
   );
 }
@@ -1528,17 +1756,18 @@ const EuropeExplorer = ({ onBack }) => {
 export default function App() {
   const [mode, setMode] = useState('start');
   const [words, setWords] = useState(defaultWords);
-  
+
   return (
     <>
-      {mode === 'start' && <StartScreen onStart={(m) => setMode(m)} onManageWords={() => setMode('manage')} />}
-      {mode === 'learn' && <LearnMode words={words} onBack={() => setMode('start')} />}
-      {mode === 'practice-nl-en' && <PracticeMode words={words} onBack={() => setMode('start')} direction="nl-en" />}
-      {mode === 'practice-en-nl' && <PracticeMode words={words} onBack={() => setMode('start')} direction="en-nl" />}
-      {mode === 'sentences' && <SentenceMode words={words} onBack={() => setMode('start')} />}
-      {mode === 'test' && <TestMode words={words} onBack={() => setMode('start')} />}
+      {mode === 'start' && <StartScreen onStart={(m) => setMode(m)} />}
+      {mode === 'english-menu' && <EnglishMenu onStart={(m) => setMode(m)} onBack={() => setMode('start')} onManageWords={() => setMode('manage')} />}
+      {mode === 'learn' && <LearnMode words={words} onBack={() => setMode('english-menu')} />}
+      {mode === 'practice-nl-en' && <PracticeMode words={words} onBack={() => setMode('english-menu')} direction="nl-en" />}
+      {mode === 'practice-en-nl' && <PracticeMode words={words} onBack={() => setMode('english-menu')} direction="en-nl" />}
+      {mode === 'sentences' && <SentenceMode words={words} onBack={() => setMode('english-menu')} />}
+      {mode === 'test' && <TestMode words={words} onBack={() => setMode('english-menu')} />}
       {mode === 'europe' && <EuropeExplorer onBack={() => setMode('start')} />}
-      {mode === 'manage' && <ManageWords words={words} setWords={setWords} onBack={() => setMode('start')} />}
+      {mode === 'manage' && <ManageWords words={words} setWords={setWords} onBack={() => setMode('english-menu')} />}
     </>
   );
 }
