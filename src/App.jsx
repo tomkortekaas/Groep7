@@ -1016,7 +1016,27 @@ const EuropeExplorer = ({ onBack }) => {
   // Country name lookup for Geography coloring
   const countryNameMap = React.useMemo(() => {
     const map = {};
-    europeData.filter(d => d.category === 'country').forEach(c => { map[c.englishName] = c; });
+    europeData.filter(d => d.category === 'country').forEach(c => { 
+      map[c.englishName] = c; 
+      
+      // Add specific mappings for Netherlands
+      if (c.id === 'netherlands') {
+        map['Netherlands'] = c;
+        map['The Netherlands'] = c;
+        map['Nederland'] = c;
+        map['Holland'] = c;
+      }
+      // Add specific mappings for other countries that might have issues
+      if (c.id === 'uk') {
+        map['United Kingdom'] = c;
+        map['UK'] = c;
+        map['Great Britain'] = c;
+      }
+      if (c.id === 'luxembourg_country') {
+        map['Luxembourg'] = c;
+      }
+    });
+    
     return map;
   }, []);
 
