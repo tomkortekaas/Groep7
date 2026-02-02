@@ -707,7 +707,14 @@ const PracticeMode = ({ words, onBack, direction }) => {
   const checkAnswer = () => {
     const userAnswer = input.toLowerCase().trim();
     const correctAnswers = answerWord.toLowerCase().split(',').map(a => a.trim());
-    const isCorrect = correctAnswers.some(answer => userAnswer === answer);
+    
+    // Add special handling for België - accept both with and without dots
+    const normalizedCorrectAnswers = correctAnswers.map(answer => {
+      if (answer === 'belgië') return ['belgië', 'belgie'];
+      return [answer];
+    }).flat();
+    
+    const isCorrect = normalizedCorrectAnswers.some(answer => userAnswer === answer);
     setFeedback(isCorrect ? 'correct' : 'wrong');
     if (isCorrect) setTimeout(() => { setInput(''); setShowHint(false); setFeedback(null); setCurrentIndex((p) => (p + 1) % shuffledWords.length); }, 1500);
   };
@@ -957,7 +964,14 @@ const TestMode = ({ words, onBack }) => {
   const submitAnswer = () => {
     const userAnswer = input.toLowerCase().trim();
     const correctAnswers = currentQuestion.answer.toLowerCase().split(',').map(a => a.trim());
-    const isCorrect = correctAnswers.some(answer => userAnswer === answer);
+    
+    // Add special handling for België - accept both with and without dots
+    const normalizedCorrectAnswers = correctAnswers.map(answer => {
+      if (answer === 'belgië') return ['belgië', 'belgie'];
+      return [answer];
+    }).flat();
+    
+    const isCorrect = normalizedCorrectAnswers.some(answer => userAnswer === answer);
     setAnswers([...answers, { question: currentQuestion.question, correctAnswer: currentQuestion.answer, userAnswer: input, isCorrect, direction: currentQuestion.direction }]);
     if (isCorrect) setScore(score + 1);
     setShowAnswer(true);
@@ -1492,8 +1506,11 @@ const EuropeExplorer = ({ onBack }) => {
     const dutchName = typeQuizHighlightedItem.dutchName.toLowerCase();
     const englishName = typeQuizHighlightedItem.englishName.toLowerCase();
 
-    // Accept both Dutch and English names
-    const isCorrect = userAnswer === dutchName || userAnswer === englishName;
+    // Accept both Dutch and English names, plus special handling for België
+    const isCorrect = userAnswer === dutchName || 
+                     userAnswer === englishName ||
+                     (dutchName === 'belgië' && userAnswer === 'belgie') ||
+                     (englishName === 'belgium' && userAnswer === 'belgium'); // Future proof
 
     if (isCorrect) {
       setFeedback('correct');
