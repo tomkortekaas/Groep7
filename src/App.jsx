@@ -88,6 +88,8 @@ const Calculator = ({ onBack }) => {
   const [previousValue, setPreviousValue] = useState(null);
   const [operation, setOperation] = useState(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
+  const [memory, setMemory] = useState(0);
+  const [memoryIndicator, setMemoryIndicator] = useState(false);
 
   const inputNumber = (num) => {
     if (waitingForOperand) {
@@ -112,6 +114,15 @@ const Calculator = ({ onBack }) => {
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(false);
+  };
+
+  const clearAll = () => {
+    setDisplay('0');
+    setPreviousValue(null);
+    setOperation(null);
+    setWaitingForOperand(false);
+    setMemory(0);
+    setMemoryIndicator(false);
   };
 
   const performOperation = (nextOperation) => {
@@ -143,6 +154,10 @@ const Calculator = ({ onBack }) => {
         return firstValue / secondValue;
       case '=':
         return secondValue;
+      case 'x²':
+        return Math.pow(secondValue, 2);
+      case '√':
+        return Math.sqrt(secondValue);
       default:
         return secondValue;
     }
@@ -170,7 +185,57 @@ const Calculator = ({ onBack }) => {
     setDisplay(String(newValue));
   };
 
-  // Format display for classic calculator look
+  const calculateSquare = () => {
+    const value = parseFloat(display);
+    const result = Math.pow(value, 2);
+    setDisplay(String(result));
+    setWaitingForOperand(true);
+  };
+
+  const calculateSquareRoot = () => {
+    const value = parseFloat(display);
+    if (value < 0) {
+      setDisplay('Error');
+      setWaitingForOperand(true);
+      return;
+    }
+    const result = Math.sqrt(value);
+    setDisplay(String(result));
+    setWaitingForOperand(true);
+  };
+
+  // Memory functions
+  const memoryRecall = () => {
+    setDisplay(String(memory));
+    setWaitingForOperand(true);
+  };
+
+  const memoryPlus = () => {
+    const newValue = memory + parseFloat(display);
+    setMemory(newValue);
+    setMemoryIndicator(true);
+    setWaitingForOperand(true);
+  };
+
+  const memoryMinus = () => {
+    const newValue = memory - parseFloat(display);
+    setMemory(newValue);
+    setMemoryIndicator(true);
+    setWaitingForOperand(true);
+  };
+
+  const memoryStore = () => {
+    setMemory(parseFloat(display));
+    setMemoryIndicator(true);
+    setWaitingForOperand(true);
+  };
+
+  const memoryClear = () => {
+    setMemory(0);
+    setMemoryIndicator(false);
+  };
+
+  // Format display for classic Casio look
   const formatDisplay = (value) => {
     const num = parseFloat(value);
     if (isNaN(num)) return '0';
@@ -180,37 +245,47 @@ const Calculator = ({ onBack }) => {
       return num.toExponential(2);
     }
     
-    // For numbers with many decimal places, limit to 8 digits total
-    if (value.length > 9) {
-      return num.toFixed(8 - Math.floor(Math.log10(Math.abs(num))) - 1);
+    // For numbers with many decimal places, limit to 10 digits total
+    if (value.length > 10) {
+      return num.toFixed(10 - Math.floor(Math.log10(Math.abs(num))) - 1);
     }
     
     return value;
   };
 
   return (
-    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center p-6">
+    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 flex items-center justify-center p-6">
       <BackButton onClick={onBack} color="text-gray-400" />
       
       <div className="w-full max-w-sm">
         <div className="text-center mb-6">
           <h2 className="text-4xl font-black text-gray-300 mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-            🧮 Klassieke Rekenmachine
+            🧮 Casio Rekenmachine
           </h2>
-          <p className="text-lg text-gray-500">Touch-vriendelijk voor iPad</p>
+          <p className="text-lg text-gray-500">Klassiek model met √ en x²</p>
         </div>
 
-        <div className="bg-gray-900 rounded-3xl shadow-2xl border-4 border-gray-700 overflow-hidden">
+        <div className="bg-gray-800 rounded-2xl shadow-2xl border-4 border-gray-600 overflow-hidden">
           {/* Display */}
-          <div className="bg-gray-800 p-6 border-b-4 border-gray-700">
-            <div className="bg-black rounded-xl p-4 text-right">
+          <div className="bg-gray-900 p-6 border-b-4 border-gray-700">
+            <div className="bg-gray-950 rounded-xl p-4">
+              {/* Memory indicator */}
+              <div className="flex justify-between items-start mb-2">
+                <div className="text-blue-400 font-mono text-sm font-bold" style={{ fontFamily: 'Courier New, monospace' }}>
+                  {memoryIndicator && 'M'}
+                </div>
+                <div className="text-gray-500 font-mono text-xs" style={{ fontFamily: 'Courier New, monospace' }}>
+                  DEG
+                </div>
+              </div>
+              {/* Main display */}
               <div 
-                className="text-green-400 font-mono text-4xl font-bold"
+                className="text-blue-300 font-mono text-5xl font-bold text-right"
                 style={{ 
                   fontFamily: 'Courier New, monospace',
-                  textShadow: '0 0 10px rgba(74, 222, 128, 0.5)',
-                  letterSpacing: '2px',
-                  minHeight: '48px',
+                  textShadow: '0 0 8px rgba(147, 197, 253, 0.3)',
+                  letterSpacing: '1px',
+                  minHeight: '60px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'flex-end'
@@ -222,149 +297,214 @@ const Calculator = ({ onBack }) => {
           </div>
 
           {/* Buttons */}
-          <div className="p-4 bg-gray-900">
-            <div className="grid grid-cols-4 gap-3">
-              {/* Row 1 */}
+          <div className="p-3 bg-gray-800">
+            <div className="grid grid-cols-5 gap-2">
+              {/* Row 1 - Memory functions */}
               <button
-                onClick={clear}
-                className="col-span-2 bg-red-600 hover:bg-red-700 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                onClick={memoryRecall}
+                className="bg-gray-600 hover:bg-gray-500 text-white text-sm font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
-                C
+                MR
               </button>
               <button
-                onClick={toggleSign}
-                className="bg-gray-600 hover:bg-gray-700 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                onClick={memoryPlus}
+                className="bg-gray-600 hover:bg-gray-500 text-white text-sm font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
-                +/−
+                M+
               </button>
               <button
-                onClick={() => performOperation('/')}
-                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                onClick={memoryMinus}
+                className="bg-gray-600 hover:bg-gray-500 text-white text-sm font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
-                ÷
+                M-
+              </button>
+              <button
+                onClick={memoryStore}
+                className="bg-gray-600 hover:bg-gray-500 text-white text-sm font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                MS
+              </button>
+              <button
+                onClick={memoryClear}
+                className="bg-gray-600 hover:bg-gray-500 text-white text-sm font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                MC
               </button>
 
               {/* Row 2 */}
               <button
+                onClick={clearAll}
+                className="bg-red-600 hover:bg-red-700 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                AC
+              </button>
+              <button
+                onClick={clear}
+                className="bg-orange-600 hover:bg-orange-700 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                C
+              </button>
+              <button
+                onClick={() => performOperation('/')}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                ÷
+              </button>
+              <button
+                onClick={calculateSquareRoot}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                √
+              </button>
+              <button
+                onClick={calculateSquare}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                x²
+              </button>
+
+              {/* Row 3 */}
+              <button
                 onClick={() => inputNumber(7)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 7
               </button>
               <button
                 onClick={() => inputNumber(8)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 8
               </button>
               <button
                 onClick={() => inputNumber(9)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 9
               </button>
               <button
                 onClick={() => performOperation('*')}
-                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 ×
               </button>
+              <button
+                onClick={() => inputPercent()}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                %
+              </button>
 
-              {/* Row 3 */}
+              {/* Row 4 */}
               <button
                 onClick={() => inputNumber(4)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 4
               </button>
               <button
                 onClick={() => inputNumber(5)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 5
               </button>
               <button
                 onClick={() => inputNumber(6)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 6
               </button>
               <button
                 onClick={() => performOperation('-')}
-                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 −
               </button>
+              <button
+                onClick={toggleSign}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
+              >
+                +/−
+              </button>
 
-              {/* Row 4 */}
+              {/* Row 5 */}
               <button
                 onClick={() => inputNumber(1)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 1
               </button>
               <button
                 onClick={() => inputNumber(2)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 2
               </button>
               <button
                 onClick={() => inputNumber(3)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 3
               </button>
               <button
                 onClick={() => performOperation('+')}
-                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 +
               </button>
-
-              {/* Row 5 */}
               <button
-                onClick={() => inputPercent()}
-                className="bg-gray-600 hover:bg-gray-700 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                onClick={() => performOperation('=')}
+                className="bg-green-600 hover:bg-green-700 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
-                %
+                =
               </button>
+
+              {/* Row 6 */}
               <button
                 onClick={() => inputNumber(0)}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="col-span-2 bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 0
               </button>
               <button
                 onClick={inputDecimal}
-                className="bg-gray-700 hover:bg-gray-600 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-xl font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
                 .
               </button>
               <button
-                onClick={performCalculation}
-                className="bg-green-600 hover:bg-green-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
-                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+                onClick={() => performOperation('ANS')}
+                className="bg-gray-600 hover:bg-gray-500 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
-                =
+                ANS
               </button>
             </div>
           </div>
@@ -372,8 +512,9 @@ const Calculator = ({ onBack }) => {
 
         {/* Instructions */}
         <div className="mt-6 text-center text-gray-500 text-sm">
-          <p className="mb-2">📱 Grote knoppen voor touch gebruik</p>
-          <p>💚 Klassiek streepjes-display effect</p>
+          <p className="mb-2">📱 Klassieke Casio stijl</p>
+          <p>🧠 Geheugenfuncties: MR, M+, M-, MS, MC</p>
+          <p>🔢 Wetenschappelijk: √ wortel, x² kwadraat</p>
         </div>
       </div>
     </div>
