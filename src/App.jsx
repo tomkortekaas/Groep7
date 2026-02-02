@@ -90,6 +90,7 @@ const Calculator = ({ onBack }) => {
   const [waitingForOperand, setWaitingForOperand] = useState(false);
   const [memory, setMemory] = useState(0);
   const [memoryIndicator, setMemoryIndicator] = useState(false);
+  const [isInverted, setIsInverted] = useState(false);
 
   const inputNumber = (num) => {
     if (waitingForOperand) {
@@ -253,6 +254,93 @@ const Calculator = ({ onBack }) => {
     return value;
   };
 
+  // Convert numbers to 7-segment display style
+  const toSevenSegment = (value) => {
+    // 7-segment bit patterns (a,b,c,d,e,f,g segments)
+    const segmentPatterns = {
+      '0': [1,1,1,1,1,1,0], // a,b,c,d,e,f
+      '1': [0,1,1,0,0,0,0], // b,c
+      '2': [1,1,0,1,1,0,1], // a,b,d,e,g
+      '3': [1,1,1,1,0,0,1], // a,b,c,d,g
+      '4': [0,1,1,0,0,1,1], // b,c,f,g
+      '5': [1,0,1,1,0,1,1], // a,c,d,f,g
+      '6': [1,0,1,1,1,1,1], // a,c,d,e,f,g
+      '7': [1,1,1,0,0,0,0], // a,b,c
+      '8': [1,1,1,1,1,1,1], // all segments
+      '9': [1,1,1,1,0,1,1], // a,b,c,d,f,g
+      '.': [0,0,0,0,0,0,0], // special case for decimal
+      '-': [0,0,0,0,0,0,1], // g segment only
+      'E': [1,0,0,1,1,1,1], // a,d,e,f,g
+      'r': [0,0,0,0,0,0,0], // empty
+      'o': [0,0,0,1,1,1,0], // d,e,f
+      ' ': [0,0,0,0,0,0,0], // empty
+      'h': [0,0,1,0,0,1,1], // c,f,g
+      'L': [0,0,0,1,1,1,0], // d,e,f
+      'b': [0,0,1,1,1,1,0], // c,d,e,f
+      'S': [1,0,1,1,0,1,1], // a,c,d,f,g
+      'g': [1,0,1,1,1,1,1], // a,c,d,e,f,g
+      'I': [0,1,1,0,0,0,0]  // b,c
+    };
+    
+    return value.split('').map(char => {
+      const segments = segmentPatterns[char] || [0,0,0,0,0,0,0];
+      return { char, segments };
+    });
+  };
+
+  // Function to create word from display (calculator spelling)
+  const createWord = () => {
+    const number = parseFloat(display);
+    if (isNaN(number)) return '';
+    
+    // Common calculator word mappings
+    const wordMap = {
+      0.7734: 'hELLO',
+      0.5537: 'bLESS',
+      0.5318: 'bILES',
+      0.7104: 'hOLE',
+      0.708: 'hOGE',
+      0.808: 'hOBE',
+      0.733: 'bEEL',
+      0.379: 'gLbE',
+      0.37186: 'gLbIEh',
+      0.4516: 'hISh',
+      0.354: 'hSLE',
+      0.5637: 'LbEhS',
+      0.7714: 'hILL',
+      0.53163: 'bILEh',
+      0.376: 'gLbE',
+      0.371: 'gLbI',
+      0.531773: 'bILEhS',
+      0.7734: 'hELLO',
+      0.31337: 'bEELb',
+      0.58008: 'hOOES',
+      0.3085: 'hOLES',
+      0.607: 'hOGE',
+      0.708: 'hOGE',
+      0.53045: 'hOLES',
+      0.5318: 'bILES',
+      0.5537: 'bLESS',
+      0.37186: 'gLbIEh',
+      0.53163: 'bILEh',
+      0.531773: 'bILEhS',
+      0.7734: 'hELLO',
+      0.31337: 'bEELb'
+    };
+    
+    return wordMap[number] || '';
+  };
+
+  // Get display text based on inversion state
+  const getDisplayText = () => {
+    const formatted = formatDisplay(display);
+    if (isInverted) {
+      const word = createWord();
+      return word || formatted;
+    }
+    return formatted;
+  };
+
   return (
     <div className="screen-scroll safe-area-pad bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 flex items-center justify-center p-6">
       <BackButton onClick={onBack} color="text-gray-400" />
@@ -260,39 +348,188 @@ const Calculator = ({ onBack }) => {
       <div className="w-full max-w-sm">
         <div className="text-center mb-6">
           <h2 className="text-4xl font-black text-gray-300 mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-            🧮 Casio Rekenmachine
+            🧮 Segment Rekenmachine
           </h2>
-          <p className="text-lg text-gray-500">Klassiek model met √ en x²</p>
+          <p className="text-lg text-gray-500">7-segment display met woordmodus</p>
         </div>
 
         <div className="bg-gray-800 rounded-2xl shadow-2xl border-4 border-gray-600 overflow-hidden">
           {/* Display */}
           <div className="bg-gray-900 p-6 border-b-4 border-gray-700">
-            <div className="bg-gray-950 rounded-xl p-4">
-              {/* Memory indicator */}
+            <div className="bg-black rounded-xl p-4">
+              {/* Memory indicator and mode */}
               <div className="flex justify-between items-start mb-2">
-                <div className="text-blue-400 font-mono text-sm font-bold" style={{ fontFamily: 'Courier New, monospace' }}>
+                <div className="text-red-500 font-mono text-sm font-bold" style={{ fontFamily: 'Courier New, monospace' }}>
                   {memoryIndicator && 'M'}
                 </div>
-                <div className="text-gray-500 font-mono text-xs" style={{ fontFamily: 'Courier New, monospace' }}>
-                  DEG
+                <div className="flex gap-2">
+                  <div className="text-gray-500 font-mono text-xs" style={{ fontFamily: 'Courier New, monospace' }}>
+                    DEG
+                  </div>
+                  {isInverted && (
+                    <div className="text-orange-400 font-mono text-xs font-bold" style={{ fontFamily: 'Courier New, monospace' }}>
+                      WORD
+                    </div>
+                  )}
                 </div>
               </div>
-              {/* Main display */}
+              {/* Main display with 7-segment style */}
               <div 
-                className="text-blue-300 font-mono text-5xl font-bold text-right"
                 style={{ 
-                  fontFamily: 'Courier New, monospace',
-                  textShadow: '0 0 8px rgba(147, 197, 253, 0.3)',
-                  letterSpacing: '1px',
-                  minHeight: '60px',
+                  minHeight: '80px',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'flex-end'
+                  justifyContent: 'flex-end',
+                  transform: isInverted ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.3s ease-in-out',
+                  gap: '8px'
                 }}
               >
-                {formatDisplay(display)}
+                {toSevenSegment(getDisplayText()).map((digit, index) => (
+                  <div key={index} style={{ position: 'relative', width: '40px', height: '60px' }}>
+                    {/* Decimal point */}
+                    {digit.char === '.' && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: '5px',
+                          right: '5px',
+                          width: '8px',
+                          height: '8px',
+                          backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                          borderRadius: '50%',
+                          boxShadow: isInverted 
+                            ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                            : '0 0 8px rgba(239, 68, 68, 0.8)'
+                        }}
+                      />
+                    )}
+                    {/* 7-segment display */}
+                    {digit.char !== '.' && (
+                      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                        {/* Segment a - top */}
+                        {digit.segments[0] && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '0',
+                              left: '5px',
+                              right: '5px',
+                              height: '6px',
+                              backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                              boxShadow: isInverted 
+                                ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                                : '0 0 8px rgba(239, 68, 68, 0.8)'
+                            }}
+                          />
+                        )}
+                        {/* Segment b - top right */}
+                        {digit.segments[1] && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '5px',
+                              right: '0',
+                              width: '6px',
+                              height: '20px',
+                              backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                              boxShadow: isInverted 
+                                ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                                : '0 0 8px rgba(239, 68, 68, 0.8)'
+                            }}
+                          />
+                        )}
+                        {/* Segment c - bottom right */}
+                        {digit.segments[2] && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: '5px',
+                              right: '0',
+                              width: '6px',
+                              height: '20px',
+                              backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                              boxShadow: isInverted 
+                                ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                                : '0 0 8px rgba(239, 68, 68, 0.8)'
+                            }}
+                          />
+                        )}
+                        {/* Segment d - bottom */}
+                        {digit.segments[3] && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: '0',
+                              left: '5px',
+                              right: '5px',
+                              height: '6px',
+                              backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                              boxShadow: isInverted 
+                                ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                                : '0 0 8px rgba(239, 68, 68, 0.8)'
+                            }}
+                          />
+                        )}
+                        {/* Segment e - bottom left */}
+                        {digit.segments[4] && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: '5px',
+                              left: '0',
+                              width: '6px',
+                              height: '20px',
+                              backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                              boxShadow: isInverted 
+                                ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                                : '0 0 8px rgba(239, 68, 68, 0.8)'
+                            }}
+                          />
+                        )}
+                        {/* Segment f - top left */}
+                        {digit.segments[5] && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '5px',
+                              left: '0',
+                              width: '6px',
+                              height: '20px',
+                              backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                              boxShadow: isInverted 
+                                ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                                : '0 0 8px rgba(239, 68, 68, 0.8)'
+                            }}
+                          />
+                        )}
+                        {/* Segment g - middle */}
+                        {digit.segments[6] && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '27px',
+                              left: '5px',
+                              right: '5px',
+                              height: '6px',
+                              backgroundColor: isInverted ? '#fb923c' : '#ef4444',
+                              boxShadow: isInverted 
+                                ? '0 0 8px rgba(251, 146, 60, 0.8)' 
+                                : '0 0 8px rgba(239, 68, 68, 0.8)'
+                            }}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
+              {/* Word hint when inverted */}
+              {isInverted && createWord() && (
+                <div className="text-orange-300 font-mono text-xs text-center mt-2" style={{ fontFamily: 'Courier New, monospace' }}>
+                  {createWord()}
+                </div>
+              )}
             </div>
           </div>
 
@@ -500,11 +737,11 @@ const Calculator = ({ onBack }) => {
                 .
               </button>
               <button
-                onClick={() => performOperation('ANS')}
-                className="bg-gray-600 hover:bg-gray-500 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
+                onClick={() => setIsInverted(!isInverted)}
+                className="bg-purple-600 hover:bg-purple-700 text-white text-lg font-bold rounded-xl py-4 active:scale-95 transition-all shadow"
                 style={{ touchAction: 'manipulation', minHeight: '60px', fontFamily: 'Courier New, monospace' }}
               >
-                ANS
+                {isInverted ? 'NORM' : 'WORD'}
               </button>
             </div>
           </div>
@@ -512,9 +749,10 @@ const Calculator = ({ onBack }) => {
 
         {/* Instructions */}
         <div className="mt-6 text-center text-gray-500 text-sm">
-          <p className="mb-2">📱 Klassieke Casio stijl</p>
+          <p className="mb-2">📱 7-segment display stijl</p>
+          <p>🔄 WORD knop keert display om voor woorden</p>
+          <p>📝 Probeer: 0.7734 → hELLO</p>
           <p>🧠 Geheugenfuncties: MR, M+, M-, MS, MC</p>
-          <p>🔢 Wetenschappelijk: √ wortel, x² kwadraat</p>
         </div>
       </div>
     </div>
