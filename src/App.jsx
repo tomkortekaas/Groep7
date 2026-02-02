@@ -83,6 +83,303 @@ const BigButton = ({ onClick, children, color, className = '' }) => (
   </button>
 );
 
+const Calculator = ({ onBack }) => {
+  const [display, setDisplay] = useState('0');
+  const [previousValue, setPreviousValue] = useState(null);
+  const [operation, setOperation] = useState(null);
+  const [waitingForOperand, setWaitingForOperand] = useState(false);
+
+  const inputNumber = (num) => {
+    if (waitingForOperand) {
+      setDisplay(String(num));
+      setWaitingForOperand(false);
+    } else {
+      setDisplay(display === '0' ? String(num) : display + num);
+    }
+  };
+
+  const inputDecimal = () => {
+    if (waitingForOperand) {
+      setDisplay('0.');
+      setWaitingForOperand(false);
+    } else if (display.indexOf('.') === -1) {
+      setDisplay(display + '.');
+    }
+  };
+
+  const clear = () => {
+    setDisplay('0');
+    setPreviousValue(null);
+    setOperation(null);
+    setWaitingForOperand(false);
+  };
+
+  const performOperation = (nextOperation) => {
+    const inputValue = parseFloat(display);
+
+    if (previousValue === null) {
+      setPreviousValue(inputValue);
+    } else if (operation) {
+      const currentValue = previousValue || 0;
+      const newValue = calculate(currentValue, inputValue, operation);
+
+      setDisplay(String(newValue));
+      setPreviousValue(newValue);
+    }
+
+    setWaitingForOperand(true);
+    setOperation(nextOperation);
+  };
+
+  const calculate = (firstValue, secondValue, operation) => {
+    switch (operation) {
+      case '+':
+        return firstValue + secondValue;
+      case '-':
+        return firstValue - secondValue;
+      case '*':
+        return firstValue * secondValue;
+      case '/':
+        return firstValue / secondValue;
+      case '=':
+        return secondValue;
+      default:
+        return secondValue;
+    }
+  };
+
+  const performCalculation = () => {
+    const inputValue = parseFloat(display);
+
+    if (previousValue !== null && operation) {
+      const newValue = calculate(previousValue, inputValue, operation);
+      setDisplay(String(newValue));
+      setPreviousValue(null);
+      setOperation(null);
+      setWaitingForOperand(true);
+    }
+  };
+
+  const toggleSign = () => {
+    const newValue = parseFloat(display) * -1;
+    setDisplay(String(newValue));
+  };
+
+  const inputPercent = () => {
+    const newValue = parseFloat(display) / 100;
+    setDisplay(String(newValue));
+  };
+
+  // Format display for classic calculator look
+  const formatDisplay = (value) => {
+    const num = parseFloat(value);
+    if (isNaN(num)) return '0';
+    
+    // For very large numbers, use scientific notation
+    if (Math.abs(num) >= 999999999) {
+      return num.toExponential(2);
+    }
+    
+    // For numbers with many decimal places, limit to 8 digits total
+    if (value.length > 9) {
+      return num.toFixed(8 - Math.floor(Math.log10(Math.abs(num))) - 1);
+    }
+    
+    return value;
+  };
+
+  return (
+    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center p-6">
+      <BackButton onClick={onBack} color="text-gray-400" />
+      
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-6">
+          <h2 className="text-4xl font-black text-gray-300 mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+            🧮 Klassieke Rekenmachine
+          </h2>
+          <p className="text-lg text-gray-500">Touch-vriendelijk voor iPad</p>
+        </div>
+
+        <div className="bg-gray-900 rounded-3xl shadow-2xl border-4 border-gray-700 overflow-hidden">
+          {/* Display */}
+          <div className="bg-gray-800 p-6 border-b-4 border-gray-700">
+            <div className="bg-black rounded-xl p-4 text-right">
+              <div 
+                className="text-green-400 font-mono text-4xl font-bold"
+                style={{ 
+                  fontFamily: 'Courier New, monospace',
+                  textShadow: '0 0 10px rgba(74, 222, 128, 0.5)',
+                  letterSpacing: '2px',
+                  minHeight: '48px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end'
+                }}
+              >
+                {formatDisplay(display)}
+              </div>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="p-4 bg-gray-900">
+            <div className="grid grid-cols-4 gap-3">
+              {/* Row 1 */}
+              <button
+                onClick={clear}
+                className="col-span-2 bg-red-600 hover:bg-red-700 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                C
+              </button>
+              <button
+                onClick={toggleSign}
+                className="bg-gray-600 hover:bg-gray-700 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                +/−
+              </button>
+              <button
+                onClick={() => performOperation('/')}
+                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                ÷
+              </button>
+
+              {/* Row 2 */}
+              <button
+                onClick={() => inputNumber(7)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                7
+              </button>
+              <button
+                onClick={() => inputNumber(8)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                8
+              </button>
+              <button
+                onClick={() => inputNumber(9)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                9
+              </button>
+              <button
+                onClick={() => performOperation('*')}
+                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                ×
+              </button>
+
+              {/* Row 3 */}
+              <button
+                onClick={() => inputNumber(4)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                4
+              </button>
+              <button
+                onClick={() => inputNumber(5)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                5
+              </button>
+              <button
+                onClick={() => inputNumber(6)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                6
+              </button>
+              <button
+                onClick={() => performOperation('-')}
+                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                −
+              </button>
+
+              {/* Row 4 */}
+              <button
+                onClick={() => inputNumber(1)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                1
+              </button>
+              <button
+                onClick={() => inputNumber(2)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                2
+              </button>
+              <button
+                onClick={() => inputNumber(3)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                3
+              </button>
+              <button
+                onClick={() => performOperation('+')}
+                className="bg-orange-600 hover:bg-orange-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                +
+              </button>
+
+              {/* Row 5 */}
+              <button
+                onClick={() => inputPercent()}
+                className="bg-gray-600 hover:bg-gray-700 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                %
+              </button>
+              <button
+                onClick={() => inputNumber(0)}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-2xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                0
+              </button>
+              <button
+                onClick={inputDecimal}
+                className="bg-gray-700 hover:bg-gray-600 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                .
+              </button>
+              <button
+                onClick={performCalculation}
+                className="bg-green-600 hover:bg-green-700 text-white text-3xl font-bold rounded-2xl py-6 active:scale-95 transition-all shadow-lg"
+                style={{ touchAction: 'manipulation', minHeight: '80px' }}
+              >
+                =
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Instructions */}
+        <div className="mt-6 text-center text-gray-500 text-sm">
+          <p className="mb-2">📱 Grote knoppen voor touch gebruik</p>
+          <p>💚 Klassiek streepjes-display effect</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const StartScreen = ({ onStart }) => (
   <div className="screen-scroll safe-area-pad bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex items-center justify-center p-8">
     <div className="text-center w-full max-w-lg">
@@ -104,6 +401,10 @@ const StartScreen = ({ onStart }) => (
 
         <BigButton onClick={() => onStart('europe')} color="bg-gradient-to-r from-slate-600 to-emerald-700">
           <span className="text-4xl">🗺️</span> Europe Explorer
+        </BigButton>
+
+        <BigButton onClick={() => onStart('calculator')} color="bg-gradient-to-r from-gray-600 to-gray-800">
+          <span className="text-4xl">🧮</span> Rekenmachine
         </BigButton>
       </div>
     </div>
@@ -1767,6 +2068,7 @@ export default function App() {
       {mode === 'sentences' && <SentenceMode words={words} onBack={() => setMode('english-menu')} />}
       {mode === 'test' && <TestMode words={words} onBack={() => setMode('english-menu')} />}
       {mode === 'europe' && <EuropeExplorer onBack={() => setMode('start')} />}
+      {mode === 'calculator' && <Calculator onBack={() => setMode('start')} />}
       {mode === 'manage' && <ManageWords words={words} setWords={setWords} onBack={() => setMode('english-menu')} />}
     </>
   );
