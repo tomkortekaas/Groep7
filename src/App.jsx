@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
 import { europeData, getRandomFunFact, getCountryForCapital, wikiSearchTerms } from './data/europeData';
 
-// Unit 2 woordenlijst - Engels voor Siem
+// Unit 2 woordenlijst - Engels leermodule
 const defaultWords = [
   { dutch: 'boven zeeniveau', english: 'above sea level', sentence: 'This small island is above sea level.', emoji: '🏝️' },
   { dutch: 'vliegveld', english: 'airport', sentence: 'Schiphol is an airport in the Netherlands.', emoji: '✈️' },
@@ -767,7 +767,7 @@ const StartScreen = ({ onStart }) => (
       </div>
       <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500 mb-4"
           style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-        Siem's Leer App
+        Leer App
       </h1>
       <p className="text-2xl text-orange-700 mb-10" style={{ fontFamily: 'Nunito, sans-serif' }}>
         Kies wat je wilt oefenen!
@@ -1431,8 +1431,18 @@ const EuropeExplorer = ({ onBack }) => {
   const [typeQuizInput, setTypeQuizInput] = useState('');
   const [typeQuizHighlightedItem, setTypeQuizHighlightedItem] = useState(null);
   const [lastQuizMode, setLastQuizMode] = useState('mission'); // Track which quiz was played
+  const [wrongAnswerTimeout, setWrongAnswerTimeout] = useState(null);
 
   // Helper to get random fun fact - uses imported function from europeData.ts
+
+  // Cleanup timeout on unmount
+  React.useEffect(() => {
+    return () => {
+      if (wrongAnswerTimeout) {
+        clearTimeout(wrongAnswerTimeout);
+      }
+    };
+  }, [wrongAnswerTimeout]);
 
   // Function to continue to next question after user clicks fun fact
   const handleContinueToNext = () => {
@@ -1447,6 +1457,26 @@ const EuropeExplorer = ({ onBack }) => {
       setWrongAnswer(null);
       setCurrentFunFact(null);
     }
+  };
+
+  // Function to clear wrong answer timeout and move to next question
+  const clearWrongAnswerTimeout = () => {
+    if (wrongAnswerTimeout) {
+      clearTimeout(wrongAnswerTimeout);
+      setWrongAnswerTimeout(null);
+    }
+    handleTypeQuizNext();
+  };
+
+  // Function to handle wrong answer with 10-second timeout
+  const handleWrongAnswer = () => {
+    setFeedback('wrong');
+    // Set timeout to automatically move to next question after 10 seconds
+    const timeout = setTimeout(() => {
+      handleTypeQuizNext();
+      setWrongAnswerTimeout(null);
+    }, 10000);
+    setWrongAnswerTimeout(timeout);
   };
 
   // Wikipedia state
@@ -1756,15 +1786,17 @@ const EuropeExplorer = ({ onBack }) => {
       setCollectedStickers(prev => new Set([...prev, typeQuizHighlightedItem.id]));
       setCurrentFunFact(getRandomFunFact(typeQuizHighlightedItem.id));
     } else {
-      setFeedback('wrong');
-      // Show correct answer briefly then move on
-      setTimeout(() => {
-        handleTypeQuizNext();
-      }, 2000);
+      handleWrongAnswer();
     }
   };
 
   const handleTypeQuizNext = () => {
+    // Clear any existing wrong answer timeout
+    if (wrongAnswerTimeout) {
+      clearTimeout(wrongAnswerTimeout);
+      setWrongAnswerTimeout(null);
+    }
+    
     const currentIdx = questionQueue.indexOf(typeQuizHighlightedItem);
     if (currentIdx + 1 >= questionQueue.length) {
       setMissionComplete(true);
@@ -2041,11 +2073,30 @@ const EuropeExplorer = ({ onBack }) => {
           }`}>
             <p className="text-white text-center font-bold mb-3" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
               {feedback === 'correct' ? t.correct :
-               feedback === 'wrong' ? `${t.wrong} ${lang === 'nl' ? typeQuizHighlightedItem.dutchName : typeQuizHighlightedItem.englishName}` :
+               feedback === 'wrong' ? `${t.wrong}` :
                `${t.whatIsThis} ${typeQuizHighlightedItem.emoji}`}
             </p>
 
-            {feedback !== 'correct' && (
+            {/* Show correct answer when wrong */}
+            {feedback === 'wrong' && (
+              <div className="text-center mb-3">
+                <p className="text-white text-lg font-bold mb-2">
+                  Goed antwoord: {lang === 'nl' ? typeQuizHighlightedItem.dutchName : typeQuizHighlightedItem.englishName}
+                </p>
+                <p className="text-white/80 text-sm">
+                  Klik om verder te gaan of wacht 10 seconden...
+                </p>
+                <button
+                  onClick={clearWrongAnswerTimeout}
+                  className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white font-bold rounded-lg active:scale-95 transition-all"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  Volgende →
+                </button>
+              </div>
+            )}
+
+            {feedback !== 'correct' && feedback !== 'wrong' && (
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -2053,7 +2104,6 @@ const EuropeExplorer = ({ onBack }) => {
                   onChange={(e) => setTypeQuizInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && checkTypeQuizAnswer()}
                   placeholder={t.typeAnswer}
-                  disabled={feedback === 'wrong'}
                   className="flex-1 px-4 py-3 rounded-xl text-lg font-bold text-center border-2 border-white/30 bg-white/90 text-slate-800"
                   style={{ touchAction: 'manipulation' }}
                   autoFocus
@@ -2064,16 +2114,14 @@ const EuropeExplorer = ({ onBack }) => {
                 />
                 <button
                   onClick={checkTypeQuizAnswer}
-                  disabled={feedback === 'wrong'}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl active:scale-95 transition-all disabled:opacity-50"
+                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl active:scale-95 transition-all"
                   style={{ touchAction: 'manipulation' }}
                 >
                   {t.check}
                 </button>
                 <button
                   onClick={skipTypeQuizQuestion}
-                  disabled={feedback === 'wrong'}
-                  className="px-4 py-3 bg-white/30 text-white font-bold rounded-xl active:scale-95 transition-all disabled:opacity-50"
+                  className="px-4 py-3 bg-white/30 text-white font-bold rounded-xl active:scale-95 transition-all"
                   style={{ touchAction: 'manipulation' }}
                 >
                   →
