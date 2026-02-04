@@ -1596,9 +1596,9 @@ const EuropeExplorer = ({ onBack }) => {
   const fetchWikiInfo = async (item) => {
     const cacheKey = `${item.id}-${lang}`;
     if (wikiCache.current[cacheKey]) {
-      // Get a fresh random fun fact even from cache (only in Dutch mode)
+      // Get a fresh random fun fact even from cache (with language support)
       const cached = wikiCache.current[cacheKey];
-      setWikiInfo({ ...cached, funFact: lang === 'nl' ? getRandomFunFact(item.id) : null });
+      setWikiInfo({ ...cached, funFact: getRandomFunFact(item.id, lang) });
       return;
     }
 
@@ -1665,7 +1665,7 @@ const EuropeExplorer = ({ onBack }) => {
           title: data.title,
           extract: extract,
           thumbnail: data.thumbnail?.source,
-          funFact: lang === 'nl' ? getRandomFunFact(item.id) : null,
+          funFact: getRandomFunFact(item.id, lang),
         };
         // Cache without funFact so we can pick fresh random fact each time
         wikiCache.current[cacheKey] = { title: data.title, extract: extract, thumbnail: data.thumbnail?.source };
@@ -1696,7 +1696,7 @@ const EuropeExplorer = ({ onBack }) => {
           title: lang === 'nl' ? item.dutchName : item.englishName, 
           extract: extract, 
           thumbnail: null, 
-          funFact: lang === 'nl' ? getRandomFunFact(item.id) : null
+          funFact: getRandomFunFact(item.id, lang)
         };
         setWikiInfo(info);
       }
@@ -1706,10 +1706,13 @@ const EuropeExplorer = ({ onBack }) => {
       let extract = item.description || '';
       const targetLength = 400;
       
-      // Add fun facts if extract is too short (only in Dutch mode)
-      if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0 && lang === 'nl') {
-        const additionalFacts = item.funFacts.slice(0, 3).join(' ');
-        extract = extract ? `${extract}\n\n💡 Extra info: ${additionalFacts}` : `💡 Extra info: ${additionalFacts}`;
+      // Add fun facts if extract is too short (with language support)
+      if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0) {
+        const facts = lang === 'nl' ? item.funFacts : (item.englishFunFacts || []);
+        if (facts.length > 0) {
+          const additionalFacts = facts.slice(0, 3).join(' ');
+          extract = extract ? `${extract}\n\n💡 Extra info: ${additionalFacts}` : `💡 Extra info: ${additionalFacts}`;
+        }
       }
       
       // Add generic content if still too short
@@ -1735,7 +1738,7 @@ const EuropeExplorer = ({ onBack }) => {
         title: lang === 'nl' ? item.dutchName : item.englishName, 
         extract: extract, 
         thumbnail: null, 
-        funFact: lang === 'nl' ? getRandomFunFact(item.id) : null
+        funFact: getRandomFunFact(item.id, lang)
       };
       setWikiInfo(info);
     }
@@ -1800,7 +1803,7 @@ const EuropeExplorer = ({ onBack }) => {
       setFeedback('correct');
       setScore(s => s + 1);
       setCollectedStickers(prev => new Set([...prev, typeQuizHighlightedItem.id]));
-      setCurrentFunFact(lang === 'nl' ? getRandomFunFact(typeQuizHighlightedItem.id) : null);
+      setCurrentFunFact(getRandomFunFact(typeQuizHighlightedItem.id, lang));
     } else {
       handleWrongAnswer();
     }
@@ -1852,7 +1855,7 @@ const EuropeExplorer = ({ onBack }) => {
         setFeedback('correct');
         setScore(s => s + 1);
         setCollectedStickers(prev => new Set([...prev, item.id]));
-        setCurrentFunFact(lang === 'nl' ? getRandomFunFact(item.id) : null);
+        setCurrentFunFact(getRandomFunFact(item.id, lang));
       } else {
         setFeedback('wrong');
         setWrongAnswer(item.id);

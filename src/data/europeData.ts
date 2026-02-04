@@ -5,6 +5,7 @@ export interface GeoItem {
   englishName: string;
   description: string;
   funFacts: string[];
+  englishFunFacts?: string[];
   emoji: string;
   coordinates: [number, number]; // [longitude, latitude]
   countryId?: string; // Only for capitals - links to country
@@ -19,16 +20,22 @@ export const europeData: GeoItem[] = [
     englishName: "Netherlands",
     emoji: "🇳🇱",
     coordinates: [5.3, 52.1],
-    description: "Een land in Noordwest-Europa, bekend om zijn vlakke landschap, uitgestrekte polders, historische grachtensteden en als 'de poort tot Europa' met de haven van Rotterdam, de grootste haven van Europa.",
+    description: "Een laaggelegen land in Noordwest-Europa, bekend om zijn tulpen, windmolens en grachten.",
     funFacts: [
-      "Ongeveer 26% van Nederland ligt onder zeeniveau en is beschermd door dijken en duinen.",
-      "De haven van Rotterdam is de grootste haven van Europa en een van de drukste ter wereld.",
-      "Nederland telt meer dan 1.000 molens, waarvan er nog ongeveer 1.100 overeind staan.",
-      "Het land is 's werelds grootste exporteur van tulpen en andere bloembollen.",
-      "Nederlanders zijn gemiddeld de langste mensen ter wereld (mannen 184 cm, vrouwen 170 cm).",
-      "Er zijn meer fietsen dan inwoners: ongeveer 23 miljoen fietsen op 17 miljoen mensen.",
-      "De Nederlandse taak wordt gesproken door ongeveer 24 miljoen mensen wereldwijd.",
-      "Het Rijksmuseum in Amsterdam herbergt meer dan 8.000 kunstobjecten, waaronder De Nachtwacht van Rembrandt."
+      "Nederland is het dichtstbevolkte land van Europa met 17 miljoen inwoners.",
+      "Het land heeft meer dan 1000 kilometer aan fietspaden en meer fietsen dan inwoners.",
+      "De Nederlandse polders zijn drooggelegd met windmolens en technisch vernuft.",
+      "Amsterdam heeft meer dan 100 kilometer aan grachten en meer dan 1200 bruggen.",
+      "Nederland is 's werelds grootste exporteur van tulpen en andere bloembollen.",
+      "De Nederlandse taal wordt gesproken door meer dan 23 miljoen mensen wereldwijd."
+    ],
+    englishFunFacts: [
+      "The Netherlands is the most densely populated country in Europe with 17 million inhabitants.",
+      "The country has over 1000 kilometers of bike paths and more bicycles than inhabitants.",
+      "Dutch polders were reclaimed using windmills and technical ingenuity.",
+      "Amsterdam has over 100 kilometers of canals and more than 1200 bridges.",
+      "The Netherlands is the world's largest exporter of tulips and other flower bulbs.",
+      "The Dutch language is spoken by more than 23 million people worldwide."
     ]
   },
   {
@@ -663,10 +670,13 @@ export const europeData: GeoItem[] = [
 ];
 
 // Helper functie om een willekeurig weetje te krijgen
-export const getRandomFunFact = (itemId: string): string | null => {
+export const getRandomFunFact = (itemId: string, lang: 'nl' | 'en' = 'nl'): string | null => {
   const item = europeData.find(i => i.id === itemId);
-  if (item && item.funFacts.length > 0) {
-    return item.funFacts[Math.floor(Math.random() * item.funFacts.length)];
+  if (item) {
+    const facts = lang === 'nl' ? item.funFacts : (item.englishFunFacts || []);
+    if (facts.length > 0) {
+      return facts[Math.floor(Math.random() * facts.length)];
+    }
   }
   return null;
 };
