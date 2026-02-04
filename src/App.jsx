@@ -1618,8 +1618,8 @@ const EuropeExplorer = ({ onBack }) => {
         // Ensure we have at least 2 paragraphs (approximately 400+ characters)
         let extract = data.extract || '';
         
-        // Remove duplicate content from extract if it's too similar to description
-        if (extract && item.description) {
+        // Remove duplicate content from extract if it's too similar to description (only in Dutch mode)
+        if (extract && item.description && lang === 'nl') {
           const descWords = item.description.toLowerCase().split(' ').slice(0, 5).join(' ');
           const extractStart = extract.toLowerCase().split(' ').slice(0, 5).join(' ');
           if (extractStart === descWords) {
@@ -1631,13 +1631,13 @@ const EuropeExplorer = ({ onBack }) => {
         // Ensure minimum content (2 paragraphs)
         const targetLength = 400; // Approximately 2 paragraphs
         if (extract.length < targetLength) {
-          // Add description if extract is too short
-          if (item.description) {
+          // Add description if extract is too short (only in Dutch mode)
+          if (item.description && lang === 'nl') {
             extract = extract ? `${extract}\n\n${item.description}` : item.description;
           }
           
-          // If still too short, add fun facts as additional content
-          if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0) {
+          // If still too short, add fun facts as additional content (only in Dutch mode)
+          if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0 && lang === 'nl') {
             const additionalFacts = item.funFacts.slice(0, 2).join(' ');
             extract = extract ? `${extract}\n\n💡 Extra info: ${additionalFacts}` : `💡 Extra info: ${additionalFacts}`;
           }
