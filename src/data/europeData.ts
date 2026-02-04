@@ -588,17 +588,17 @@ export const europeData: GeoItem[] = [
   {
     id: "volga",
     category: "water",
-    dutchName: "Volga",
+    dutchName: "Wolga",
     englishName: "Volga River",
     emoji: "🐟",
     coordinates: [45.0, 54.0],
     description: "De langste rivier van Europa (3.531 km), de belangrijkste waterweg van Rusland en de historische wieg van de Russische staat.",
     funFacts: [
-      "In Rusland noemen ze de rivier liefkozend 'Moeder Volga' en het is een nationaal symbool.",
-      "De Volga is verbonden met de Baltische Zee, Witte Zee, Zee van Azov en Zwarte Zee via kanalen.",
-      "Grote steden aan de Volga zijn onder andere Moskou (via kanaal), Nizhny Novgorod, Kazan en Volgograd.",
+      "In Rusland noemen ze de rivier liefkozend 'Moeder Wolga' en het is een nationaal symbool.",
+      "De Wolga is verbonden met de Baltische Zee, Witte Zee, Zee van Azov en Zwarte Zee via kanalen.",
+      "Grote steden aan de Wolga zijn onder andere Moskou (via kanaal), Nizhny Novgorod, Kazan en Volgograd.",
       "De rivier wordt voor scheepvaart verbreed met grote dammen en sluiten uit de Stalin-tijd.",
-      "De Volga-delta is de grootste rivierdelta van Europa en mondt uit in de Kaspische Zee.",
+      "De Wolga-delta is de grootste rivierdelta van Europa en mondt uit in de Kaspische Zee.",
       "Tot 60% van het water komt uit smeltende sneeuw, de rest uit grondwater en regenval."
     ]
   },
