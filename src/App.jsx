@@ -1596,9 +1596,9 @@ const EuropeExplorer = ({ onBack }) => {
   const fetchWikiInfo = async (item) => {
     const cacheKey = `${item.id}-${lang}`;
     if (wikiCache.current[cacheKey]) {
-      // Get a fresh random fun fact even from cache
+      // Get a fresh random fun fact even from cache (only in Dutch mode)
       const cached = wikiCache.current[cacheKey];
-      setWikiInfo({ ...cached, funFact: getRandomFunFact(item.id) });
+      setWikiInfo({ ...cached, funFact: lang === 'nl' ? getRandomFunFact(item.id) : null });
       return;
     }
 
@@ -1645,10 +1645,18 @@ const EuropeExplorer = ({ onBack }) => {
           // If still too short, add generic content
           if (extract.length < targetLength) {
             const categoryInfo = {
-              country: `Dit ${lang === 'nl' ? 'land' : 'country'} is een belangrijk geografisch gebied in Europa.`,
-              capital: `Deze ${lang === 'nl' ? 'hoofdstad' : 'capital'} is een cultureel en administratief centrum.`,
-              water: `Deze ${lang === 'nl' ? 'waterweg' : 'waterway'} speelt een cruciale rol in de regio.`,
-              mountain: `Dit ${lang === 'nl' ? 'gebergte' : 'mountain'} is een opvallend geografisch kenmerk.`
+              country: lang === 'nl' 
+                ? `Dit land is een belangrijk geografisch gebied in Europa.`
+                : `This country is an important geographical area in Europe.`,
+              capital: lang === 'nl'
+                ? `Deze hoofdstad is een cultureel en administratief centrum.`
+                : `This capital is a cultural and administrative center.`,
+              water: lang === 'nl'
+                ? `Deze waterweg speelt een cruciale rol in de regio.`
+                : `This waterway plays a crucial role in the region.`,
+              mountain: lang === 'nl'
+                ? `Dit gebergte is een opvallend geografisch kenmerk.`
+                : `This mountain range is a prominent geographical feature.`
             };
             extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
           }
@@ -1657,7 +1665,7 @@ const EuropeExplorer = ({ onBack }) => {
           title: data.title,
           extract: extract,
           thumbnail: data.thumbnail?.source,
-          funFact: getRandomFunFact(item.id),
+          funFact: lang === 'nl' ? getRandomFunFact(item.id) : null,
         };
         // Cache without funFact so we can pick fresh random fact each time
         wikiCache.current[cacheKey] = { title: data.title, extract: extract, thumbnail: data.thumbnail?.source };
@@ -1688,7 +1696,7 @@ const EuropeExplorer = ({ onBack }) => {
           title: lang === 'nl' ? item.dutchName : item.englishName, 
           extract: extract, 
           thumbnail: null, 
-          funFact: getRandomFunFact(item.id) 
+          funFact: lang === 'nl' ? getRandomFunFact(item.id) : null
         };
         setWikiInfo(info);
       }
@@ -1698,8 +1706,8 @@ const EuropeExplorer = ({ onBack }) => {
       let extract = item.description || '';
       const targetLength = 400;
       
-      // Add fun facts if extract is too short
-      if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0) {
+      // Add fun facts if extract is too short (only in Dutch mode)
+      if (extract.length < targetLength && item.funFacts && item.funFacts.length > 0 && lang === 'nl') {
         const additionalFacts = item.funFacts.slice(0, 3).join(' ');
         extract = extract ? `${extract}\n\n💡 Extra info: ${additionalFacts}` : `💡 Extra info: ${additionalFacts}`;
       }
@@ -1707,10 +1715,18 @@ const EuropeExplorer = ({ onBack }) => {
       // Add generic content if still too short
       if (extract.length < targetLength) {
         const categoryInfo = {
-          country: `Dit ${lang === 'nl' ? 'land' : 'country'} is een belangrijk geografisch gebied in Europa met een rijke geschiedenis en cultuur.`,
-          capital: `Deze ${lang === 'nl' ? 'hoofdstad' : 'capital'} is een cultureel en administratief centrum met veel historische bezienswaardigheden.`,
-          water: `Deze ${lang === 'nl' ? 'waterweg' : 'waterway'} speelt een cruciale rol in de regio en heeft belangrijke ecologische waarde.`,
-          mountain: `Dit ${lang === 'nl' ? 'gebergte' : 'mountain'} is een opvallend geografisch kenmerk met unieke flora en fauna.`
+          country: lang === 'nl' 
+            ? `Dit land is een belangrijk geografisch gebied in Europa met een rijke geschiedenis en cultuur.`
+            : `This country is an important geographical area in Europe with a rich history and culture.`,
+          capital: lang === 'nl'
+            ? `Deze hoofdstad is een cultureel en administratief centrum met veel historische bezienswaardigheden.`
+            : `This capital is a cultural and administrative center with many historical landmarks.`,
+          water: lang === 'nl'
+            ? `Deze waterweg speelt een cruciale rol in de regio en heeft belangrijke ecologische waarde.`
+            : `This waterway plays a crucial role in the region and has important ecological value.`,
+          mountain: lang === 'nl'
+            ? `Dit gebergte is een opvallend geografisch kenmerk met unieke flora en fauna.`
+            : `This mountain range is a prominent geographical feature with unique flora and fauna.`
         };
         extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
       }
@@ -1719,7 +1735,7 @@ const EuropeExplorer = ({ onBack }) => {
         title: lang === 'nl' ? item.dutchName : item.englishName, 
         extract: extract, 
         thumbnail: null, 
-        funFact: getRandomFunFact(item.id) 
+        funFact: lang === 'nl' ? getRandomFunFact(item.id) : null
       };
       setWikiInfo(info);
     }
@@ -1784,7 +1800,7 @@ const EuropeExplorer = ({ onBack }) => {
       setFeedback('correct');
       setScore(s => s + 1);
       setCollectedStickers(prev => new Set([...prev, typeQuizHighlightedItem.id]));
-      setCurrentFunFact(getRandomFunFact(typeQuizHighlightedItem.id));
+      setCurrentFunFact(lang === 'nl' ? getRandomFunFact(typeQuizHighlightedItem.id) : null);
     } else {
       handleWrongAnswer();
     }
@@ -1836,7 +1852,7 @@ const EuropeExplorer = ({ onBack }) => {
         setFeedback('correct');
         setScore(s => s + 1);
         setCollectedStickers(prev => new Set([...prev, item.id]));
-        setCurrentFunFact(getRandomFunFact(item.id));
+        setCurrentFunFact(lang === 'nl' ? getRandomFunFact(item.id) : null);
       } else {
         setFeedback('wrong');
         setWrongAnswer(item.id);
