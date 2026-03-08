@@ -1,4 +1,4 @@
-# Engels Leren - Siem 📚
+# Engels Leren  📚
 
 Een leuke app om Engelse woordjes te oefenen voor Unit 2!
 
@@ -42,4 +42,4 @@ Als de app draait op je computer:
 - 🏆 **Overhoren** - Test jezelf met beide richtingen door elkaar
 - ⚙️ **Woordjes Beheren** - Woordjes toevoegen, bewerken of verwijderen
 
-Succes met leren, Siem! 🎉
+Succes met leren! 🎉
