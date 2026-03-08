@@ -2,43 +2,41 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
 import { europeData, getRandomFunFact, getCountryForCapital, wikiSearchTerms } from './data/europeData';
 
-// Unit 2 woordenlijst - Engels leermodule
+// Unit 3 woordenlijst - Engels leermodule (winkelen & kleding)
 const defaultWords = [
-  { dutch: 'boven zeeniveau', english: 'above sea level', sentence: 'This small island is above sea level.', emoji: '🏝️' },
-  { dutch: 'vliegveld', english: 'airport', sentence: 'Schiphol is an airport in the Netherlands.', emoji: '✈️' },
-  { dutch: 'mooi, knap, aantrekkelijk', english: 'attractive', sentence: 'These waterfalls are very attractive.', emoji: '💐' },
-  { dutch: 'onder zeeniveau', english: 'below sea level', sentence: 'A large part of the Netherlands is below sea level.', emoji: '🌊' },
-  { dutch: 'kanaal, gracht', english: 'canal', sentence: 'Tourists enjoy the canals of Venice in Italy by boat.', emoji: '🚣' },
-  { dutch: 'hoofdstad', english: 'capital', sentence: 'Amsterdam is the capital of the Netherlands.', emoji: '🏛️' },
-  { dutch: 'stad', english: 'city', sentence: 'Bangkok is a huge city in Thailand.', emoji: '🌆' },
-  { dutch: 'land', english: 'country', sentence: 'There are many countries in the world.', emoji: '🌍' },
-  { dutch: 'dijk', english: 'dyke', sentence: 'Dykes protect the land from the sea.', emoji: '🧱' },
-  { dutch: 'enorm, heel groot', english: 'enormous', sentence: 'These flats are enormous!', emoji: '🏢' },
-  { dutch: 'plat', english: 'flat', sentence: 'The Netherlands are a flat country.', emoji: '🌾' },
-  { dutch: 'haven', english: 'harbour', sentence: 'The ship has arrived in the harbour.', emoji: '⚓' },
-  { dutch: 'heuvelachtig', english: 'hilly', sentence: 'This hilly landscape is beautiful.', emoji: '⛰️' },
-  { dutch: 'groot', english: 'huge', sentence: "This tree is so huge you can't see the top.", emoji: '🌳' },
-  { dutch: 'inwoner', english: 'inhabitant', sentence: 'The Netherlands has about 17 million inhabitants.', emoji: '👥' },
-  { dutch: 'monument', english: 'monument', sentence: 'The Statue of Liberty monument is very famous.', emoji: '🗽' },
-  { dutch: 'snelweg', english: 'motorway', sentence: 'A lot of trucks and cars drive on the motorway.', emoji: '🛣️' },
-  { dutch: 'berg', english: 'mountain', sentence: 'If you climb this mountain you are higher than the clouds!', emoji: '🏔️' },
-  { dutch: 'buur, buurman, buurvrouw', english: 'neighbour', sentence: 'Our neighbours have the same front door as us.', emoji: '🏘️' },
-  { dutch: 'buurt, wijk', english: 'neighbourhood', sentence: 'In New York there is a Chinese neighbourhood.', emoji: '🏙️' },
-  { dutch: 'rivier', english: 'river', sentence: 'The river Thames flows through London.', emoji: '🏞️' },
-  { dutch: 'plein', english: 'square', sentence: 'Times Square is a busy square.', emoji: '🎭' },
-  { dutch: 'heel klein', english: 'tiny', sentence: "A tiny baby kangaroo is sitting in its mother's pouch.", emoji: '🦘' },
-  { dutch: 'toeristische attractie', english: 'tourist attraction', sentence: 'Versailles is a tourist attraction in Paris.', emoji: '🏰' },
-  { dutch: 'metro', english: 'underground', sentence: 'The underground is a fast way to travel around a big city.', emoji: '🚇' },
-  { dutch: 'dorp', english: 'village', sentence: 'I live in a small village with only 800 inhabitants.', emoji: '🏡' },
-  { dutch: 'windmolen', english: 'windmill', sentence: 'There are old and new windmills in the Netherlands.', emoji: '🌀' },
-  { dutch: 'Woon je graag in...?', english: 'Do you like living in...?', sentence: 'Do you like living in Scotland?', emoji: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
-  { dutch: '...is geweldig, want...', english: '...is great, because...', sentence: 'This theme park is great, because I like roller coasters.', emoji: '🎢' },
-  { dutch: 'Hoe is het om in ... te wonen?', english: "What's it like living in...?", sentence: "What's it like living in New York?", emoji: '🗽' },
-  { dutch: 'roltrap', english: 'escalator', sentence: "You don't have to walk when you use the escalator.", emoji: '🛗' },
-  { dutch: 'jas', english: 'jacket', sentence: 'His jacket is very colourful.', emoji: '🧥' },
-  { dutch: 'landschap', english: 'landscape', sentence: 'Tourists love the typical Dutch landscape.', emoji: '🖼️' },
-  { dutch: 'zitplaats, stoel', english: 'seat', sentence: 'All the seats in the train are taken.', emoji: '💺' },
-  { dutch: 'overstromen', english: 'to flood', sentence: 'The street is flooded.', emoji: '🌧️' },
+  { dutch: 'badpak', english: 'bathing suit', sentence: 'The girl puts on her bathing suit and swims in the water.', emoji: '👙' },
+  { dutch: 'goedkoop', english: 'cheap', sentence: "The skateboard only costs 10 euros, that's cheap!", emoji: '💸' },
+  { dutch: 'warenhuis', english: 'department store', sentence: 'This department store has a lot of floors.', emoji: '🏬' },
+  { dutch: 'roltrap', english: 'escalator', sentence: 'There are a lot of people on the escalator.', emoji: '🛗' },
+  { dutch: 'duur', english: 'expensive', sentence: 'Gold and diamonds are very expensive.', emoji: '💎' },
+  { dutch: 'eerste verdieping', english: 'first floor', sentence: 'On the first floor there are a lot of shops.', emoji: '1️⃣' },
+  { dutch: 'pashokje', english: 'fitting room', sentence: 'She wants to try on the clothes in the fitting room.', emoji: '🪞' },
+  { dutch: 'trui met capuchon', english: 'hoodie', sentence: "I put on my hoodie when it's cold.", emoji: '🧥' },
+  { dutch: 'kleding', english: 'outfit', sentence: 'My best friend bought a colourful outfit for next winter.', emoji: '👗' },
+  { dutch: '(broek)zak', english: 'pocket', sentence: "Don't lose your phone if you put it in your pocket!", emoji: '👖' },
+  { dutch: 'artikel', english: 'product', sentence: 'What products do they sell in this shop? Sweets!', emoji: '🛍️' },
+  { dutch: '(kassa)bon', english: 'receipt', sentence: 'On the receipt is the price of the hoodie: 40 euros.', emoji: '🧾' },
+  { dutch: 'geld terug', english: 'refund', sentence: 'The dress is too big. I would like a refund.', emoji: '💰' },
+  { dutch: 'uitverkoop', english: 'sale', sentence: 'The expensive shoes are in the sale: only 20 euros.', emoji: '🏷️' },
+  { dutch: 'tweede verdieping', english: 'second floor', sentence: 'There is a restaurant on the second floor.', emoji: '2️⃣' },
+  { dutch: 'schoenmaat', english: 'shoe size', sentence: "My sister's shoe size is 16, mine is 35 and my dad's is 45!", emoji: '👟' },
+  { dutch: 'mouw', english: 'sleeve', sentence: "My sleeves are too long: I can't see my hands.", emoji: '👕' },
+  { dutch: 'aanbieding', english: 'special offer', sentence: "Today's special offer is two for the price of one!", emoji: '🎉' },
+  { dutch: 'zwembroek', english: 'swimming trunks', sentence: 'These are my favourite swimming trunks.', emoji: '🩲' },
+  { dutch: 'trainingspak', english: 'tracksuit', sentence: 'I do football training in my tracksuit.', emoji: '🏃' },
+  { dutch: 'rits', english: 'zipper', sentence: "It's cold outside. Do up your zipper.", emoji: '🤐' },
+  { dutch: 'omkleden', english: 'to change', sentence: "Your shirt is dirty. You'll have to change it.", emoji: '🔄' },
+  { dutch: 'etalages kijken', english: 'to go window shopping', sentence: 'They never buy anything, they just go window shopping.', emoji: '🪟' },
+  { dutch: 'aantrekken', english: 'to put on', sentence: "I'm putting on my shoes.", emoji: '🥿' },
+  { dutch: 'uitdoen', english: 'to take off', sentence: "I'm taking off my sweater, it's too hot.", emoji: '♨️' },
+  { dutch: 'passen', english: 'to try on', sentence: 'The girl wants to try on the red shirt.', emoji: '🪄' },
+  { dutch: 'Het is te kort/lang/wijd/strak.', english: 'It is too short/long/big/tight.', sentence: 'These trousers are too big.', emoji: '📏' },
+  { dutch: 'Ik neem hem.', english: 'I will take it.', sentence: 'Is this book only 5 euros? I will take it!', emoji: '🛒' },
+  { dutch: 'Mag ik alstublieft ...?', english: 'May I have ...?', sentence: 'May I have the red tracksuit, please?', emoji: '🙋' },
+  { dutch: 'Welke maat heb je?', english: 'What size are you?', sentence: 'What shoe size are you? I am size 39.', emoji: '📐' },
+  { dutch: 'badkoets, strandkoets', english: 'bathing machine', sentence: 'People used to ride into the sea in a bathing machine.', emoji: '🏖️' },
+  { dutch: 'netjes, fatsoenlijk', english: 'decent', sentence: "This bathing suit was decent in the 1920's.", emoji: '😇' },
+  { dutch: 'bruin worden', english: 'to tan', sentence: 'Some people love to get a tan at the beach.', emoji: '☀️' },
 ];
 
 const shuffleArray = (array) => {
@@ -1489,7 +1487,7 @@ const EuropeExplorer = ({ onBack }) => {
   const [collectedStickers, setCollectedStickers] = useState(new Set());
 
   // Zoom state for map
-  const [position, setPosition] = useState({ coordinates: [15, 52], zoom: 1 });
+  const [position, setPosition] = useState({ coordinates: [5, 57], zoom: 1 });
 
   const handleZoomIn = useCallback(() => {
     if (position.zoom >= 8) return;
@@ -1502,7 +1500,7 @@ const EuropeExplorer = ({ onBack }) => {
   }, [position.zoom]);
 
   const handleZoomReset = useCallback(() => {
-    setPosition({ coordinates: [15, 52], zoom: 1 });
+    setPosition({ coordinates: [5, 57], zoom: 1 });
   }, []);
 
   const handleMoveEnd = useCallback((position) => {
@@ -1519,8 +1517,10 @@ const EuropeExplorer = ({ onBack }) => {
     missionShort: 'Missie',
     countries: 'Landen',
     capitals: 'Hoofdsteden',
+    cities: 'Steden',
     waters: 'Wateren',
     mountains: 'Gebergten',
+    regions: 'Regio\'s',
     back: '← Terug',
     correct: '✓ Goed zo!',
     wrong: '✗ Probeer opnieuw!',
@@ -1530,9 +1530,12 @@ const EuropeExplorer = ({ onBack }) => {
     again: '🔄 Opnieuw',
     country: 'Land',
     capital: 'Hoofdstad',
+    cityType: 'Stad',
     water: 'Water',
     mountainType: 'Gebergte',
+    regionType: 'Regio',
     capitalOf: 'Hoofdstad van',
+    cityIn: 'Stad in',
     loading: 'Laden...',
     moreInfo: 'Meer info',
     close: 'Sluiten',
@@ -1558,8 +1561,10 @@ const EuropeExplorer = ({ onBack }) => {
     missionShort: 'Mission',
     countries: 'Countries',
     capitals: 'Capitals',
+    cities: 'Cities',
     waters: 'Waters',
     mountains: 'Mountains',
+    regions: 'Regions',
     back: '← Back',
     correct: '✓ Correct!',
     wrong: '✗ Try again!',
@@ -1569,9 +1574,12 @@ const EuropeExplorer = ({ onBack }) => {
     again: '🔄 Again',
     country: 'Country',
     capital: 'Capital',
+    cityType: 'City',
     water: 'Water',
-    mountainType: 'Mountains',
+    mountainType: 'Mountain range',
+    regionType: 'Region',
     capitalOf: 'Capital of',
+    cityIn: 'City in',
     loading: 'Loading...',
     moreInfo: 'More info',
     close: 'Close',
@@ -1645,18 +1653,24 @@ const EuropeExplorer = ({ onBack }) => {
           // If still too short, add generic content
           if (extract.length < targetLength) {
             const categoryInfo = {
-              country: lang === 'nl' 
+              country: lang === 'nl'
                 ? `Dit land is een belangrijk geografisch gebied in Europa.`
                 : `This country is an important geographical area in Europe.`,
               capital: lang === 'nl'
                 ? `Deze hoofdstad is een cultureel en administratief centrum.`
                 : `This capital is a cultural and administrative center.`,
+              city: lang === 'nl'
+                ? `Deze stad is een belangrijk cultureel en economisch centrum.`
+                : `This city is an important cultural and economic centre.`,
               water: lang === 'nl'
                 ? `Deze waterweg speelt een cruciale rol in de regio.`
                 : `This waterway plays a crucial role in the region.`,
               mountain: lang === 'nl'
                 ? `Dit gebergte is een opvallend geografisch kenmerk.`
-                : `This mountain range is a prominent geographical feature.`
+                : `This mountain range is a prominent geographical feature.`,
+              region: lang === 'nl'
+                ? `Deze regio heeft een unieke geografische en culturele identiteit.`
+                : `This region has a unique geographical and cultural identity.`
             };
             extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
           }
@@ -1686,8 +1700,10 @@ const EuropeExplorer = ({ onBack }) => {
           const categoryInfo = {
             country: `Dit ${lang === 'nl' ? 'land' : 'country'} is een belangrijk geografisch gebied in Europa met een rijke geschiedenis en cultuur.`,
             capital: `Deze ${lang === 'nl' ? 'hoofdstad' : 'capital'} is een cultureel en administratief centrum met veel historische bezienswaardigheden.`,
+            city: `Deze ${lang === 'nl' ? 'stad' : 'city'} is een belangrijk cultureel en economisch centrum in de regio.`,
             water: `Deze ${lang === 'nl' ? 'waterweg' : 'waterway'} speelt een cruciale rol in de regio en heeft belangrijke ecologische waarde.`,
-            mountain: `Dit ${lang === 'nl' ? 'gebergte' : 'mountain'} is een opvallend geografisch kenmerk met unieke flora en fauna.`
+            mountain: `Dit ${lang === 'nl' ? 'gebergte' : 'mountain'} is een opvallend geografisch kenmerk met unieke flora en fauna.`,
+            region: `Deze ${lang === 'nl' ? 'regio' : 'region'} heeft een unieke geografische en culturele identiteit binnen Europa.`
           };
           extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
         }
@@ -1718,18 +1734,24 @@ const EuropeExplorer = ({ onBack }) => {
       // Add generic content if still too short
       if (extract.length < targetLength) {
         const categoryInfo = {
-          country: lang === 'nl' 
+          country: lang === 'nl'
             ? `Dit land is een belangrijk geografisch gebied in Europa met een rijke geschiedenis en cultuur.`
             : `This country is an important geographical area in Europe with a rich history and culture.`,
           capital: lang === 'nl'
             ? `Deze hoofdstad is een cultureel en administratief centrum met veel historische bezienswaardigheden.`
             : `This capital is a cultural and administrative center with many historical landmarks.`,
+          city: lang === 'nl'
+            ? `Deze stad is een belangrijk cultureel en economisch centrum in de regio.`
+            : `This city is an important cultural and economic centre in the region.`,
           water: lang === 'nl'
             ? `Deze waterweg speelt een cruciale rol in de regio en heeft belangrijke ecologische waarde.`
             : `This waterway plays a crucial role in the region and has important ecological value.`,
           mountain: lang === 'nl'
             ? `Dit gebergte is een opvallend geografisch kenmerk met unieke flora en fauna.`
-            : `This mountain range is a prominent geographical feature with unique flora and fauna.`
+            : `This mountain range is a prominent geographical feature with unique flora and fauna.`,
+          region: lang === 'nl'
+            ? `Deze regio heeft een unieke geografische en culturele identiteit binnen Europa.`
+            : `This region has a unique geographical and cultural identity within Europe.`
         };
         extract = extract ? `${extract}\n\n${categoryInfo[item.category]}` : categoryInfo[item.category];
       }
@@ -1753,6 +1775,12 @@ const EuropeExplorer = ({ onBack }) => {
         const country = getCountryForCapital(item.id);
         const countryName = country ? (lang === 'nl' ? country.dutchName : country.englishName) : '';
         return { target: item, text: lang === 'nl' ? `Vind de hoofdstad van ${countryName}!` : `Find the capital of ${countryName}!` };
+      } else if (item.category === 'city') {
+        const country = getCountryForCapital(item.id);
+        const countryName = country ? (lang === 'nl' ? country.dutchName : country.englishName) : '';
+        return { target: item, text: lang === 'nl' ? `Vind de stad ${item.dutchName} (in ${countryName})!` : `Find the city ${item.englishName} (in ${countryName})!` };
+      } else if (item.category === 'region') {
+        return { target: item, text: lang === 'nl' ? `Vind de regio: ${item.dutchName}!` : `Find the region: ${item.englishName}!` };
       } else {
         return { target: item, text: lang === 'nl' ? `Vind: ${item.dutchName}!` : `Find: ${item.englishName}!` };
       }
@@ -1767,7 +1795,7 @@ const EuropeExplorer = ({ onBack }) => {
     setTotalQuestions(questions.length);
     setFeedback(null);
     setMissionComplete(false);
-    setPosition({ coordinates: [15, 52], zoom: 1 }); // Reset zoom
+    setPosition({ coordinates: [5, 57], zoom: 1 }); // Reset zoom
     setLastQuizMode('mission');
     setGameMode('mission');
   };
@@ -1781,7 +1809,7 @@ const EuropeExplorer = ({ onBack }) => {
     setFeedback(null);
     setMissionComplete(false);
     setTypeQuizInput('');
-    setPosition({ coordinates: [15, 52], zoom: 1 }); // Reset zoom
+    setPosition({ coordinates: [5, 57], zoom: 1 }); // Reset zoom
     setLastQuizMode('typeQuiz');
     setGameMode('typeQuiz');
   };
@@ -1882,9 +1910,38 @@ const EuropeExplorer = ({ onBack }) => {
         map['United Kingdom'] = c;
         map['UK'] = c;
         map['Great Britain'] = c;
+        map['England'] = c;
+        map['Scotland'] = c;
+        map['Wales'] = c;
+        map['Northern Ireland'] = c;
       }
-      if (c.id === 'luxembourg_country') {
-        map['Luxembourg'] = c;
+      if (c.id === 'denmark') {
+        map['Denmark'] = c;
+      }
+      if (c.id === 'estonia') {
+        map['Estonia'] = c;
+      }
+      if (c.id === 'finland') {
+        map['Finland'] = c;
+      }
+      if (c.id === 'ireland') {
+        map['Ireland'] = c;
+        map['Republic of Ireland'] = c;
+      }
+      if (c.id === 'iceland') {
+        map['Iceland'] = c;
+      }
+      if (c.id === 'latvia') {
+        map['Latvia'] = c;
+      }
+      if (c.id === 'lithuania') {
+        map['Lithuania'] = c;
+      }
+      if (c.id === 'norway') {
+        map['Norway'] = c;
+      }
+      if (c.id === 'sweden') {
+        map['Sweden'] = c;
       }
     });
     
@@ -1932,22 +1989,30 @@ const EuropeExplorer = ({ onBack }) => {
             <span className="text-4xl">⌨️</span> {t.typeQuiz}
           </BigButton>
         </div>
-        <div className="mt-8 grid grid-cols-4 gap-3 text-center">
+        <div className="mt-8 grid grid-cols-3 gap-3 text-center">
           <div className="bg-white/10 rounded-2xl p-3">
             <span className="text-2xl block">🌍</span>
-            <p className="text-emerald-200 font-bold mt-1 text-sm">14 {t.countries}</p>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">{europeData.filter(d => d.category === 'country').length} {t.countries}</p>
           </div>
           <div className="bg-white/10 rounded-2xl p-3">
             <span className="text-2xl block">🏛️</span>
-            <p className="text-emerald-200 font-bold mt-1 text-sm">14 {t.capitals}</p>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">{europeData.filter(d => d.category === 'capital' || d.category === 'city').length} {t.capitals}</p>
           </div>
           <div className="bg-white/10 rounded-2xl p-3">
             <span className="text-2xl block">🌊</span>
-            <p className="text-emerald-200 font-bold mt-1 text-sm">12 {t.waters}</p>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">{europeData.filter(d => d.category === 'water').length} {t.waters}</p>
           </div>
           <div className="bg-white/10 rounded-2xl p-3">
             <span className="text-2xl block">⛰️</span>
-            <p className="text-emerald-200 font-bold mt-1 text-sm">4 {t.mountains}</p>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">{europeData.filter(d => d.category === 'mountain').length} {t.mountains}</p>
+          </div>
+          <div className="bg-white/10 rounded-2xl p-3">
+            <span className="text-2xl block">🗺️</span>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">{europeData.filter(d => d.category === 'region').length} {t.regions}</p>
+          </div>
+          <div className="bg-white/10 rounded-2xl p-3">
+            <span className="text-2xl block">📍</span>
+            <p className="text-emerald-200 font-bold mt-1 text-sm">{europeData.length} totaal</p>
           </div>
         </div>
       </div>
@@ -2000,7 +2065,7 @@ const EuropeExplorer = ({ onBack }) => {
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 shrink-0">
         <button
-          onClick={() => { setGameMode('menu'); setSelectedItem(null); setFeedback(null); setPosition({ coordinates: [15, 52], zoom: 1 }); }}
+          onClick={() => { setGameMode('menu'); setSelectedItem(null); setFeedback(null); setPosition({ coordinates: [5, 57], zoom: 1 }); }}
           className="px-3 py-2 bg-white/20 text-white font-bold rounded-xl active:scale-95 transition-all text-sm"
           style={{ touchAction: 'manipulation', minHeight: '44px' }}
         >
@@ -2016,7 +2081,7 @@ const EuropeExplorer = ({ onBack }) => {
         )}
         {gameMode === 'recon' && (
           <div className="flex gap-1">
-            {[['all', 'All'], ['country', '🌍'], ['capital', '🏛️'], ['water', '🌊'], ['mountain', '⛰️']].map(([key, label]) => (
+            {[['all', 'All'], ['country', '🌍'], ['capital', '🏛️'], ['city', '🏙️'], ['water', '🌊'], ['mountain', '⛰️'], ['region', '🗺️']].map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => { setFilter(key); setSelectedItem(null); }}
@@ -2157,7 +2222,7 @@ const EuropeExplorer = ({ onBack }) => {
         <div className="relative flex-1 min-h-0 rounded-xl shadow-xl border-2 border-slate-600 overflow-hidden" style={{ backgroundColor: '#a8d5e2' }}>
         <ComposableMap
           projection="geoMercator"
-          projectionConfig={{ center: [15, 52], scale: 700 }}
+          projectionConfig={{ center: [5, 57], scale: 680 }}
           style={{ width: '100%', height: '100%', touchAction: 'none' }}
           width={800}
           height={600}
@@ -2273,11 +2338,8 @@ const EuropeExplorer = ({ onBack }) => {
 
               const fill = isTypeQuizCorrect ? '#86efac' : isTypeQuizWrong ? '#fca5a5' : isTypeQuizHighlight ? '#f0abfc' : isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#fbbf24';
               const stroke = isTypeQuizCorrect ? '#16a34a' : isTypeQuizWrong ? '#dc2626' : isTypeQuizHighlight ? '#d946ef' : isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#d97706';
-              // Scale inversely with zoom - keeps apparent screen size constant
               const scale = 1 / position.zoom;
-              // Touch target: large enough to tap, but scales down to reduce overlap
               const touchRadius = Math.max(4, 15 * scale);
-              // Visual marker: stays visible at all zoom levels - larger for highlighted items
               const markerRadius = Math.max(2, ((isTypeQuizHighlight || isCorrect) ? 10 : 5) * scale);
               const strokeW = Math.max(0.5, (isTypeQuizHighlight ? 2.5 : 1.5) * scale);
 
@@ -2285,6 +2347,73 @@ const EuropeExplorer = ({ onBack }) => {
                 <Marker key={item.id} coordinates={item.coordinates}>
                   <circle r={touchRadius} fill="transparent" onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
                   <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
+                </Marker>
+              );
+            })}
+
+          {/* Cities (non-capital, orange markers) */}
+          {(gameMode === 'recon' ? filteredData : europeData)
+            .filter(i => i.category === 'city')
+            .map(item => {
+              const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
+              const isWrong = wrongAnswer === item.id;
+              const isTypeQuizHighlight = gameMode === 'typeQuiz' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizCorrect = gameMode === 'typeQuiz' && feedback === 'correct' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizWrong = gameMode === 'typeQuiz' && feedback === 'wrong' && item.id === typeQuizHighlightedItem?.id;
+
+              const fill = isTypeQuizCorrect ? '#86efac' : isTypeQuizWrong ? '#fca5a5' : isTypeQuizHighlight ? '#f0abfc' : isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#fb923c';
+              const stroke = isTypeQuizCorrect ? '#16a34a' : isTypeQuizWrong ? '#dc2626' : isTypeQuizHighlight ? '#d946ef' : isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#ea580c';
+              const scale = 1 / position.zoom;
+              const touchRadius = Math.max(4, 15 * scale);
+              const markerRadius = Math.max(2, ((isTypeQuizHighlight || isCorrect) ? 10 : 5) * scale);
+              const strokeW = Math.max(0.5, (isTypeQuizHighlight ? 2.5 : 1.5) * scale);
+
+              return (
+                <Marker key={item.id} coordinates={item.coordinates}>
+                  <circle r={touchRadius} fill="transparent" onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
+                  <circle r={markerRadius} fill={fill} stroke={stroke} strokeWidth={strokeW} onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)} style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }} />
+                </Marker>
+              );
+            })}
+
+          {/* Regions (text labels, pink) */}
+          {(gameMode === 'recon' ? filteredData : europeData)
+            .filter(i => i.category === 'region')
+            .map(item => {
+              const isCorrect = feedback === 'correct' && item.id === currentQuestion?.target.id;
+              const isWrong = wrongAnswer === item.id;
+              const isTypeQuizHighlight = gameMode === 'typeQuiz' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizCorrect = gameMode === 'typeQuiz' && feedback === 'correct' && item.id === typeQuizHighlightedItem?.id;
+              const isTypeQuizWrong = gameMode === 'typeQuiz' && feedback === 'wrong' && item.id === typeQuizHighlightedItem?.id;
+
+              const bgFill = isTypeQuizCorrect ? '#86efac' : isTypeQuizWrong ? '#fca5a5' : isTypeQuizHighlight ? '#f0abfc' : isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#f9a8d4';
+              const textColor = isTypeQuizCorrect ? '#16a34a' : isTypeQuizWrong ? '#dc2626' : isTypeQuizHighlight ? '#d946ef' : isCorrect ? '#16a34a' : isWrong ? '#dc2626' : '#9d174d';
+              const scale = 1 / position.zoom;
+              const fontSize = Math.max(4, 9 * scale);
+              const padX = 6 * scale;
+              const padY = 3 * scale;
+              const rectW = Math.max(20, (lang === 'nl' ? item.dutchName.length : item.englishName.length) * fontSize * 0.65 + padX * 2);
+              const rectH = fontSize + padY * 2;
+
+              return (
+                <Marker key={item.id} coordinates={item.coordinates}>
+                  <rect
+                    x={-rectW / 2} y={-rectH / 2}
+                    width={rectW} height={rectH}
+                    rx={2 * scale} ry={2 * scale}
+                    fill={bgFill} fillOpacity={0.85}
+                    stroke={textColor} strokeWidth={Math.max(0.5, 1.2 * scale)}
+                    onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)}
+                    style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer' }}
+                  />
+                  <text
+                    textAnchor="middle" dominantBaseline="central"
+                    fontSize={fontSize} fontWeight="bold" fill={textColor}
+                    onClick={() => gameMode !== 'typeQuiz' && handleMarkerClick(item)}
+                    style={{ cursor: gameMode === 'typeQuiz' ? 'default' : 'pointer', fontFamily: 'Nunito, sans-serif', userSelect: 'none' }}
+                  >
+                    {lang === 'nl' ? item.dutchName : item.englishName}
+                  </text>
                 </Marker>
               );
             })}
@@ -2352,9 +2481,14 @@ const EuropeExplorer = ({ onBack }) => {
                       const country = getCountryForCapital(selectedItem.id);
                       return `${t.capitalOf} ${country ? (lang === 'nl' ? country.dutchName : country.englishName) : ''}`;
                     })()}
+                    {selectedItem.category === 'city' && (() => {
+                      const country = getCountryForCapital(selectedItem.id);
+                      return `${t.cityIn} ${country ? (lang === 'nl' ? country.dutchName : country.englishName) : ''}`;
+                    })()}
                     {selectedItem.category === 'country' && t.country}
                     {selectedItem.category === 'water' && t.water}
                     {selectedItem.category === 'mountain' && t.mountainType}
+                    {selectedItem.category === 'region' && t.regionType}
                   </p>
                 </div>
                 <button
@@ -2407,7 +2541,7 @@ const EuropeExplorer = ({ onBack }) => {
         {/* Legend */}
         {gameMode === 'recon' && !selectedItem && (
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 bg-slate-800/80 rounded-full px-3 py-1.5">
-            {[['bg-purple-400', 'border-purple-600', t.countries], ['bg-amber-400', 'border-amber-600', t.capitals], ['bg-blue-400', 'border-blue-600', t.waters], ['bg-emerald-400', 'border-emerald-600', t.mountains]].map(([bg, border, label]) => (
+            {[['bg-purple-400', 'border-purple-600', t.countries], ['bg-amber-400', 'border-amber-600', t.capitals], ['bg-orange-400', 'border-orange-600', t.cities], ['bg-blue-400', 'border-blue-600', t.waters], ['bg-emerald-400', 'border-emerald-600', t.mountains], ['bg-pink-400', 'border-pink-600', t.regions]].map(([bg, border, label]) => (
               <div key={label} className="flex items-center gap-1 text-white/90">
                 <div className={`w-2.5 h-2.5 rounded-full ${bg} border ${border}`} />
                 <span className="text-xs font-bold">{label}</span>
