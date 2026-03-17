@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
 import { europeData, getRandomFunFact, getCountryForCapital, wikiSearchTerms } from './data/europeData';
+
+const PI_DECIMAL_DIGITS = '14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798';
 
 // Unit 3 woordenlijst - Engels leermodule (winkelen & kleding)
 const defaultWords = [
@@ -757,6 +759,252 @@ const Calculator = ({ onBack }) => {
   );
 };
 
+const PI_COLORS = [
+  { bg: 'bg-red-200', text: 'text-red-800' },
+  { bg: 'bg-orange-200', text: 'text-orange-800' },
+  { bg: 'bg-yellow-200', text: 'text-yellow-800' },
+  { bg: 'bg-green-200', text: 'text-green-800' },
+  { bg: 'bg-blue-200', text: 'text-blue-800' },
+  { bg: 'bg-purple-200', text: 'text-purple-800' },
+  { bg: 'bg-pink-200', text: 'text-pink-800' },
+];
+
+const PiDigitGroups = ({ digits }) => {
+  const groups = [];
+  for (let i = 0; i < digits.length; i += 5) {
+    groups.push(digits.slice(i, i + 5));
+  }
+  return (
+    <div className="flex flex-wrap gap-2 justify-center">
+      {groups.map((group, gi) => {
+        const { bg, text } = PI_COLORS[gi % 7];
+        return (
+          <span key={gi} className={`${bg} ${text} px-3 py-2 rounded-xl text-3xl font-bold tracking-widest`}>
+            {group}
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
+const PiMenu = ({ onStart, onBack }) => (
+  <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex items-center justify-center p-8">
+    <BackButton onClick={onBack} color="text-violet-600" />
+    <div className="text-center w-full max-w-lg">
+      <div className="mb-6">
+        <span className="text-8xl block">π</span>
+      </div>
+      <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-indigo-600 mb-2"
+          style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+        Pi Challenge
+      </h1>
+      <p className="text-xl text-violet-600 mb-8" style={{ fontFamily: 'Nunito, sans-serif' }}>
+        Leer de cijfers van π uit je hoofd!
+      </p>
+      <div className="space-y-4 flex flex-col items-center">
+        <BigButton onClick={() => onStart('pi-viewer')} color="bg-gradient-to-r from-violet-400 to-purple-500">
+          <span className="text-4xl">🔍</span> Pi Bekijken
+        </BigButton>
+        <BigButton onClick={() => onStart('pi-game')} color="bg-gradient-to-r from-indigo-400 to-violet-500">
+          <span className="text-4xl">🎮</span> Pi Spelen
+        </BigButton>
+      </div>
+    </div>
+  </div>
+);
+
+const PiViewer = ({ onBack }) => (
+  <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 p-6">
+    <BackButton onClick={onBack} color="text-violet-600" />
+    <div className="pt-20 text-center">
+      <h2 className="text-4xl font-black text-violet-700 mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+        π Bekijken 🔢
+      </h2>
+      <p className="text-lg text-violet-500 mb-6" style={{ fontFamily: 'Nunito, sans-serif' }}>
+        Elke groep van 5 cijfers heeft een eigen kleur
+      </p>
+      <div className="flex items-start justify-center gap-2 mb-4">
+        <span className="text-3xl font-bold text-violet-800 pt-2">3.</span>
+        <PiDigitGroups digits={PI_DECIMAL_DIGITS} />
+      </div>
+    </div>
+  </div>
+);
+
+const PiGame = ({ onBack }) => {
+  const [hearts, setHearts] = useState(3);
+  const [current, setCurrent] = useState(0);
+  const [showCorrect, setShowCorrect] = useState(false);
+  const [flash, setFlash] = useState(null); // 'green' | 'red' | null
+  const [gameOver, setGameOver] = useState(false);
+  const [newRecord, setNewRecord] = useState(false);
+  const [highscore, setHighscore] = useState(
+    () => parseInt(localStorage.getItem('piHighscore') || '0')
+  );
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!gameOver && !showCorrect) {
+      inputRef.current?.focus();
+    }
+  }, [current, gameOver, showCorrect]);
+
+  const handleCorrect = () => {
+    setFlash('green');
+    setTimeout(() => {
+      setFlash(null);
+      setCurrent(c => c + 1);
+    }, 400);
+  };
+
+  const handleWrong = (newHearts) => {
+    setFlash('red');
+    setShowCorrect(true);
+    setTimeout(() => {
+      setFlash(null);
+      setShowCorrect(false);
+      if (newHearts <= 0) {
+        const score = current;
+        if (score > highscore) {
+          localStorage.setItem('piHighscore', String(score));
+          setHighscore(score);
+          setNewRecord(true);
+        }
+        setGameOver(true);
+      } else {
+        setCurrent(c => c + 1);
+      }
+    }, 1500);
+  };
+
+  const handleInput = (e) => {
+    const val = e.target.value;
+    e.target.value = '';
+    if (!/^[0-9]$/.test(val) || showCorrect || gameOver) return;
+    const correct = PI_DECIMAL_DIGITS[current];
+    if (val === correct) {
+      handleCorrect();
+    } else {
+      const newHearts = hearts - 1;
+      setHearts(newHearts);
+      handleWrong(newHearts);
+    }
+  };
+
+  const handleGiveUp = () => {
+    if (showCorrect || gameOver) return;
+    const newHearts = hearts - 1;
+    setHearts(newHearts);
+    handleWrong(newHearts);
+  };
+
+  const restart = () => {
+    setHearts(3);
+    setCurrent(0);
+    setShowCorrect(false);
+    setFlash(null);
+    setGameOver(false);
+    setNewRecord(false);
+  };
+
+  const heartDisplay = Array.from({ length: 3 }, (_, i) => i < hearts ? '❤️' : '🖤').join('');
+
+  const typedDigits = PI_DECIMAL_DIGITS.slice(0, current);
+  const correctDigit = PI_DECIMAL_DIGITS[current];
+
+  if (gameOver) {
+    return (
+      <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex items-center justify-center p-8">
+        {newRecord && <Confetti />}
+        <BackButton onClick={onBack} color="text-violet-600" />
+        <div className="text-center w-full max-w-lg pt-16">
+          <div className="text-8xl mb-4">😵</div>
+          <h2 className="text-4xl font-black text-violet-700 mb-4" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+            Game Over!
+          </h2>
+          <p className="text-2xl text-violet-600 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            Jij kon <strong>{current}</strong> decimaalcijfer{current !== 1 ? 's' : ''}!
+          </p>
+          {newRecord ? (
+            <p className="text-2xl text-amber-500 font-bold mb-6">🏆 Nieuw record!</p>
+          ) : (
+            <p className="text-xl text-violet-400 mb-6">Record: {highscore}</p>
+          )}
+          <BigButton onClick={restart} color="bg-gradient-to-r from-violet-400 to-indigo-500">
+            🔄 Opnieuw proberen
+          </BigButton>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex flex-col items-center p-6 transition-all duration-150 ${
+      flash === 'green' ? 'bg-green-100' : flash === 'red' ? 'bg-red-100' : ''
+    }`}>
+      <BackButton onClick={onBack} color="text-violet-600" />
+
+      <div className="pt-20 w-full max-w-lg text-center">
+        <h2 className="text-3xl font-black text-violet-700 mb-1" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+          🎮 Pi Spelen
+        </h2>
+
+        <div className="text-3xl mb-2">{heartDisplay}</div>
+        <p className="text-sm text-violet-400 mb-4">Record: {highscore}</p>
+
+        {/* Pi display */}
+        <div className="bg-white/80 rounded-3xl shadow-lg p-4 mb-4 overflow-x-auto">
+          <div className="flex flex-wrap gap-1 justify-center items-center">
+            <span className="text-2xl font-bold text-violet-800">3.</span>
+            {typedDigits.length > 0 && <PiDigitGroups digits={typedDigits} />}
+            {showCorrect ? (
+              <span className="bg-green-200 text-green-800 px-3 py-2 rounded-xl text-3xl font-bold animate-pulse">
+                {correctDigit}
+              </span>
+            ) : (
+              <span className={`text-3xl font-bold px-3 py-2 rounded-xl ${
+                flash === 'green' ? 'bg-green-200 text-green-700' :
+                flash === 'red' ? 'bg-red-200 text-red-700' :
+                'bg-violet-200 text-violet-600 animate-pulse'
+              }`}>
+                ?
+              </span>
+            )}
+          </div>
+        </div>
+
+        <p className="text-violet-500 mb-4" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          Cijfer {current + 1} — typ het volgende decimaalcijfer
+        </p>
+
+        <input
+          ref={inputRef}
+          type="tel"
+          inputMode="numeric"
+          maxLength={1}
+          onChange={handleInput}
+          disabled={showCorrect || gameOver}
+          className="w-24 h-24 text-center text-4xl font-bold border-4 border-violet-300 rounded-2xl shadow-lg focus:outline-none focus:border-violet-500 bg-white mb-4"
+          style={{ touchAction: 'manipulation' }}
+          placeholder="?"
+        />
+
+        <div>
+          <button
+            onClick={handleGiveUp}
+            disabled={showCorrect || gameOver}
+            className="px-8 py-3 bg-white/80 text-violet-500 font-bold rounded-2xl shadow border-2 border-violet-200 active:scale-95 transition-all disabled:opacity-40"
+            style={{ fontFamily: 'Nunito, sans-serif', touchAction: 'manipulation' }}
+          >
+            😓 Geef op
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const StartScreen = ({ onStart }) => (
   <div className="screen-scroll safe-area-pad bg-gradient-to-br from-amber-100 via-orange-50 to-rose-100 flex items-center justify-center p-8">
     <div className="text-center w-full max-w-lg">
@@ -782,6 +1030,10 @@ const StartScreen = ({ onStart }) => (
 
         <BigButton onClick={() => onStart('calculator')} color="bg-gradient-to-r from-gray-600 to-gray-800">
           <span className="text-4xl">🧮</span> Rekenmachine
+        </BigButton>
+
+        <BigButton onClick={() => onStart('pi-menu')} color="bg-gradient-to-r from-violet-400 to-purple-500">
+          <span className="text-4xl">🔢</span> Pi Challenge
         </BigButton>
       </div>
     </div>
@@ -2667,6 +2919,9 @@ export default function App() {
       {mode === 'europe' && <EuropeExplorer onBack={() => setMode('start')} />}
       {mode === 'calculator' && <Calculator onBack={() => setMode('start')} />}
       {mode === 'manage' && <ManageWords words={words} setWords={setWords} onBack={() => setMode('english-menu')} />}
+      {mode === 'pi-menu' && <PiMenu onStart={(m) => setMode(m)} onBack={() => setMode('start')} />}
+      {mode === 'pi-viewer' && <PiViewer onBack={() => setMode('pi-menu')} />}
+      {mode === 'pi-game' && <PiGame onBack={() => setMode('pi-menu')} />}
     </>
   );
 }
