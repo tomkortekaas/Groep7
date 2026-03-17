@@ -788,47 +788,87 @@ const PiDigitGroups = ({ digits }) => {
   );
 };
 
+// ── Shared Pi Challenge theme ──────────────────────────────────────────────
+const PI_NEON = [
+  { color: '#ff6b9d', bg: 'rgba(255,107,157,0.12)', border: 'rgba(255,107,157,0.5)' },
+  { color: '#ff9a3c', bg: 'rgba(255,154,60,0.12)',  border: 'rgba(255,154,60,0.5)'  },
+  { color: '#ffd93d', bg: 'rgba(255,217,61,0.12)',  border: 'rgba(255,217,61,0.5)'  },
+  { color: '#6bcb77', bg: 'rgba(107,203,119,0.12)', border: 'rgba(107,203,119,0.5)' },
+  { color: '#4d96ff', bg: 'rgba(77,150,255,0.12)',  border: 'rgba(77,150,255,0.5)'  },
+  { color: '#c77dff', bg: 'rgba(199,125,255,0.12)', border: 'rgba(199,125,255,0.5)' },
+  { color: '#ff6b6b', bg: 'rgba(255,107,107,0.12)', border: 'rgba(255,107,107,0.5)' },
+];
+
+const PI_BG = 'linear-gradient(160deg, #060d1a 0%, #0a1628 50%, #060d1a 100%)';
+
+const PiShell = ({ children, flash }) => {
+  const bg = flash === 'green' ? 'linear-gradient(160deg, #061a0a 0%, #0a2814 50%, #061a0a 100%)'
+           : flash === 'red'   ? 'linear-gradient(160deg, #1a0606 0%, #280a0a 50%, #1a0606 100%)'
+           : PI_BG;
+  return (
+    <div className="screen-scroll safe-area-pad" style={{ background: bg, minHeight: '100vh', transition: 'background 0.2s' }}>
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: 'linear-gradient(rgba(77,150,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(77,150,255,0.04) 1px, transparent 1px)',
+        backgroundSize: '48px 48px' }} />
+      <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
+    </div>
+  );
+};
+
+const NeonBtn = ({ onClick, color, icon, label, disabled }) => (
+  <button onClick={onClick} disabled={disabled} style={{
+    width: '100%', maxWidth: '400px', padding: '18px 28px',
+    background: `${color}12`, border: `2px solid ${color}70`,
+    borderRadius: '20px', color,
+    fontSize: '1.4rem', fontWeight: 700, fontFamily: 'Fredoka, cursive',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px',
+    boxShadow: `0 0 18px ${color}20`, cursor: 'pointer', touchAction: 'manipulation',
+    transition: 'transform 0.15s, box-shadow 0.15s', letterSpacing: '0.03em',
+    opacity: disabled ? 0.4 : 1,
+  }}
+    onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 0 30px ${color}55, 0 0 60px ${color}20`; e.currentTarget.style.transform = 'scale(1.02) translateY(-2px)'; }}
+    onMouseLeave={e => { e.currentTarget.style.boxShadow = `0 0 18px ${color}20`; e.currentTarget.style.transform = 'scale(1)'; }}
+  ><span style={{ fontSize: '1.8rem' }}>{icon}</span>{label}</button>
+);
+
+const PiGlassCard = ({ children, style }) => (
+  <div style={{
+    background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(77,150,255,0.15)',
+    borderRadius: '24px', backdropFilter: 'blur(12px)',
+    boxShadow: '0 0 40px rgba(77,150,255,0.05), inset 0 1px 0 rgba(255,255,255,0.04)',
+    ...style,
+  }}>{children}</div>
+);
+// ───────────────────────────────────────────────────────────────────────────
+
 const PiMenu = ({ onStart, onBack }) => (
-  <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex items-center justify-center p-8">
-    <BackButton onClick={onBack} color="text-violet-600" />
-    <div className="text-center w-full max-w-lg">
-      <div className="mb-6">
-        <span className="text-8xl block">π</span>
-      </div>
-      <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-indigo-600 mb-2"
-          style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-        Pi Challenge
-      </h1>
-      <p className="text-xl text-violet-600 mb-8" style={{ fontFamily: 'Nunito, sans-serif' }}>
+  <PiShell>
+    <BackButton onClick={onBack} color="text-blue-700" />
+    <div className="pt-20 pb-16 px-6 flex flex-col items-center justify-center" style={{ minHeight: '100vh' }}>
+      <div style={{
+        fontFamily: 'Fredoka, cursive', fontSize: '8rem', lineHeight: 1,
+        color: '#4d96ff', textShadow: '0 0 30px rgba(77,150,255,0.9), 0 0 80px rgba(77,150,255,0.4)',
+        marginBottom: '4px', textAlign: 'center',
+      }}>π</div>
+      <h1 style={{
+        fontFamily: 'Fredoka, cursive', fontSize: '2.2rem', letterSpacing: '0.05em',
+        color: '#c8e0ff', textShadow: '0 0 20px rgba(77,150,255,0.4)',
+        marginBottom: '6px', textAlign: 'center',
+      }}>Pi Challenge</h1>
+      <p style={{ color: '#2d4f7a', fontFamily: 'Nunito, sans-serif', fontSize: '1rem', marginBottom: '40px', textAlign: 'center' }}>
         Leer de cijfers van π uit je hoofd!
       </p>
-      <div className="space-y-4 flex flex-col items-center">
-        <BigButton onClick={() => onStart('pi-viewer')} color="bg-gradient-to-r from-violet-400 to-purple-500">
-          <span className="text-4xl">🔍</span> Pi Bekijken
-        </BigButton>
-        <BigButton onClick={() => onStart('pi-game')} color="bg-gradient-to-r from-indigo-400 to-violet-500">
-          <span className="text-4xl">🎮</span> Pi Spelen
-        </BigButton>
-        <BigButton onClick={() => onStart('pi-scores')} color="bg-gradient-to-r from-amber-400 to-orange-500">
-          <span className="text-4xl">🏆</span> Highscores
-        </BigButton>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '400px', alignItems: 'center' }}>
+        <NeonBtn onClick={() => onStart('pi-viewer')} color="#c77dff" icon="🔍" label="Pi Bekijken" />
+        <NeonBtn onClick={() => onStart('pi-game')}   color="#4d96ff" icon="🎮" label="Pi Spelen" />
+        <NeonBtn onClick={() => onStart('pi-scores')} color="#ffd93d" icon="🏆" label="Highscores" />
       </div>
     </div>
-  </div>
+  </PiShell>
 );
 
 const PiViewer = ({ onBack }) => {
   const [hoveredGroup, setHoveredGroup] = useState(null);
-
-  const NEON = [
-    { color: '#ff6b9d', bg: 'rgba(255,107,157,0.12)', border: 'rgba(255,107,157,0.5)' },
-    { color: '#ff9a3c', bg: 'rgba(255,154,60,0.12)',  border: 'rgba(255,154,60,0.5)'  },
-    { color: '#ffd93d', bg: 'rgba(255,217,61,0.12)',  border: 'rgba(255,217,61,0.5)'  },
-    { color: '#6bcb77', bg: 'rgba(107,203,119,0.12)', border: 'rgba(107,203,119,0.5)' },
-    { color: '#4d96ff', bg: 'rgba(77,150,255,0.12)',  border: 'rgba(77,150,255,0.5)'  },
-    { color: '#c77dff', bg: 'rgba(199,125,255,0.12)', border: 'rgba(199,125,255,0.5)' },
-    { color: '#ff6b6b', bg: 'rgba(255,107,107,0.12)', border: 'rgba(255,107,107,0.5)' },
-  ];
 
   const groups = [];
   for (let i = 0; i < PI_DECIMAL_DIGITS.length; i += 5) {
@@ -836,19 +876,8 @@ const PiViewer = ({ onBack }) => {
   }
 
   return (
-    <div className="screen-scroll safe-area-pad" style={{
-      background: 'linear-gradient(160deg, #060d1a 0%, #0a1628 50%, #060d1a 100%)',
-      minHeight: '100vh',
-    }}>
-      {/* Grid overlay */}
-      <div style={{
-        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: 'linear-gradient(rgba(77,150,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(77,150,255,0.04) 1px, transparent 1px)',
-        backgroundSize: '48px 48px',
-      }} />
-
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <BackButton onClick={onBack} color="text-blue-700" />
+    <PiShell>
+      <BackButton onClick={onBack} color="text-blue-700" />
 
         <div className="pt-20 pb-16 px-6 max-w-2xl mx-auto">
           {/* Header */}
@@ -870,15 +899,7 @@ const PiViewer = ({ onBack }) => {
             </p>
           </div>
 
-          {/* Card */}
-          <div style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(77,150,255,0.15)',
-            borderRadius: '28px',
-            padding: '32px 24px',
-            backdropFilter: 'blur(12px)',
-            boxShadow: '0 0 60px rgba(77,150,255,0.06), inset 0 1px 0 rgba(255,255,255,0.05)',
-          }}>
+          <PiGlassCard style={{ padding: '32px 24px' }}>
             {/* 3. */}
             <div className="text-center mb-8">
               <span style={{
@@ -892,7 +913,7 @@ const PiViewer = ({ onBack }) => {
             {/* Digit groups */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
               {groups.map((group, gi) => {
-                const { color, bg, border } = NEON[gi % 7];
+                const { color, bg, border } = PI_NEON[gi % 7];
                 const hovered = hoveredGroup === gi;
                 return (
                   <div
@@ -928,15 +949,14 @@ const PiViewer = ({ onBack }) => {
                 );
               })}
             </div>
-          </div>
+          </PiGlassCard>
 
           <p style={{
             textAlign: 'center', marginTop: '20px',
             color: '#1a3050', fontSize: '0.8rem', fontFamily: 'Nunito, sans-serif',
           }}>Beweeg over een groep om hem op te lichten</p>
         </div>
-      </div>
-    </div>
+    </PiShell>
   );
 };
 
@@ -1096,110 +1116,163 @@ const PiGame = ({ onBack }) => {
   const typedDigits = PI_DECIMAL_DIGITS.slice(0, current);
   const correctDigit = PI_DECIMAL_DIGITS[current];
 
+  // Render typed digits in neon style for dark background
+  const renderNeonDigits = (digits) => {
+    const groups = [];
+    for (let i = 0; i < digits.length; i += 5) {
+      const gi = Math.floor(i / 5);
+      const { color, bg, border } = PI_NEON[gi % 7];
+      groups.push(
+        <span key={gi} style={{
+          fontFamily: '"Courier New", monospace', fontSize: '1.1rem', fontWeight: 700,
+          letterSpacing: '0.12em', color, padding: '3px 8px', borderRadius: '8px',
+          background: bg, border: `1px solid ${border}`, boxShadow: `0 0 6px ${color}30`,
+        }}>{digits.slice(i, i + 5)}</span>
+      );
+    }
+    return <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>{groups}</div>;
+  };
+
   if (gameOver) {
     return (
-      <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex items-center justify-center p-8">
+      <PiShell>
         {newRecord && <Confetti />}
-        <BackButton onClick={onBack} color="text-violet-600" />
-        <div className="text-center w-full max-w-lg pt-16">
-          <div className="text-8xl mb-4">😵</div>
-          <h2 className="text-4xl font-black text-violet-700 mb-4" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-            Game Over!
-          </h2>
-          <p className="text-2xl text-violet-600 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
-            Jij kon <strong>{current}</strong> decimaalcijfer{current !== 1 ? 's' : ''}!
-          </p>
+        <BackButton onClick={onBack} color="text-blue-700" />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '80px 24px 40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '5rem', marginBottom: '8px' }}>😵</div>
+          <div style={{
+            fontFamily: 'Fredoka, cursive', fontSize: '3.5rem', letterSpacing: '0.05em',
+            color: '#ff6b6b', textShadow: '0 0 30px rgba(255,107,107,0.8), 0 0 70px rgba(255,107,107,0.3)',
+            marginBottom: '24px',
+          }}>Game Over!</div>
+          <PiGlassCard style={{ padding: '28px 40px', marginBottom: '20px' }}>
+            <p style={{ color: '#6a9fd8', fontFamily: 'Nunito, sans-serif', fontSize: '1rem', marginBottom: '8px' }}>Jouw score</p>
+            <div style={{
+              fontFamily: '"Courier New", monospace', fontSize: '4rem', fontWeight: 900,
+              color: '#4d96ff', textShadow: '0 0 20px rgba(77,150,255,0.7)',
+              lineHeight: 1, marginBottom: '4px',
+            }}>{current}</div>
+            <p style={{ color: '#4a6fa5', fontFamily: 'Nunito, sans-serif', fontSize: '0.9rem' }}>
+              decimaalcijfer{current !== 1 ? 's' : ''}
+            </p>
+          </PiGlassCard>
           {newRecord ? (
-            <p className="text-2xl text-amber-500 font-bold mb-6">🏆 Nieuw record!</p>
+            <div style={{
+              fontFamily: 'Fredoka, cursive', fontSize: '1.8rem',
+              color: '#ffd93d', textShadow: '0 0 25px rgba(255,217,61,0.9), 0 0 60px rgba(255,217,61,0.4)',
+              marginBottom: '28px',
+            }}>🏆 Nieuw record!</div>
           ) : (
-            <p className="text-xl text-violet-400 mb-6">Record: {highscore}</p>
+            <p style={{ color: '#2d4f7a', fontFamily: 'Nunito, sans-serif', marginBottom: '28px' }}>
+              Record: <span style={{ color: '#ffd93d' }}>{highscore}</span>
+            </p>
           )}
-          <BigButton onClick={restart} color="bg-gradient-to-r from-violet-400 to-indigo-500">
-            🔄 Opnieuw proberen
-          </BigButton>
+          <NeonBtn onClick={restart} color="#4d96ff" icon="🔄" label="Opnieuw proberen" />
         </div>
-      </div>
+      </PiShell>
     );
   }
 
+  const questionColor = flash === 'green' ? '#6bcb77' : flash === 'red' ? '#ff6b6b' : '#4d96ff';
+
   return (
-    <div className={`screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex flex-col items-center p-6 transition-colors duration-300 ${
-      flash === 'green' ? '!bg-green-100' : flash === 'red' ? '!bg-red-100' : ''
-    }`}>
-      <BackButton onClick={onBack} color="text-violet-600" />
-      <div className="pt-20 w-full max-w-lg text-center">
-        <h2 className="text-3xl font-black text-violet-700 mb-1" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-          🎮 Pi Spelen
-        </h2>
-        <div className="text-3xl mb-2">{heartDisplay}</div>
-        <p className="text-sm text-violet-400 mb-4">Record: {highscore}</p>
+    <PiShell flash={flash}>
+      <BackButton onClick={onBack} color="text-blue-700" />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '80px 16px 40px' }}>
+        <div style={{ width: '100%', maxWidth: '520px', textAlign: 'center' }}>
 
-        <div className="bg-white/80 rounded-3xl shadow-lg p-4 mb-4">
-          <div className="flex flex-wrap gap-1 justify-center items-center">
-            <span className="text-2xl font-bold text-violet-800">3.</span>
-            {typedDigits.length > 0 && <PiDigitGroups digits={typedDigits} />}
-            {showCorrect ? (
-              <span className="bg-green-200 text-green-800 px-3 py-2 rounded-xl text-3xl font-bold animate-pulse">{correctDigit}</span>
-            ) : (
-              <span className={`text-3xl font-bold px-3 py-2 rounded-xl ${
-                flash === 'green' ? 'bg-green-200 text-green-700' :
-                flash === 'red' ? 'bg-red-200 text-red-700' :
-                'bg-violet-200 text-violet-600 animate-pulse'
-              }`}>?</span>
-            )}
+          {/* HUD */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', padding: '0 4px' }}>
+            <div style={{ fontSize: '1.8rem', letterSpacing: '6px' }}>
+              {Array.from({ length: 3 }, (_, i) => (
+                <span key={i} style={{ filter: i < hearts ? 'drop-shadow(0 0 6px #ff4d6d)' : 'grayscale(1) opacity(0.3)' }}>❤️</span>
+              ))}
+            </div>
+            <div style={{ fontFamily: '"Courier New", monospace', fontSize: '0.85rem', color: '#2d4f7a', textAlign: 'right' }}>
+              <div>Cijfer <span style={{ color: '#4d96ff' }}>#{current + 1}</span></div>
+              <div>Record: <span style={{ color: '#ffd93d' }}>{highscore}</span></div>
+            </div>
           </div>
-        </div>
 
-        <p className="text-violet-500 mb-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          Cijfer {current + 1} — {useSpeech ? 'spreek het volgende decimaalcijfer' : 'typ het volgende decimaalcijfer'}
-        </p>
+          {/* Pi digit display */}
+          <PiGlassCard style={{ padding: '20px 16px', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', alignItems: 'center' }}>
+              <span style={{
+                fontFamily: '"Courier New", monospace', fontSize: '1.4rem', fontWeight: 900,
+                color: '#e8f4ff', textShadow: '0 0 10px rgba(200,224,255,0.3)',
+              }}>3.</span>
+              {typedDigits.length > 0 && renderNeonDigits(typedDigits)}
+              {showCorrect ? (
+                <span style={{
+                  fontFamily: '"Courier New", monospace', fontSize: '1.6rem', fontWeight: 900,
+                  color: '#6bcb77', padding: '4px 10px', borderRadius: '10px',
+                  background: 'rgba(107,203,119,0.15)', border: '1.5px solid rgba(107,203,119,0.6)',
+                  boxShadow: '0 0 15px rgba(107,203,119,0.5)', animation: 'pulse 1s infinite',
+                }}>{correctDigit}</span>
+              ) : (
+                <span style={{
+                  fontFamily: '"Courier New", monospace', fontSize: '1.6rem', fontWeight: 900,
+                  color: questionColor, padding: '4px 10px', borderRadius: '10px',
+                  background: `${questionColor}15`, border: `1.5px solid ${questionColor}60`,
+                  boxShadow: `0 0 15px ${questionColor}50`,
+                  transition: 'all 0.2s',
+                }}>?</span>
+              )}
+            </div>
+          </PiGlassCard>
 
-        {/* Input mode toggle */}
-        {speechSupported && (
-          <div className="flex justify-center gap-3 mb-4">
-            <button
-              onClick={() => setUseSpeech(false)}
-              className={`px-5 py-2 rounded-xl font-bold text-lg transition-all ${!useSpeech ? 'bg-violet-500 text-white shadow-lg' : 'bg-white/70 text-violet-400 border-2 border-violet-200'}`}
-              style={{ touchAction: 'manipulation' }}
-            >⌨️ Typen</button>
-            <button
-              onClick={() => setUseSpeech(true)}
-              className={`px-5 py-2 rounded-xl font-bold text-lg transition-all ${useSpeech ? 'bg-violet-500 text-white shadow-lg' : 'bg-white/70 text-violet-400 border-2 border-violet-200'}`}
-              style={{ touchAction: 'manipulation' }}
-            >🎤 Spraak</button>
-          </div>
-        )}
+          <p style={{ color: '#2d4f7a', fontFamily: 'Nunito, sans-serif', fontSize: '0.9rem', marginBottom: '16px' }}>
+            {useSpeech ? '🎤 Spreek het volgende cijfer' : '⌨️ Typ het volgende decimaalcijfer'}
+          </p>
 
-        {useSpeech ? (
-          <div className={`w-24 h-24 mx-auto rounded-full flex items-center justify-center text-5xl mb-4 transition-all ${
-            speechActive ? 'bg-red-400 text-white shadow-lg shadow-red-300 animate-pulse scale-110' : 'bg-violet-200 text-violet-500'
-          }`}>
-            🎤
-          </div>
-        ) : (
-          <input
-            ref={inputRef}
-            type="tel"
-            inputMode="numeric"
-            maxLength={1}
-            onChange={handleInput}
-            disabled={showCorrect || gameOver}
-            className="w-24 h-24 text-center text-4xl font-bold border-4 border-violet-300 rounded-2xl shadow-lg focus:outline-none focus:border-violet-500 bg-white mb-4"
-            style={{ touchAction: 'manipulation' }}
-            placeholder="?"
-          />
-        )}
+          {/* Input mode toggle */}
+          {speechSupported && (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
+              {[{ val: false, icon: '⌨️', label: 'Typen', color: '#4d96ff' }, { val: true, icon: '🎤', label: 'Spraak', color: '#ff6b9d' }].map(({ val, icon, label, color }) => (
+                <button key={label} onClick={() => setUseSpeech(val)} style={{
+                  padding: '8px 20px', borderRadius: '14px', fontWeight: 700, fontSize: '1rem',
+                  fontFamily: 'Fredoka, cursive', cursor: 'pointer', touchAction: 'manipulation', transition: 'all 0.15s',
+                  background: useSpeech === val ? `${color}20` : 'transparent',
+                  border: `2px solid ${useSpeech === val ? `${color}80` : 'rgba(77,150,255,0.2)'}`,
+                  color: useSpeech === val ? color : '#2d4f7a',
+                  boxShadow: useSpeech === val ? `0 0 15px ${color}30` : 'none',
+                }}>{icon} {label}</button>
+              ))}
+            </div>
+          )}
 
-        <div className="mt-2">
-          <button
-            onClick={handleGiveUp}
-            disabled={showCorrect || gameOver}
-            className="px-8 py-3 bg-white/80 text-violet-500 font-bold rounded-2xl shadow border-2 border-violet-200 active:scale-95 transition-all disabled:opacity-40"
-            style={{ fontFamily: 'Nunito, sans-serif', touchAction: 'manipulation' }}
-          >😓 Geef op</button>
+          {/* Input */}
+          {useSpeech ? (
+            <div style={{
+              width: '90px', height: '90px', borderRadius: '50%', margin: '0 auto 20px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem',
+              background: speechActive ? 'rgba(255,107,107,0.2)' : 'rgba(77,150,255,0.08)',
+              border: speechActive ? '2px solid rgba(255,107,107,0.7)' : '2px solid rgba(77,150,255,0.3)',
+              boxShadow: speechActive ? '0 0 25px rgba(255,107,107,0.6), 0 0 50px rgba(255,107,107,0.2)' : '0 0 15px rgba(77,150,255,0.2)',
+              transition: 'all 0.2s',
+              transform: speechActive ? 'scale(1.08)' : 'scale(1)',
+            }}>🎤</div>
+          ) : (
+            <input
+              ref={inputRef}
+              type="tel" inputMode="numeric" maxLength={1}
+              onChange={handleInput} disabled={showCorrect || gameOver}
+              style={{
+                width: '90px', height: '90px', textAlign: 'center',
+                fontSize: '2.5rem', fontWeight: 900, fontFamily: '"Courier New", monospace',
+                background: 'rgba(77,150,255,0.08)', border: '2px solid rgba(77,150,255,0.4)',
+                borderRadius: '20px', color: '#4d96ff', outline: 'none', display: 'block', margin: '0 auto 20px',
+                boxShadow: '0 0 20px rgba(77,150,255,0.2), inset 0 0 10px rgba(77,150,255,0.05)',
+                caretColor: '#4d96ff', touchAction: 'manipulation',
+              }}
+              placeholder="?"
+            />
+          )}
+
+          <NeonBtn onClick={handleGiveUp} color="#ff6b6b" icon="😓" label="Geef op" disabled={showCorrect || gameOver} />
         </div>
       </div>
-    </div>
+    </PiShell>
   );
 };
 
@@ -1207,35 +1280,60 @@ const PiScores = ({ onBack }) => {
   const history = JSON.parse(localStorage.getItem('piScoreHistory') || '[]');
   const highscore = parseInt(localStorage.getItem('piHighscore') || '0');
   return (
-    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 p-6">
-      <BackButton onClick={onBack} color="text-violet-600" />
-      <div className="pt-20 max-w-lg mx-auto">
-        <h2 className="text-4xl font-black text-violet-700 mb-1 text-center" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-          🏆 Highscores
-        </h2>
-        <p className="text-center text-violet-400 mb-6" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          Beste poging: <strong className="text-violet-600">{highscore}</strong> cijfers
-        </p>
+    <PiShell>
+      <BackButton onClick={onBack} color="text-blue-700" />
+      <div style={{ padding: '80px 20px 40px', maxWidth: '480px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+          <div style={{
+            fontFamily: 'Fredoka, cursive', fontSize: '2.5rem',
+            color: '#ffd93d', textShadow: '0 0 25px rgba(255,217,61,0.8), 0 0 60px rgba(255,217,61,0.3)',
+            marginBottom: '4px',
+          }}>🏆 Highscores</div>
+          <p style={{ color: '#2d4f7a', fontFamily: 'Nunito, sans-serif', fontSize: '0.9rem' }}>
+            Beste poging:{' '}
+            <span style={{ color: '#ffd93d', fontFamily: '"Courier New", monospace', fontWeight: 700 }}>{highscore}</span>
+            {' '}cijfers
+          </p>
+        </div>
         {history.length === 0 ? (
-          <div className="text-center text-violet-400 text-xl mt-10">Nog geen pogingen! Ga spelen 🎮</div>
+          <PiGlassCard style={{ padding: '40px', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🎮</div>
+            <p style={{ color: '#2d4f7a', fontFamily: 'Nunito, sans-serif', fontSize: '1.1rem' }}>
+              Nog geen pogingen! Ga spelen.
+            </p>
+          </PiGlassCard>
         ) : (
-          <div className="space-y-3">
-            {history.map((entry, i) => (
-              <div key={i} className={`flex items-center justify-between px-6 py-4 rounded-2xl shadow ${
-                i === 0 ? 'bg-amber-100 border-2 border-amber-300' : 'bg-white/80'
-              }`}>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-black text-violet-400 w-8">#{i + 1}</span>
-                  {i === 0 && <span className="text-xl">🏆</span>}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {history.map((entry, i) => {
+              const isTop = i === 0;
+              return (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '14px 20px', borderRadius: '16px',
+                  background: isTop ? 'rgba(255,217,61,0.08)' : 'rgba(255,255,255,0.03)',
+                  border: isTop ? '1.5px solid rgba(255,217,61,0.5)' : '1px solid rgba(77,150,255,0.12)',
+                  boxShadow: isTop ? '0 0 20px rgba(255,217,61,0.12)' : 'none',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '48px' }}>
+                    <span style={{
+                      fontFamily: '"Courier New", monospace', fontWeight: 700, fontSize: '0.85rem',
+                      color: isTop ? '#ffd93d' : '#1e3a5a',
+                    }}>#{i + 1}</span>
+                    {isTop && <span style={{ fontSize: '1.1rem', filter: 'drop-shadow(0 0 6px rgba(255,217,61,0.8))' }}>🏆</span>}
+                  </div>
+                  <div style={{
+                    fontFamily: '"Courier New", monospace', fontSize: '1.5rem', fontWeight: 900,
+                    color: isTop ? '#ffd93d' : '#4d96ff',
+                    textShadow: isTop ? '0 0 10px rgba(255,217,61,0.5)' : '0 0 8px rgba(77,150,255,0.4)',
+                  }}>{entry.score} <span style={{ fontSize: '0.75rem', fontWeight: 400, color: '#2d4f7a' }}>cijfers</span></div>
+                  <span style={{ color: '#1e3a5a', fontFamily: 'Nunito, sans-serif', fontSize: '0.8rem' }}>{entry.date}</span>
                 </div>
-                <span className="text-2xl font-bold text-violet-700">{entry.score} cijfers</span>
-                <span className="text-sm text-violet-400">{entry.date}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
-    </div>
+    </PiShell>
   );
 };
 
