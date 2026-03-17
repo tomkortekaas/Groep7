@@ -856,29 +856,34 @@ const PiGame = ({ onBack }) => {
   );
   const inputRef = useRef(null);
   const recognitionRef = useRef(null);
-  // Refs so speech handler always sees current state
   const heartsRef = useRef(hearts);
   const currentRef = useRef(current);
+  const gameOverRef = useRef(false);
   const blockRef = useRef(false);
+  const queueRef = useRef([]); // digit queue for continuous speech
   heartsRef.current = hearts;
   currentRef.current = current;
+  gameOverRef.current = gameOver;
 
   useEffect(() => {
     if (!useSpeech && !gameOver && !showCorrect) inputRef.current?.focus();
   }, [current, gameOver, showCorrect, useSpeech]);
 
-  const processDigit = useCallback((val) => {
-    if (blockRef.current || !/^[0-9]$/.test(val)) return;
+  // Processes next digit from the queue (if not blocked)
+  const drainQueue = useCallback(() => {
+    if (blockRef.current || queueRef.current.length === 0 || gameOverRef.current) return;
+    const val = queueRef.current.shift();
     blockRef.current = true;
     const correct = PI_DECIMAL_DIGITS[currentRef.current];
     if (val === correct) {
       setFlash('green');
-      setTimeout(() => { setFlash(null); setCurrent(c => c + 1); blockRef.current = false; }, 400);
+      setTimeout(() => { setFlash(null); setCurrent(c => c + 1); blockRef.current = false; drainQueue(); }, 400);
     } else {
       const newH = heartsRef.current - 1;
       setHearts(newH);
       setFlash('red');
       setShowCorrect(true);
+      queueRef.current = []; // clear queue on mistake
       setTimeout(() => {
         setFlash(null);
         setShowCorrect(false);
@@ -902,7 +907,15 @@ const PiGame = ({ onBack }) => {
     }
   }, []);
 
-  // Speech recognition lifecycle
+  const enqueueDigit = useCallback((val) => {
+    if (!/^[0-9]$/.test(val) || gameOverRef.current) return;
+    queueRef.current.push(val);
+    drainQueue();
+  }, [drainQueue]);
+
+  const DIGIT_WORDS = { 'nul':'0','één':'1','een':'1','twee':'2','drie':'3','vier':'4','vijf':'5','zes':'6','zeven':'7','acht':'8','negen':'9' };
+
+  // Speech recognition: continuous mode with queue
   useEffect(() => {
     if (!useSpeech || gameOver) {
       recognitionRef.current?.abort();
@@ -913,31 +926,59 @@ const PiGame = ({ onBack }) => {
     if (!SR) return;
     const r = new SR();
     r.lang = 'nl-NL';
-    r.continuous = false;
+    r.continuous = true;
     r.interimResults = false;
-    const DIGIT_WORDS = { 'nul':'0','één':'1','een':'1','twee':'2','drie':'3','vier':'4','vijf':'5','zes':'6','zeven':'7','acht':'8','negen':'9' };
-    const tryStart = () => { try { r.start(); } catch(e) {} };
+    let lastResultIndex = 0;
     r.onstart = () => setSpeechActive(true);
-    r.onend = () => { setSpeechActive(false); if (useSpeech && !gameOver) setTimeout(tryStart, 200); };
+    r.onend = () => { setSpeechActive(false); };
     r.onresult = (e) => {
-      const transcript = e.results[0][0].transcript.trim().toLowerCase();
-      const digit = DIGIT_WORDS[transcript] ?? (/^[0-9]$/.test(transcript) ? transcript : null);
-      if (digit) processDigit(digit);
+      for (let i = lastResultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) {
+          const words = e.results[i][0].transcript.trim().toLowerCase().split(/\s+/);
+          words.forEach(w => {
+            const digit = DIGIT_WORDS[w] ?? (/^[0-9]$/.test(w) ? w : null);
+            if (digit) enqueueDigit(digit);
+          });
+          lastResultIndex = i + 1;
+        }
+      }
     };
-    tryStart();
+    try { r.start(); } catch(e) {}
     recognitionRef.current = r;
     return () => { r.onend = null; r.abort(); setSpeechActive(false); };
-  }, [useSpeech, gameOver, processDigit]);
+  }, [useSpeech, gameOver, enqueueDigit]);
 
   const handleInput = (e) => {
     const val = e.target.value;
     e.target.value = '';
-    if (!showCorrect && !gameOver) processDigit(val);
+    if (!gameOver) enqueueDigit(val);
   };
 
   const handleGiveUp = () => {
     if (blockRef.current || gameOver) return;
-    processDigit('X'); // guaranteed wrong
+    queueRef.current = [];
+    // trigger a wrong answer
+    const newH = heartsRef.current - 1;
+    setHearts(newH);
+    blockRef.current = true;
+    setFlash('red');
+    setShowCorrect(true);
+    setTimeout(() => {
+      setFlash(null);
+      setShowCorrect(false);
+      blockRef.current = false;
+      if (newH <= 0) {
+        const score = currentRef.current;
+        savePiScore(score);
+        setHighscore(prev => {
+          if (score > prev) { localStorage.setItem('piHighscore', String(score)); setNewRecord(true); return score; }
+          return prev;
+        });
+        setGameOver(true);
+      } else {
+        setCurrent(c => c + 1);
+      }
+    }, 1500);
   };
 
   const restart = () => {
