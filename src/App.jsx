@@ -1028,12 +1028,34 @@ const StartScreen = ({ onStart }) => (
           <span className="text-4xl">🗺️</span> Europe Explorer
         </BigButton>
 
+        <BigButton onClick={() => onStart('wiskunde-menu')} color="bg-gradient-to-r from-gray-600 to-violet-600">
+          <span className="text-4xl">🔢</span> Wiskunde
+        </BigButton>
+      </div>
+    </div>
+  </div>
+);
+
+const WiskundeMenu = ({ onStart, onBack }) => (
+  <div className="screen-scroll safe-area-pad bg-gradient-to-br from-gray-100 via-slate-50 to-violet-100 flex items-center justify-center p-8">
+    <BackButton onClick={onBack} color="text-slate-600" />
+    <div className="text-center w-full max-w-lg">
+      <div className="mb-6">
+        <span className="text-8xl block">🔢</span>
+      </div>
+      <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-violet-600 mb-2"
+          style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+        Wiskunde
+      </h1>
+      <p className="text-xl text-slate-500 mb-8" style={{ fontFamily: 'Nunito, sans-serif' }}>
+        Rekenen en getallen!
+      </p>
+      <div className="space-y-4 flex flex-col items-center">
         <BigButton onClick={() => onStart('calculator')} color="bg-gradient-to-r from-gray-600 to-gray-800">
           <span className="text-4xl">🧮</span> Rekenmachine
         </BigButton>
-
         <BigButton onClick={() => onStart('pi-menu')} color="bg-gradient-to-r from-violet-400 to-purple-500">
-          <span className="text-4xl">🔢</span> Pi Challenge
+          <span className="text-4xl">π</span> Pi Challenge
         </BigButton>
       </div>
     </div>
@@ -2917,9 +2939,10 @@ export default function App() {
       {mode === 'sentences' && <SentenceMode words={words} onBack={() => setMode('english-menu')} />}
       {mode === 'test' && <TestMode words={words} onBack={() => setMode('english-menu')} />}
       {mode === 'europe' && <EuropeExplorer onBack={() => setMode('start')} />}
-      {mode === 'calculator' && <Calculator onBack={() => setMode('start')} />}
+      {mode === 'wiskunde-menu' && <WiskundeMenu onStart={(m) => setMode(m)} onBack={() => setMode('start')} />}
+      {mode === 'calculator' && <Calculator onBack={() => setMode('wiskunde-menu')} />}
       {mode === 'manage' && <ManageWords words={words} setWords={setWords} onBack={() => setMode('english-menu')} />}
-      {mode === 'pi-menu' && <PiMenu onStart={(m) => setMode(m)} onBack={() => setMode('start')} />}
+      {mode === 'pi-menu' && <PiMenu onStart={(m) => setMode(m)} onBack={() => setMode('wiskunde-menu')} />}
       {mode === 'pi-viewer' && <PiViewer onBack={() => setMode('pi-menu')} />}
       {mode === 'pi-game' && <PiGame onBack={() => setMode('pi-menu')} />}
     </>
