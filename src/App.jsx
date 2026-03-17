@@ -817,23 +817,128 @@ const PiMenu = ({ onStart, onBack }) => (
   </div>
 );
 
-const PiViewer = ({ onBack }) => (
-  <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 p-6">
-    <BackButton onClick={onBack} color="text-violet-600" />
-    <div className="pt-20 text-center max-w-lg mx-auto">
-      <h2 className="text-4xl font-black text-violet-700 mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
-        π Bekijken 🔢
-      </h2>
-      <p className="text-lg text-violet-500 mb-6" style={{ fontFamily: 'Nunito, sans-serif' }}>
-        Elke groep van 5 cijfers heeft een eigen kleur
-      </p>
-      <div className="bg-white/70 rounded-3xl shadow-lg p-6 mb-4">
-        <p className="text-3xl font-bold text-violet-800 mb-4">3.</p>
-        <PiDigitGroups digits={PI_DECIMAL_DIGITS} />
+const PiViewer = ({ onBack }) => {
+  const [hoveredGroup, setHoveredGroup] = useState(null);
+
+  const NEON = [
+    { color: '#ff6b9d', bg: 'rgba(255,107,157,0.12)', border: 'rgba(255,107,157,0.5)' },
+    { color: '#ff9a3c', bg: 'rgba(255,154,60,0.12)',  border: 'rgba(255,154,60,0.5)'  },
+    { color: '#ffd93d', bg: 'rgba(255,217,61,0.12)',  border: 'rgba(255,217,61,0.5)'  },
+    { color: '#6bcb77', bg: 'rgba(107,203,119,0.12)', border: 'rgba(107,203,119,0.5)' },
+    { color: '#4d96ff', bg: 'rgba(77,150,255,0.12)',  border: 'rgba(77,150,255,0.5)'  },
+    { color: '#c77dff', bg: 'rgba(199,125,255,0.12)', border: 'rgba(199,125,255,0.5)' },
+    { color: '#ff6b6b', bg: 'rgba(255,107,107,0.12)', border: 'rgba(255,107,107,0.5)' },
+  ];
+
+  const groups = [];
+  for (let i = 0; i < PI_DECIMAL_DIGITS.length; i += 5) {
+    groups.push(PI_DECIMAL_DIGITS.slice(i, i + 5));
+  }
+
+  return (
+    <div className="screen-scroll safe-area-pad" style={{
+      background: 'linear-gradient(160deg, #060d1a 0%, #0a1628 50%, #060d1a 100%)',
+      minHeight: '100vh',
+    }}>
+      {/* Grid overlay */}
+      <div style={{
+        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: 'linear-gradient(rgba(77,150,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(77,150,255,0.04) 1px, transparent 1px)',
+        backgroundSize: '48px 48px',
+      }} />
+
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <BackButton onClick={onBack} color="text-blue-700" />
+
+        <div className="pt-20 pb-16 px-6 max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-10">
+            <div style={{
+              fontFamily: 'Fredoka, cursive', fontSize: '7rem', lineHeight: 1,
+              color: '#4d96ff',
+              textShadow: '0 0 30px rgba(77,150,255,0.9), 0 0 80px rgba(77,150,255,0.4)',
+              marginBottom: '4px',
+            }}>π</div>
+            <h1 style={{
+              fontFamily: 'Fredoka, cursive', fontSize: '1.8rem', letterSpacing: '0.05em',
+              color: '#c8e0ff',
+              textShadow: '0 0 20px rgba(77,150,255,0.4)',
+              marginBottom: '6px',
+            }}>Pi Bekijken</h1>
+            <p style={{ color: '#2d4f7a', fontFamily: 'Nunito, sans-serif', fontSize: '0.85rem' }}>
+              100 decimaalcijfers · 20 groepen van 5
+            </p>
+          </div>
+
+          {/* Card */}
+          <div style={{
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(77,150,255,0.15)',
+            borderRadius: '28px',
+            padding: '32px 24px',
+            backdropFilter: 'blur(12px)',
+            boxShadow: '0 0 60px rgba(77,150,255,0.06), inset 0 1px 0 rgba(255,255,255,0.05)',
+          }}>
+            {/* 3. */}
+            <div className="text-center mb-8">
+              <span style={{
+                fontFamily: '"Courier New", Courier, monospace',
+                fontSize: '3rem', fontWeight: 900, letterSpacing: '0.05em',
+                color: '#e8f4ff',
+                textShadow: '0 0 20px rgba(200,224,255,0.4)',
+              }}>3.</span>
+            </div>
+
+            {/* Digit groups */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
+              {groups.map((group, gi) => {
+                const { color, bg, border } = NEON[gi % 7];
+                const hovered = hoveredGroup === gi;
+                return (
+                  <div
+                    key={gi}
+                    onMouseEnter={() => setHoveredGroup(gi)}
+                    onMouseLeave={() => setHoveredGroup(null)}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px',
+                      transform: hovered ? 'scale(1.12) translateY(-4px)' : 'scale(1)',
+                      transition: 'transform 0.18s ease',
+                      cursor: 'default', touchAction: 'manipulation',
+                    }}
+                  >
+                    <span style={{
+                      fontFamily: '"Courier New", Courier, monospace',
+                      fontSize: '1.55rem', fontWeight: 700, letterSpacing: '0.18em',
+                      color,
+                      padding: '9px 14px',
+                      borderRadius: '14px',
+                      background: hovered ? border.replace('0.5', '0.2') : bg,
+                      border: `1.5px solid ${border}`,
+                      boxShadow: hovered
+                        ? `0 0 22px ${color}70, 0 0 50px ${color}30, inset 0 0 12px ${color}15`
+                        : `0 0 8px ${color}35`,
+                      transition: 'box-shadow 0.18s ease, background 0.18s ease',
+                      display: 'block',
+                    }}>{group}</span>
+                    <span style={{
+                      fontSize: '0.6rem', color: '#1e3a5a',
+                      fontFamily: 'Nunito, sans-serif', letterSpacing: '0.08em',
+                      fontWeight: 700,
+                    }}>#{gi + 1}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <p style={{
+            textAlign: 'center', marginTop: '20px',
+            color: '#1a3050', fontSize: '0.8rem', fontFamily: 'Nunito, sans-serif',
+          }}>Beweeg over een groep om hem op te lichten</p>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const savePiScore = (score) => {
   const history = JSON.parse(localStorage.getItem('piScoreHistory') || '[]');
