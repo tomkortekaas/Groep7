@@ -809,6 +809,9 @@ const PiMenu = ({ onStart, onBack }) => (
         <BigButton onClick={() => onStart('pi-game')} color="bg-gradient-to-r from-indigo-400 to-violet-500">
           <span className="text-4xl">🎮</span> Pi Spelen
         </BigButton>
+        <BigButton onClick={() => onStart('pi-scores')} color="bg-gradient-to-r from-amber-400 to-orange-500">
+          <span className="text-4xl">🏆</span> Highscores
+        </BigButton>
       </div>
     </div>
   </div>
@@ -817,99 +820,133 @@ const PiMenu = ({ onStart, onBack }) => (
 const PiViewer = ({ onBack }) => (
   <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 p-6">
     <BackButton onClick={onBack} color="text-violet-600" />
-    <div className="pt-20 text-center">
+    <div className="pt-20 text-center max-w-lg mx-auto">
       <h2 className="text-4xl font-black text-violet-700 mb-2" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
         π Bekijken 🔢
       </h2>
       <p className="text-lg text-violet-500 mb-6" style={{ fontFamily: 'Nunito, sans-serif' }}>
         Elke groep van 5 cijfers heeft een eigen kleur
       </p>
-      <div className="flex items-start justify-center gap-2 mb-4">
-        <span className="text-3xl font-bold text-violet-800 pt-2">3.</span>
+      <div className="bg-white/70 rounded-3xl shadow-lg p-6 mb-4">
+        <p className="text-3xl font-bold text-violet-800 mb-4">3.</p>
         <PiDigitGroups digits={PI_DECIMAL_DIGITS} />
       </div>
     </div>
   </div>
 );
 
+const savePiScore = (score) => {
+  const history = JSON.parse(localStorage.getItem('piScoreHistory') || '[]');
+  const entry = { score, date: new Date().toLocaleDateString('nl-NL') };
+  localStorage.setItem('piScoreHistory', JSON.stringify([entry, ...history].slice(0, 20)));
+};
+
 const PiGame = ({ onBack }) => {
   const [hearts, setHearts] = useState(3);
   const [current, setCurrent] = useState(0);
   const [showCorrect, setShowCorrect] = useState(false);
-  const [flash, setFlash] = useState(null); // 'green' | 'red' | null
+  const [flash, setFlash] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [newRecord, setNewRecord] = useState(false);
+  const [useSpeech, setUseSpeech] = useState(false);
+  const [speechActive, setSpeechActive] = useState(false);
+  const [speechSupported] = useState(() => !!(window.SpeechRecognition || window.webkitSpeechRecognition));
   const [highscore, setHighscore] = useState(
     () => parseInt(localStorage.getItem('piHighscore') || '0')
   );
   const inputRef = useRef(null);
+  const recognitionRef = useRef(null);
+  // Refs so speech handler always sees current state
+  const heartsRef = useRef(hearts);
+  const currentRef = useRef(current);
+  const blockRef = useRef(false);
+  heartsRef.current = hearts;
+  currentRef.current = current;
 
   useEffect(() => {
-    if (!gameOver && !showCorrect) {
-      inputRef.current?.focus();
-    }
-  }, [current, gameOver, showCorrect]);
+    if (!useSpeech && !gameOver && !showCorrect) inputRef.current?.focus();
+  }, [current, gameOver, showCorrect, useSpeech]);
 
-  const handleCorrect = () => {
-    setFlash('green');
-    setTimeout(() => {
-      setFlash(null);
-      setCurrent(c => c + 1);
-    }, 400);
-  };
-
-  const handleWrong = (newHearts) => {
-    setFlash('red');
-    setShowCorrect(true);
-    setTimeout(() => {
-      setFlash(null);
-      setShowCorrect(false);
-      if (newHearts <= 0) {
-        const score = current;
-        if (score > highscore) {
-          localStorage.setItem('piHighscore', String(score));
-          setHighscore(score);
-          setNewRecord(true);
+  const processDigit = useCallback((val) => {
+    if (blockRef.current || !/^[0-9]$/.test(val)) return;
+    blockRef.current = true;
+    const correct = PI_DECIMAL_DIGITS[currentRef.current];
+    if (val === correct) {
+      setFlash('green');
+      setTimeout(() => { setFlash(null); setCurrent(c => c + 1); blockRef.current = false; }, 400);
+    } else {
+      const newH = heartsRef.current - 1;
+      setHearts(newH);
+      setFlash('red');
+      setShowCorrect(true);
+      setTimeout(() => {
+        setFlash(null);
+        setShowCorrect(false);
+        blockRef.current = false;
+        if (newH <= 0) {
+          const score = currentRef.current;
+          savePiScore(score);
+          setHighscore(prev => {
+            if (score > prev) {
+              localStorage.setItem('piHighscore', String(score));
+              setNewRecord(true);
+              return score;
+            }
+            return prev;
+          });
+          setGameOver(true);
+        } else {
+          setCurrent(c => c + 1);
         }
-        setGameOver(true);
-      } else {
-        setCurrent(c => c + 1);
-      }
-    }, 1500);
-  };
+      }, 1500);
+    }
+  }, []);
+
+  // Speech recognition lifecycle
+  useEffect(() => {
+    if (!useSpeech || gameOver) {
+      recognitionRef.current?.abort();
+      setSpeechActive(false);
+      return;
+    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
+    const r = new SR();
+    r.lang = 'nl-NL';
+    r.continuous = false;
+    r.interimResults = false;
+    const DIGIT_WORDS = { 'nul':'0','één':'1','een':'1','twee':'2','drie':'3','vier':'4','vijf':'5','zes':'6','zeven':'7','acht':'8','negen':'9' };
+    const tryStart = () => { try { r.start(); } catch(e) {} };
+    r.onstart = () => setSpeechActive(true);
+    r.onend = () => { setSpeechActive(false); if (useSpeech && !gameOver) setTimeout(tryStart, 200); };
+    r.onresult = (e) => {
+      const transcript = e.results[0][0].transcript.trim().toLowerCase();
+      const digit = DIGIT_WORDS[transcript] ?? (/^[0-9]$/.test(transcript) ? transcript : null);
+      if (digit) processDigit(digit);
+    };
+    tryStart();
+    recognitionRef.current = r;
+    return () => { r.onend = null; r.abort(); setSpeechActive(false); };
+  }, [useSpeech, gameOver, processDigit]);
 
   const handleInput = (e) => {
     const val = e.target.value;
     e.target.value = '';
-    if (!/^[0-9]$/.test(val) || showCorrect || gameOver) return;
-    const correct = PI_DECIMAL_DIGITS[current];
-    if (val === correct) {
-      handleCorrect();
-    } else {
-      const newHearts = hearts - 1;
-      setHearts(newHearts);
-      handleWrong(newHearts);
-    }
+    if (!showCorrect && !gameOver) processDigit(val);
   };
 
   const handleGiveUp = () => {
-    if (showCorrect || gameOver) return;
-    const newHearts = hearts - 1;
-    setHearts(newHearts);
-    handleWrong(newHearts);
+    if (blockRef.current || gameOver) return;
+    processDigit('X'); // guaranteed wrong
   };
 
   const restart = () => {
-    setHearts(3);
-    setCurrent(0);
-    setShowCorrect(false);
-    setFlash(null);
-    setGameOver(false);
-    setNewRecord(false);
+    setHearts(3); setCurrent(0); setShowCorrect(false);
+    setFlash(null); setGameOver(false); setNewRecord(false);
+    blockRef.current = false;
   };
 
   const heartDisplay = Array.from({ length: 3 }, (_, i) => i < hearts ? '❤️' : '🖤').join('');
-
   const typedDigits = PI_DECIMAL_DIGITS.slice(0, current);
   const correctDigit = PI_DECIMAL_DIGITS[current];
 
@@ -940,66 +977,117 @@ const PiGame = ({ onBack }) => {
   }
 
   return (
-    <div className={`screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex flex-col items-center p-6 transition-all duration-150 ${
-      flash === 'green' ? 'bg-green-100' : flash === 'red' ? 'bg-red-100' : ''
+    <div className={`screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 flex flex-col items-center p-6 transition-colors duration-300 ${
+      flash === 'green' ? '!bg-green-100' : flash === 'red' ? '!bg-red-100' : ''
     }`}>
       <BackButton onClick={onBack} color="text-violet-600" />
-
       <div className="pt-20 w-full max-w-lg text-center">
         <h2 className="text-3xl font-black text-violet-700 mb-1" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
           🎮 Pi Spelen
         </h2>
-
         <div className="text-3xl mb-2">{heartDisplay}</div>
         <p className="text-sm text-violet-400 mb-4">Record: {highscore}</p>
 
-        {/* Pi display */}
-        <div className="bg-white/80 rounded-3xl shadow-lg p-4 mb-4 overflow-x-auto">
+        <div className="bg-white/80 rounded-3xl shadow-lg p-4 mb-4">
           <div className="flex flex-wrap gap-1 justify-center items-center">
             <span className="text-2xl font-bold text-violet-800">3.</span>
             {typedDigits.length > 0 && <PiDigitGroups digits={typedDigits} />}
             {showCorrect ? (
-              <span className="bg-green-200 text-green-800 px-3 py-2 rounded-xl text-3xl font-bold animate-pulse">
-                {correctDigit}
-              </span>
+              <span className="bg-green-200 text-green-800 px-3 py-2 rounded-xl text-3xl font-bold animate-pulse">{correctDigit}</span>
             ) : (
               <span className={`text-3xl font-bold px-3 py-2 rounded-xl ${
                 flash === 'green' ? 'bg-green-200 text-green-700' :
                 flash === 'red' ? 'bg-red-200 text-red-700' :
                 'bg-violet-200 text-violet-600 animate-pulse'
-              }`}>
-                ?
-              </span>
+              }`}>?</span>
             )}
           </div>
         </div>
 
-        <p className="text-violet-500 mb-4" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          Cijfer {current + 1} — typ het volgende decimaalcijfer
+        <p className="text-violet-500 mb-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          Cijfer {current + 1} — {useSpeech ? 'spreek het volgende decimaalcijfer' : 'typ het volgende decimaalcijfer'}
         </p>
 
-        <input
-          ref={inputRef}
-          type="tel"
-          inputMode="numeric"
-          maxLength={1}
-          onChange={handleInput}
-          disabled={showCorrect || gameOver}
-          className="w-24 h-24 text-center text-4xl font-bold border-4 border-violet-300 rounded-2xl shadow-lg focus:outline-none focus:border-violet-500 bg-white mb-4"
-          style={{ touchAction: 'manipulation' }}
-          placeholder="?"
-        />
+        {/* Input mode toggle */}
+        {speechSupported && (
+          <div className="flex justify-center gap-3 mb-4">
+            <button
+              onClick={() => setUseSpeech(false)}
+              className={`px-5 py-2 rounded-xl font-bold text-lg transition-all ${!useSpeech ? 'bg-violet-500 text-white shadow-lg' : 'bg-white/70 text-violet-400 border-2 border-violet-200'}`}
+              style={{ touchAction: 'manipulation' }}
+            >⌨️ Typen</button>
+            <button
+              onClick={() => setUseSpeech(true)}
+              className={`px-5 py-2 rounded-xl font-bold text-lg transition-all ${useSpeech ? 'bg-violet-500 text-white shadow-lg' : 'bg-white/70 text-violet-400 border-2 border-violet-200'}`}
+              style={{ touchAction: 'manipulation' }}
+            >🎤 Spraak</button>
+          </div>
+        )}
 
-        <div>
+        {useSpeech ? (
+          <div className={`w-24 h-24 mx-auto rounded-full flex items-center justify-center text-5xl mb-4 transition-all ${
+            speechActive ? 'bg-red-400 text-white shadow-lg shadow-red-300 animate-pulse scale-110' : 'bg-violet-200 text-violet-500'
+          }`}>
+            🎤
+          </div>
+        ) : (
+          <input
+            ref={inputRef}
+            type="tel"
+            inputMode="numeric"
+            maxLength={1}
+            onChange={handleInput}
+            disabled={showCorrect || gameOver}
+            className="w-24 h-24 text-center text-4xl font-bold border-4 border-violet-300 rounded-2xl shadow-lg focus:outline-none focus:border-violet-500 bg-white mb-4"
+            style={{ touchAction: 'manipulation' }}
+            placeholder="?"
+          />
+        )}
+
+        <div className="mt-2">
           <button
             onClick={handleGiveUp}
             disabled={showCorrect || gameOver}
             className="px-8 py-3 bg-white/80 text-violet-500 font-bold rounded-2xl shadow border-2 border-violet-200 active:scale-95 transition-all disabled:opacity-40"
             style={{ fontFamily: 'Nunito, sans-serif', touchAction: 'manipulation' }}
-          >
-            😓 Geef op
-          </button>
+          >😓 Geef op</button>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const PiScores = ({ onBack }) => {
+  const history = JSON.parse(localStorage.getItem('piScoreHistory') || '[]');
+  const highscore = parseInt(localStorage.getItem('piHighscore') || '0');
+  return (
+    <div className="screen-scroll safe-area-pad bg-gradient-to-br from-violet-100 via-purple-50 to-indigo-100 p-6">
+      <BackButton onClick={onBack} color="text-violet-600" />
+      <div className="pt-20 max-w-lg mx-auto">
+        <h2 className="text-4xl font-black text-violet-700 mb-1 text-center" style={{ fontFamily: 'Fredoka, Comic Sans MS, cursive' }}>
+          🏆 Highscores
+        </h2>
+        <p className="text-center text-violet-400 mb-6" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          Beste poging: <strong className="text-violet-600">{highscore}</strong> cijfers
+        </p>
+        {history.length === 0 ? (
+          <div className="text-center text-violet-400 text-xl mt-10">Nog geen pogingen! Ga spelen 🎮</div>
+        ) : (
+          <div className="space-y-3">
+            {history.map((entry, i) => (
+              <div key={i} className={`flex items-center justify-between px-6 py-4 rounded-2xl shadow ${
+                i === 0 ? 'bg-amber-100 border-2 border-amber-300' : 'bg-white/80'
+              }`}>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-black text-violet-400 w-8">#{i + 1}</span>
+                  {i === 0 && <span className="text-xl">🏆</span>}
+                </div>
+                <span className="text-2xl font-bold text-violet-700">{entry.score} cijfers</span>
+                <span className="text-sm text-violet-400">{entry.date}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -2945,6 +3033,7 @@ export default function App() {
       {mode === 'pi-menu' && <PiMenu onStart={(m) => setMode(m)} onBack={() => setMode('wiskunde-menu')} />}
       {mode === 'pi-viewer' && <PiViewer onBack={() => setMode('pi-menu')} />}
       {mode === 'pi-game' && <PiGame onBack={() => setMode('pi-menu')} />}
+      {mode === 'pi-scores' && <PiScores onBack={() => setMode('pi-menu')} />}
     </>
   );
 }
