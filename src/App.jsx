@@ -2501,56 +2501,32 @@ const EuropeExplorer = ({ onBack }) => {
   // Country name lookup for Geography coloring
   const countryNameMap = React.useMemo(() => {
     const map = {};
-    europeData.filter(d => d.category === 'country').forEach(c => { 
-      map[c.englishName] = c; 
-      
-      // Add specific mappings for Netherlands
-      if (c.id === 'netherlands') {
-        map['Netherlands'] = c;
-        map['The Netherlands'] = c;
-        map['Nederland'] = c;
-        map['Holland'] = c;
+    europeData.filter(d => d.category === 'country').forEach(c => {
+      map[c.englishName] = c;
+
+      if (c.id === 'germany') {
+        map['Germany'] = c;
+        map['Deutschland'] = c;
       }
-      // Add specific mappings for other countries that might have issues
-      if (c.id === 'uk') {
-        map['United Kingdom'] = c;
-        map['UK'] = c;
-        map['Great Britain'] = c;
-        map['England'] = c;
-        map['Scotland'] = c;
-        map['Wales'] = c;
-        map['Northern Ireland'] = c;
+      if (c.id === 'luxembourg') {
+        map['Luxembourg'] = c;
+        map['Luxemburg'] = c;
       }
-      if (c.id === 'denmark') {
-        map['Denmark'] = c;
+      if (c.id === 'france') {
+        map['France'] = c;
+        map['Frankrijk'] = c;
       }
-      if (c.id === 'estonia') {
-        map['Estonia'] = c;
+      if (c.id === 'switzerland') {
+        map['Switzerland'] = c;
+        map['Schweiz'] = c;
+        map['Suisse'] = c;
       }
-      if (c.id === 'finland') {
-        map['Finland'] = c;
-      }
-      if (c.id === 'ireland') {
-        map['Ireland'] = c;
-        map['Republic of Ireland'] = c;
-      }
-      if (c.id === 'iceland') {
-        map['Iceland'] = c;
-      }
-      if (c.id === 'latvia') {
-        map['Latvia'] = c;
-      }
-      if (c.id === 'lithuania') {
-        map['Lithuania'] = c;
-      }
-      if (c.id === 'norway') {
-        map['Norway'] = c;
-      }
-      if (c.id === 'sweden') {
-        map['Sweden'] = c;
+      if (c.id === 'austria') {
+        map['Austria'] = c;
+        map['Österreich'] = c;
       }
     });
-    
+
     return map;
   }, []);
 

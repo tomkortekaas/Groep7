@@ -14,571 +14,435 @@ export interface GeoItem {
 export const europeData: GeoItem[] = [
   // --- LANDEN ---
   {
-    id: "netherlands",
+    id: "germany",
     category: "country",
-    dutchName: "Nederland",
-    englishName: "Netherlands",
-    emoji: "🇳🇱",
-    coordinates: [5.3, 52.1],
-    description: "Een laaggelegen land in Noordwest-Europa, bekend om zijn tulpen, windmolens en grachten.",
+    dutchName: "Duitsland",
+    englishName: "Germany",
+    emoji: "🇩🇪",
+    coordinates: [10.5, 51.2],
+    description: "Het grootste land in de Europese Unie, bekend om zijn industrie, bossen en bierculuur.",
     funFacts: [
-      "Nederland heeft meer fietsen dan inwoners — ruim 23 miljoen fietsen voor 17 miljoen mensen.",
-      "Meer dan een kwart van Nederland ligt onder zeeniveau.",
-      "De Nederlandse polders zijn drooggelegd met windmolens en ingenieus waterbeheer.",
-      "Nederland is 's werelds grootste exporteur van tulpen en andere bloembollen.",
-      "Amsterdam heeft meer dan 100 kilometer aan grachten en meer dan 1.200 bruggen."
+      "Duitsland heeft meer dan 1.300 brouwerijen — meer dan welk ander land ter wereld.",
+      "Het Zwarte Woud (Schwarzwald) is een van de dichtste bossen van Europa.",
+      "De autobahn heeft op sommige stukken geen maximumsnelheid.",
+      "Duitsland heeft 47 UNESCO Werelderfgoedsites — een van de meeste ter wereld.",
+      "De Berlijnse Muur stond van 1961 tot 1989 en verdeelde de stad in twee."
     ],
     englishFunFacts: [
-      "The Netherlands has more bicycles than inhabitants — over 23 million bikes for 17 million people.",
-      "More than a quarter of the Netherlands lies below sea level.",
-      "Dutch polders were reclaimed using windmills and ingenious water management.",
-      "The Netherlands is the world's largest exporter of tulips and flower bulbs.",
-      "Amsterdam has over 100 kilometres of canals and more than 1,200 bridges."
+      "Germany has over 1,300 breweries — more than any other country in the world.",
+      "The Black Forest (Schwarzwald) is one of the densest forests in Europe.",
+      "The Autobahn has no speed limit on some sections.",
+      "Germany has 47 UNESCO World Heritage Sites — one of the most in the world.",
+      "The Berlin Wall stood from 1961 to 1989 and divided the city in two."
     ]
   },
   {
-    id: "belgium",
+    id: "luxembourg",
     category: "country",
-    dutchName: "België",
-    englishName: "Belgium",
-    emoji: "🇧🇪",
-    coordinates: [4.5, 50.5],
-    description: "Een klein land bekend om middeleeuwse steden en het hoofdkwartier van de Europese Unie.",
+    dutchName: "Luxemburg",
+    englishName: "Luxembourg",
+    emoji: "🇱🇺",
+    coordinates: [6.13, 49.75],
+    description: "Een van de kleinste landen van Europa, ingeklemd tussen Duitsland, België en Frankrijk.",
     funFacts: [
-      "België produceert meer dan 220.000 ton chocolade per jaar.",
-      "De Smurfen en Kuifje komen oorspronkelijk uit België.",
-      "België heeft het wereldrecord voor de langste tijd zonder regering: 541 dagen in 2010-2011.",
-      "Bier is zo belangrijk in België dat er meer dan 1.500 verschillende biersoorten worden gebrouwen.",
-      "Frieten zijn niet Frans maar Belgisch uitgevonden — vandaar ook wel 'Belgian fries'."
+      "Luxemburg heeft het hoogste bruto nationaal inkomen per hoofd ter wereld.",
+      "Het land heeft drie officiële talen: Luxemburgs, Frans en Duits.",
+      "Luxemburg is het enige groothertogdom ter wereld dat nog bestaat.",
+      "Meer dan 47% van de werknemers in Luxemburg pendelt dagelijks vanuit het buitenland.",
+      "De EU-instellingen, waaronder het Europees Hof van Justitie, zijn gevestigd in Luxemburg."
     ],
     englishFunFacts: [
-      "Belgium produces over 220,000 tonnes of chocolate per year.",
-      "The Smurfs and Tintin both originated in Belgium.",
-      "Belgium holds the world record for the longest period without a government: 541 days in 2010-2011.",
-      "Beer is so important in Belgium that over 1,500 different beer types are brewed there.",
-      "French fries were actually invented in Belgium, not France — hence 'Belgian fries'."
+      "Luxembourg has the highest gross national income per capita in the world.",
+      "The country has three official languages: Luxembourgish, French, and German.",
+      "Luxembourg is the only Grand Duchy in the world that still exists.",
+      "Over 47% of workers in Luxembourg commute daily from abroad.",
+      "EU institutions, including the European Court of Justice, are located in Luxembourg."
     ]
   },
   {
-    id: "denmark",
+    id: "france",
     category: "country",
-    dutchName: "Denemarken",
-    englishName: "Denmark",
-    emoji: "🇩🇰",
-    coordinates: [10.0, 56.0],
-    description: "Een Scandinavisch land bestaande uit het schiereiland Jutland en ruim 400 eilanden.",
+    dutchName: "Frankrijk",
+    englishName: "France",
+    emoji: "🇫🇷",
+    coordinates: [2.5, 46.5],
+    description: "Het grootste land van West-Europa, bekend om zijn kunst, keuken, mode en cultuur.",
     funFacts: [
-      "De Deense vlag (Dannebrog) is de oudste nog steeds gebruikte nationale vlag ter wereld, uit circa 1370.",
-      "Denemarken staat elk jaar in de top 3 van gelukkigste landen ter wereld.",
-      "De sprookjesschrijver Hans Christian Andersen ('De Kleine Zeemeermin') was een Deen.",
-      "Denemarken is een van de meest fietsvriendelijke landen ter wereld.",
-      "LEGO is uitgevonden door de Deen Ole Kirk Christiansen in 1932."
+      "Frankrijk is het meest bezochte land ter wereld, met meer dan 90 miljoen toeristen per jaar.",
+      "De Eiffeltoren werd gebouwd in 1889 als tijdelijke constructie voor de Wereldtentoonstelling.",
+      "Frankrijk produceert meer dan 1.200 verschillende soorten kaas.",
+      "Het land heeft zowel oceaankusten als mediterrane kust, bergen én vlaktes.",
+      "De Tour de France wielerwedstrijd wordt elk jaar gehouden en begon in 1903."
     ],
     englishFunFacts: [
-      "The Danish flag (Dannebrog) is the oldest still-used national flag in the world, dating from around 1370.",
-      "Denmark consistently ranks in the top 3 happiest countries in the world.",
-      "The fairy tale writer Hans Christian Andersen ('The Little Mermaid') was Danish.",
-      "Denmark is one of the most cycle-friendly countries in the world.",
-      "LEGO was invented by Dane Ole Kirk Christiansen in 1932."
+      "France is the most visited country in the world, with over 90 million tourists per year.",
+      "The Eiffel Tower was built in 1889 as a temporary structure for the World Exhibition.",
+      "France produces over 1,200 different types of cheese.",
+      "The country has both Atlantic and Mediterranean coastlines, mountains, and plains.",
+      "The Tour de France cycling race is held every year and began in 1903."
     ]
   },
   {
-    id: "estonia",
+    id: "switzerland",
     category: "country",
-    dutchName: "Estland",
-    englishName: "Estonia",
-    emoji: "🇪🇪",
-    coordinates: [25.0, 58.7],
-    description: "Een Baltisch land met uitgestrekte bossen, duizenden eilanden en een digitale samenleving.",
+    dutchName: "Zwitserland",
+    englishName: "Switzerland",
+    emoji: "🇨🇭",
+    coordinates: [8.2, 46.8],
+    description: "Een bergachtig land in het hart van Europa, bekend om zijn neutraliteit, banken en chocolade.",
     funFacts: [
-      "Estland was het eerste land ter wereld dat stemmen bij verkiezingen volledig online mogelijk maakte (2005).",
-      "Skype werd mede ontwikkeld door Estse programmeurs in Tallinn.",
-      "Meer dan de helft van Estland is bedekt met bos.",
-      "Estland heeft meer dan 2.000 eilanden in de Oostzee.",
-      "De Estse taal is nauw verwant aan het Fins, maar niet aan de Slavische of Germaanse talen."
+      "Zwitserland is al meer dan 500 jaar neutraal en heeft nooit deelgenomen aan een internationale oorlog.",
+      "Het Zwitserse Rode Kruis werd in 1863 opgericht in Genève.",
+      "Er zijn meer dan 1.500 meren in Zwitserland.",
+      "Zwitserland heeft vier officiële talen: Duits, Frans, Italiaans en Reto-Romaans.",
+      "De Zwitserse chocolade en het Zwitserse horloge zijn wereldberoemd om hun kwaliteit."
     ],
     englishFunFacts: [
-      "Estonia was the first country in the world to allow fully online voting in elections (2005).",
-      "Skype was partly developed by Estonian programmers in Tallinn.",
-      "More than half of Estonia is covered by forest.",
-      "Estonia has over 2,000 islands in the Baltic Sea.",
-      "The Estonian language is closely related to Finnish, but not to Slavic or Germanic languages."
+      "Switzerland has been neutral for over 500 years and has never participated in an international war.",
+      "The Swiss Red Cross was founded in Geneva in 1863.",
+      "There are over 1,500 lakes in Switzerland.",
+      "Switzerland has four official languages: German, French, Italian, and Romansh.",
+      "Swiss chocolate and Swiss watches are world-famous for their quality."
     ]
   },
   {
-    id: "finland",
+    id: "austria",
     category: "country",
-    dutchName: "Finland",
-    englishName: "Finland",
-    emoji: "🇫🇮",
-    coordinates: [26.0, 64.0],
-    description: "Een Scandinavisch land bekend als het 'Land van duizend meren' en de geboorteplaats van de sauna.",
+    dutchName: "Oostenrijk",
+    englishName: "Austria",
+    emoji: "🇦🇹",
+    coordinates: [14.5, 47.5],
+    description: "Een bergachtig land in Centraal-Europa, vroeger het centrum van het grote Habsburgse Rijk.",
     funFacts: [
-      "Finland heeft meer dan 188.000 meren — meer dan welk ander land ter wereld per oppervlakte.",
-      "Er zijn in Finland meer saunas dan auto's: ruim 3 miljoen saunas voor 5,5 miljoen inwoners.",
-      "De Kerstman woont officieel in Rovaniemi, Finland (op de Poolcirkel).",
-      "Finland staat al jaren bovenaan de ranglijst van de meest geletterde landen ter wereld.",
-      "De Finse taal heeft 15 naamvallen, terwijl het Nederlands er maar twee heeft."
+      "Wenen was eeuwenlang de hoofdstad van het machtige Habsburgse Keizerrijk.",
+      "Mozart, Beethoven en Schubert leefden en werkten in Oostenrijk.",
+      "Meer dan 60% van Oostenrijk bestaat uit berggebied (Alpen).",
+      "De Weense koffiehuiscultuur staat op de UNESCO lijst van immaterieel erfgoed.",
+      "Oostenrijk was de eerste republiek die vrouwen stemrecht gaf (1918)."
     ],
     englishFunFacts: [
-      "Finland has over 188,000 lakes — more than any other country in the world per area.",
-      "Finland has more saunas than cars: over 3 million saunas for 5.5 million inhabitants.",
-      "Santa Claus officially lives in Rovaniemi, Finland (on the Arctic Circle).",
-      "Finland has topped the world's most literate countries ranking for years.",
-      "The Finnish language has 15 grammatical cases, while English has only two."
-    ]
-  },
-  {
-    id: "ireland",
-    category: "country",
-    dutchName: "Ierland",
-    englishName: "Ireland",
-    emoji: "🇮🇪",
-    coordinates: [-8.2, 53.4],
-    description: "Een eilandland in West-Europa, bekend om zijn groene landschappen en rijke keltische cultuur.",
-    funFacts: [
-      "Halloween stamt oorspronkelijk uit Ierland, van het Keltische feest Samhain.",
-      "Ierland is het enige land ter wereld waarvan het nationale symbool een muziekinstrument is: de harp.",
-      "Bram Stoker, de schrijver van Dracula, werd in Dublin geboren.",
-      "Ierland heeft vier officiële nationale feestdagen, waaronder St. Patrick's Day op 17 maart.",
-      "Het Ierse woord voor whisky, 'uisce beatha', betekent letterlijk 'water des levens'."
-    ],
-    englishFunFacts: [
-      "Halloween originally comes from Ireland, from the Celtic festival of Samhain.",
-      "Ireland is the only country in the world whose national symbol is a musical instrument: the harp.",
-      "Bram Stoker, the author of Dracula, was born in Dublin.",
-      "Ireland has four official national holidays, including St. Patrick's Day on 17 March.",
-      "The Irish word for whiskey, 'uisce beatha', literally means 'water of life'."
-    ]
-  },
-  {
-    id: "iceland",
-    category: "country",
-    dutchName: "IJsland",
-    englishName: "Iceland",
-    emoji: "🇮🇸",
-    coordinates: [-19.0, 65.0],
-    description: "Een eilandland in de Noord-Atlantische Oceaan, bekend om vulkanen, geisers en het noorderlicht.",
-    funFacts: [
-      "IJsland heeft geen muggen — ze bestaan simpelweg niet op het eiland.",
-      "IJsland wekt bijna al zijn elektriciteit op uit hernieuwbare energie (geothermisch en waterkracht).",
-      "Ondanks de naam is IJsland groener dan Groenland, dat voor 80% bedekt is met ijs.",
-      "IJsland had de eerste democratisch gekozen vrouwelijke president ter wereld (Vigdís Finnbogadóttir, 1980).",
-      "Er zijn meer actieve vulkanen op IJsland dan in heel Europa bij elkaar."
-    ],
-    englishFunFacts: [
-      "Iceland has no mosquitoes — they simply don't exist on the island.",
-      "Iceland generates almost all of its electricity from renewable energy (geothermal and hydroelectric).",
-      "Despite its name, Iceland is greener than Greenland, which is 80% covered in ice.",
-      "Iceland had the world's first democratically elected female president (Vigdís Finnbogadóttir, 1980).",
-      "There are more active volcanoes in Iceland than in the rest of Europe combined."
-    ]
-  },
-  {
-    id: "latvia",
-    category: "country",
-    dutchName: "Letland",
-    englishName: "Latvia",
-    emoji: "🇱🇻",
-    coordinates: [24.8, 57.0],
-    description: "Een Baltisch land met uitgestrekte bossen, witte zandstranden aan de Oostzee en een rijke folklorecultuur.",
-    funFacts: [
-      "Riga was in de 16e eeuw een van de grootste steden in Noord-Europa.",
-      "De kerstboomtraditie is mogelijk uitgevonden in Riga in 1510 — de oudste vermelding ter wereld.",
-      "Letland heeft het hoogste percentage bebost gebied van alle EU-landen na Finland en Zweden.",
-      "Het Lets is een van de oudste nog gesproken talen ter wereld en nauw verwant aan het Litouws.",
-      "Letland heeft meer vrouwelijke managers dan welk ander Europees land ook."
-    ],
-    englishFunFacts: [
-      "Riga was one of the largest cities in Northern Europe in the 16th century.",
-      "The Christmas tree tradition may have been invented in Riga in 1510 — the oldest recorded use in the world.",
-      "Latvia has the highest percentage of forested land of all EU countries after Finland and Sweden.",
-      "Latvian is one of the oldest living languages in the world and closely related to Lithuanian.",
-      "Latvia has more female managers than any other European country."
-    ]
-  },
-  {
-    id: "lithuania",
-    category: "country",
-    dutchName: "Litouwen",
-    englishName: "Lithuania",
-    emoji: "🇱🇹",
-    coordinates: [23.9, 55.9],
-    description: "Het grootste van de drie Baltische staten, met een rijke geschiedenis als vroeger grootmacht in Europa.",
-    funFacts: [
-      "In de 14e en 15e eeuw was het Groothertogdom Litouwen het grootste land van Europa.",
-      "Litouwen was het laatste land in Europa dat officieel tot het christendom overging (1387).",
-      "Basketball is in Litouwen bijna een religie — de nationale ploeg won twee keer olympisch brons.",
-      "De oude binnenstad van Vilnius staat op de UNESCO Werelderfgoedlijst als een van de grootste in Europa.",
-      "Litouwse amber (barnsteen) uit de Oostzee wordt al duizenden jaren verhandeld."
-    ],
-    englishFunFacts: [
-      "In the 14th and 15th centuries, the Grand Duchy of Lithuania was the largest country in Europe.",
-      "Lithuania was the last country in Europe to officially convert to Christianity (1387).",
-      "Basketball is almost a religion in Lithuania — the national team won Olympic bronze twice.",
-      "The old town of Vilnius is on the UNESCO World Heritage List as one of the largest in Europe.",
-      "Lithuanian amber from the Baltic Sea has been traded for thousands of years."
-    ]
-  },
-  {
-    id: "norway",
-    category: "country",
-    dutchName: "Noorwegen",
-    englishName: "Norway",
-    emoji: "🇳🇴",
-    coordinates: [8.5, 61.0],
-    description: "Een Scandinavisch land met bergen, gletsjers en diepe fjorden langs de kust.",
-    funFacts: [
-      "Noorwegen introduceerde zalmsushi in Japan in de jaren '80 — nu een wereldwijde hit.",
-      "In het noorden gaat de zon in de zomer wekenlang niet onder (middernachtzon).",
-      "De paperclip is een Noorse uitvinding (Johan Vaaler, 1899).",
-      "Noorwegen heeft een van de grootste staatsfondsen ter wereld, gevuld met olie-inkomsten.",
-      "Zo'n 70% van Noorwegen bestaat uit bergen en rotsachtig terrein."
-    ],
-    englishFunFacts: [
-      "Norway introduced salmon sushi to Japan in the 1980s — now a worldwide hit.",
-      "In the north, the sun doesn't set for weeks in summer (midnight sun).",
-      "The paper clip was a Norwegian invention (Johan Vaaler, 1899).",
-      "Norway has one of the world's largest sovereign wealth funds, filled with oil revenues.",
-      "About 70% of Norway consists of mountains and rocky terrain."
-    ]
-  },
-  {
-    id: "uk",
-    category: "country",
-    dutchName: "Verenigd Koninkrijk",
-    englishName: "United Kingdom",
-    emoji: "🇬🇧",
-    coordinates: [-2.0, 54.0],
-    description: "Een eilandstaat die bestaat uit vier delen: Engeland, Schotland, Wales en Noord-Ierland.",
-    funFacts: [
-      "De Koning is technisch gezien eigenaar van alle zwanen in open water in het VK.",
-      "Je bent in het VK nooit verder dan 115 kilometer van de zee verwijderd.",
-      "Het wereldwijd bekende spel voetbal (soccer) is uitgevonden in Engeland.",
-      "Het VK heeft geen geschreven grondwet — de regels staan verspreid over vele wetten en tradities.",
-      "De Britten drinken meer dan 165 miljoen kopjes thee per dag."
-    ],
-    englishFunFacts: [
-      "The King technically owns all mute swans in open water in the UK.",
-      "You are never more than 115 kilometres from the sea anywhere in the UK.",
-      "The globally popular sport of football (soccer) was invented in England.",
-      "The UK has no written constitution — its rules are spread across many laws and traditions.",
-      "The British drink over 165 million cups of tea every day."
-    ]
-  },
-  {
-    id: "sweden",
-    category: "country",
-    dutchName: "Zweden",
-    englishName: "Sweden",
-    emoji: "🇸🇪",
-    coordinates: [15.5, 62.0],
-    description: "Een Scandinavisch land met duizenden eilanden, meren en uitgestrekte bossen.",
-    funFacts: [
-      "Zweden heeft een ijshotel dat elk jaar opnieuw volledig uit ijs en sneeuw wordt gebouwd.",
-      "Zweden importeert afval uit andere landen om energie op te wekken — zo weinig afval produceren ze zelf.",
-      "Minecraft is uitgevonden door Zweed Markus 'Notch' Persson in 2009.",
-      "De veiligheidsgordel (driehaaksgordel) is een Zweedse uitvinding van Nils Bohlin (Volvo, 1959).",
-      "Zweden heeft meer dan 220.000 eilanden langs zijn kust en in zijn meren."
-    ],
-    englishFunFacts: [
-      "Sweden has an ice hotel that is completely rebuilt from ice and snow every year.",
-      "Sweden imports waste from other countries to generate energy — they produce so little waste themselves.",
-      "Minecraft was invented by Swede Markus 'Notch' Persson in 2009.",
-      "The three-point safety belt was a Swedish invention by Nils Bohlin (Volvo, 1959).",
-      "Sweden has over 220,000 islands along its coast and in its lakes."
+      "Vienna was for centuries the capital of the powerful Habsburg Empire.",
+      "Mozart, Beethoven, and Schubert lived and worked in Austria.",
+      "Over 60% of Austria consists of mountain terrain (Alps).",
+      "The Viennese coffeehouse culture is on the UNESCO intangible heritage list.",
+      "Austria was the first republic to give women the right to vote (1918)."
     ]
   },
 
   // --- STEDEN (HOOFDSTEDEN) ---
   {
-    id: "brussels",
+    id: "berlin",
     category: "capital",
-    dutchName: "Brussel",
-    englishName: "Brussels",
-    emoji: "🍟",
-    coordinates: [4.35, 50.85],
-    countryId: "belgium",
-    description: "De hoofdstad van België en het bestuurscentrum van de Europese Unie.",
+    dutchName: "Berlijn",
+    englishName: "Berlin",
+    emoji: "🐻",
+    coordinates: [13.4, 52.52],
+    countryId: "germany",
+    description: "De hoofdstad en grootste stad van Duitsland, een bruisende metropool vol kunst en geschiedenis.",
     funFacts: [
-      "Het symbool van Brussel is Manneken Pis: een klein standbeeldje van een plassend jongetje.",
-      "Frieten (French Fries) zijn eigenlijk in de regio rond Brussel uitgevonden, niet in Frankrijk.",
-      "Brussel heeft meer dan 90 gemeenten en is officieel tweetalig (Frans en Nederlands).",
-      "Het Atomium in Brussel is een bouwsel in de vorm van een ijzercel, vergroot 165 miljard keer.",
-      "Brussel is de thuisbasis van de NAVO én de Europese Commissie."
+      "Berlijn heeft meer bruggen dan Venetië: ruim 960 stuks.",
+      "De stad is negen keer zo groot als Parijs binnen de stadsgrenzen.",
+      "Berlijn heeft meer musea dan regenachtige dagen per jaar.",
+      "De Berlijnse Muur werd op 9 november 1989 geopend na massale protesten.",
+      "De Brandenburger Tor is het symbool van de hereniging van Duitsland."
     ],
     englishFunFacts: [
-      "The symbol of Brussels is Manneken Pis: a small statue of a urinating boy.",
-      "French fries were actually invented in the region around Brussels, not in France.",
-      "Brussels has over 90 municipalities and is officially bilingual (French and Dutch).",
-      "The Atomium in Brussels is a structure shaped like an iron unit cell, enlarged 165 billion times.",
-      "Brussels is home to both NATO and the European Commission."
+      "Berlin has more bridges than Venice: over 960 of them.",
+      "The city is nine times the size of Paris within its city limits.",
+      "Berlin has more museums than rainy days per year.",
+      "The Berlin Wall was opened on 9 November 1989 after mass protests.",
+      "The Brandenburg Gate is the symbol of German reunification."
     ]
   },
   {
-    id: "dublin",
+    id: "luxembourg_city",
     category: "capital",
-    dutchName: "Dublin",
-    englishName: "Dublin",
-    emoji: "🍀",
-    coordinates: [-6.26, 53.33],
-    countryId: "ireland",
-    description: "De hoofdstad van Ierland, gelegen aan de monding van de rivier de Liffey.",
+    dutchName: "Luxemburg",
+    englishName: "Luxembourg City",
+    emoji: "🏰",
+    coordinates: [6.13, 49.61],
+    countryId: "luxembourg",
+    description: "De hoofdstad van Luxemburg, gebouwd op rotsen met indrukwekkende kastelruïnes en ravijnen.",
     funFacts: [
-      "Bram Stoker, de schrijver van Dracula, werd geboren en groeide op in Dublin.",
-      "Het Book of Kells — een schitterend verluchtig manuscript uit 800 n.Chr. — wordt bewaard in Dublin.",
-      "Dublin heeft meer pubs per vierkante kilometer dan welke andere hoofdstad in Europa ook.",
-      "De naam Dublin stamt af van 'Dubh Linn' (Gaelisch voor 'zwarte poel').",
-      "Beroemde schrijvers als Oscar Wilde, James Joyce en Samuel Beckett kwamen uit Dublin."
+      "De oude stad van Luxemburg staat op de UNESCO Werelderfgoedlijst.",
+      "De stad heeft een ondergronds netwerk van tunnels, de 'Bock Casemates', uit de 17e eeuw.",
+      "Luxemburg-stad is zetel van drie EU-instellingen: het Hof van Justitie, het Rekenhof en het Parlement.",
+      "De stad ligt op een hoge rots die drie rivieren omringt.",
+      "Meer dan 170 nationaliteiten wonen in Luxemburg-stad."
     ],
     englishFunFacts: [
-      "Bram Stoker, the author of Dracula, was born and grew up in Dublin.",
-      "The Book of Kells — a stunning illuminated manuscript from 800 AD — is kept in Dublin.",
-      "Dublin has more pubs per square kilometre than any other capital in Europe.",
-      "The name Dublin comes from 'Dubh Linn' (Gaelic for 'black pool').",
-      "Famous writers Oscar Wilde, James Joyce, and Samuel Beckett all came from Dublin."
+      "The old city of Luxembourg is on the UNESCO World Heritage List.",
+      "The city has an underground network of tunnels, the 'Bock Casemates', from the 17th century.",
+      "Luxembourg City is the seat of three EU institutions: the Court of Justice, the Court of Auditors, and Parliament.",
+      "The city sits on a high rock surrounded by three rivers.",
+      "Over 170 nationalities live in Luxembourg City."
     ]
   },
   {
-    id: "helsinki",
+    id: "paris",
     category: "capital",
-    dutchName: "Helsinki",
-    englishName: "Helsinki",
-    emoji: "🧖",
-    coordinates: [24.94, 60.17],
-    countryId: "finland",
-    description: "De hoofdstad van Finland, gebouwd op een rotsachtig schiereiland omgeven door eilanden.",
+    dutchName: "Parijs",
+    englishName: "Paris",
+    emoji: "🗼",
+    coordinates: [2.35, 48.85],
+    countryId: "france",
+    description: "De hoofdstad van Frankrijk, wereldberoemd als stad van licht, liefde, kunst en mode.",
     funFacts: [
-      "Helsinki is de meest noordelijk gelegen hoofdstad ter wereld (samen met Reykjavik).",
-      "De stad telt meer dan 300 eilanden rondom het schiereiland.",
-      "Helsinki ontvangt elk jaar meer regen dan Amsterdam, maar heeft ook meer zonnige dagen.",
-      "De stad werd gesticht door de Zweedse koning Gustaaf Vasa in 1550.",
-      "Helsinki werd in 2012 uitgeroepen tot Wereldontwerp Hoofdstad door de UNESCO."
+      "De Louvre in Parijs is het drukstbezochte museum ter wereld.",
+      "Parijs heeft meer dan 450 parken en tuinen.",
+      "De metro van Parijs opende in 1900 en heeft nu meer dan 300 stations.",
+      "Parijs staat ook bekend als 'La Ville Lumière' (de stad van het licht).",
+      "De Notre-Dame kathedraal trekt jaarlijks meer bezoekers dan de Eiffeltoren."
     ],
     englishFunFacts: [
-      "Helsinki is the most northerly capital city in the world (together with Reykjavik).",
-      "The city has over 300 islands around its peninsula.",
-      "Helsinki receives more rain than Amsterdam per year, but also has more sunny days.",
-      "The city was founded by Swedish King Gustav Vasa in 1550.",
-      "Helsinki was named World Design Capital by UNESCO in 2012."
+      "The Louvre in Paris is the most visited museum in the world.",
+      "Paris has over 450 parks and gardens.",
+      "The Paris Métro opened in 1900 and now has over 300 stations.",
+      "Paris is also known as 'La Ville Lumière' (the City of Light).",
+      "Notre-Dame Cathedral attracts more visitors annually than the Eiffel Tower."
     ]
   },
   {
-    id: "copenhagen",
+    id: "bern",
     category: "capital",
-    dutchName: "Kopenhagen",
-    englishName: "Copenhagen",
-    emoji: "🧜",
-    coordinates: [12.57, 55.68],
-    countryId: "denmark",
-    description: "De hoofdstad van Denemarken, een levendige havenstad bekend om design, duurzaamheid en fietsen.",
+    dutchName: "Bern",
+    englishName: "Bern",
+    emoji: "🐻",
+    coordinates: [7.45, 46.95],
+    countryId: "switzerland",
+    description: "De hoofdstad van Zwitserland, een middeleeuwse stad met arcades en een historische binnenstad.",
     funFacts: [
-      "Kopenhagen werd meerdere jaren op rij verkozen tot de meest leefbare stad ter wereld.",
-      "Het beroemde standbeeld De Kleine Zeemeermin is gebaseerd op het sprookje van Hans Christian Andersen.",
-      "Kopenhagen streeft ernaar de eerste CO₂-neutrale hoofdstad ter wereld te worden (doel: 2025).",
-      "Meer dan 60% van de inwoners fietst dagelijks naar werk of school.",
-      "In de 17e eeuw was Kopenhagen de grootste stad in Scandinavië."
+      "De historische binnenstad van Bern staat op de UNESCO Werelderfgoedlijst.",
+      "Bern heeft meer dan 6 kilometer overdekte arcades — een van de langste ter wereld.",
+      "De naam Bern zou afkomstig zijn van het woord 'beer' (beer/bear in Duits).",
+      "Albert Einstein woonde in Bern toen hij zijn relativiteitstheorie ontwikkelde (1905).",
+      "De Zytglogge (Tijdklokkentoren) in Bern dateert uit de 13e eeuw."
     ],
     englishFunFacts: [
-      "Copenhagen was voted the most liveable city in the world for several consecutive years.",
-      "The famous statue The Little Mermaid is based on the fairy tale by Hans Christian Andersen.",
-      "Copenhagen aims to become the world's first carbon-neutral capital (target: 2025).",
-      "More than 60% of residents cycle to work or school every day.",
-      "In the 17th century, Copenhagen was the largest city in Scandinavia."
+      "The historic old city of Bern is on the UNESCO World Heritage List.",
+      "Bern has over 6 kilometres of covered arcades — one of the longest in the world.",
+      "The name Bern is said to come from the word 'bear' (Bär in German).",
+      "Albert Einstein lived in Bern when he developed his theory of relativity (1905).",
+      "The Zytglogge (Clock Tower) in Bern dates from the 13th century."
     ]
   },
   {
-    id: "london",
+    id: "vienna",
     category: "capital",
-    dutchName: "Londen",
-    englishName: "London",
-    emoji: "💂",
-    coordinates: [-0.13, 51.51],
-    countryId: "uk",
-    description: "De hoofdstad van het VK, een wereldstad met een geschiedenis die teruggaat tot de Romeinse tijd.",
+    dutchName: "Wenen",
+    englishName: "Vienna",
+    emoji: "🎻",
+    coordinates: [16.37, 48.21],
+    countryId: "austria",
+    description: "De hoofdstad van Oostenrijk, wereldberoemd om zijn klassieke muziek, koffiehuizen en keizerlijke paleizen.",
     funFacts: [
-      "Big Ben is de naam van de klok (bel) in de toren, niet de toren zelf.",
-      "Londen was de eerste stad ter wereld met een ondergrondse metro (1863).",
-      "Meer dan 300 talen worden dagelijks gesproken in Londen.",
-      "De Theems (Thames) die door Londen stroomt, kan bij springtij met 7 meter in hoogte stijgen.",
-      "Londen heeft meer dan 170 musea, waarvan vele gratis toegankelijk zijn."
+      "Wenen werd meerdere jaren op rij gekozen als de meest leefbare stad ter wereld.",
+      "Mozart, Beethoven, Brahms en Strauss leefden en werkten allemaal in Wenen.",
+      "Het Wiener Prater heeft het oudste nog werkende reuzenrad ter wereld (1897).",
+      "Wenen heeft meer dan 100 musea.",
+      "Het Schönbrunn paleis in Wenen heeft 1.441 kamers."
     ],
     englishFunFacts: [
-      "Big Ben is the name of the bell (clock) in the tower, not the tower itself.",
-      "London was the first city in the world with an underground railway (1863).",
-      "Over 300 languages are spoken daily in London.",
-      "The Thames flowing through London can rise 7 metres in height during spring tides.",
-      "London has over 170 museums, many of which are free to enter."
-    ]
-  },
-  {
-    id: "oslo",
-    category: "capital",
-    dutchName: "Oslo",
-    englishName: "Oslo",
-    emoji: "🕊️",
-    coordinates: [10.75, 59.91],
-    countryId: "norway",
-    description: "De hoofdstad van Noorwegen, gelegen aan de Oslofjord en omgeven door heuvels en bossen.",
-    funFacts: [
-      "De Nobelprijs voor de Vrede wordt elk jaar in Oslo uitgereikt.",
-      "De helft van de gemeente Oslo bestaat uit bos en parken.",
-      "De kerstboom op Trafalgar Square in Londen is elk jaar een cadeau van de stad Oslo.",
-      "Oslo was in de middeleeuwen bekend als Christiania — die naam had het tot 1925.",
-      "De Vikingschepen die in Oslo te zien zijn, zijn meer dan 1.000 jaar oud en uitstekend bewaard."
-    ],
-    englishFunFacts: [
-      "The Nobel Peace Prize is awarded in Oslo every year.",
-      "Half of Oslo municipality consists of forest and parks.",
-      "The Christmas tree on Trafalgar Square in London is an annual gift from the city of Oslo.",
-      "Oslo was known as Christiania in the Middle Ages — it kept that name until 1925.",
-      "The Viking ships on display in Oslo are over 1,000 years old and remarkably well preserved."
-    ]
-  },
-  {
-    id: "stockholm",
-    category: "capital",
-    dutchName: "Stockholm",
-    englishName: "Stockholm",
-    emoji: "👑",
-    coordinates: [18.07, 59.33],
-    countryId: "sweden",
-    description: "De hoofdstad van Zweden, gebouwd op 14 eilanden en verbonden door meer dan 50 bruggen.",
-    funFacts: [
-      "Het metrosysteem van Stockholm staat bekend als de langste kunstgalerij ter wereld.",
-      "Je kunt midden in de stad vissen op zalm — het is zelfs wettelijk toegestaan.",
-      "Het koninklijk paleis in Stockholm heeft meer dan 600 kamers.",
-      "Stockholm werd gesticht in 1252 en is vernoemd naar 'stock' (boomstam) en 'holm' (eilandje).",
-      "Spotify, de muziekstreamingdienst, is opgericht in Stockholm (2006)."
-    ],
-    englishFunFacts: [
-      "Stockholm's metro system is known as the world's longest art gallery.",
-      "You can fish for salmon right in the city centre — it is even legally permitted.",
-      "The Royal Palace in Stockholm has over 600 rooms.",
-      "Stockholm was founded in 1252 and is named after 'stock' (log) and 'holm' (small island).",
-      "Spotify, the music streaming service, was founded in Stockholm (2006)."
+      "Vienna was voted the world's most liveable city for several years in a row.",
+      "Mozart, Beethoven, Brahms, and Strauss all lived and worked in Vienna.",
+      "The Wiener Prater has the world's oldest still-operating Ferris wheel (1897).",
+      "Vienna has over 100 museums.",
+      "The Schönbrunn Palace in Vienna has 1,441 rooms."
     ]
   },
 
   // --- STEDEN (NIET-HOOFDSTEDEN) ---
   {
-    id: "antwerp",
+    id: "hamburg",
     category: "city",
-    dutchName: "Antwerpen",
-    englishName: "Antwerp",
-    emoji: "💎",
-    coordinates: [4.4, 51.22],
-    countryId: "belgium",
-    description: "De grootste haven van België en een wereldcentrum voor de diamanthandel.",
+    dutchName: "Hamburg",
+    englishName: "Hamburg",
+    emoji: "⚓",
+    coordinates: [10.0, 53.55],
+    countryId: "germany",
+    description: "De op één na grootste stad van Duitsland en een van de grootste havens van Europa.",
     funFacts: [
-      "Antwerpen verwerkt meer dan 80% van de ruwe diamanten in de wereld.",
-      "De haven van Antwerpen is de op één na grootste van Europa (na Rotterdam).",
-      "De schilder Peter Paul Rubens woonde en werkte in Antwerpen in de 17e eeuw.",
-      "In de Middeleeuwen was Antwerpen de rijkste handelsstad van Europa.",
-      "Het Centraal Station van Antwerpen wordt wel de 'Spoorwegkathedraal' genoemd."
+      "Hamburg heeft de op twee na grootste haven van Europa.",
+      "De stad heeft meer bruggen dan Venetië, Amsterdam en Londen samen.",
+      "The Beatles begonnen hun carrière in de clubs van Hamburg.",
+      "Hamburg heeft meer millionairs per inwoner dan welke andere stad in Duitsland.",
+      "De Speicherstadt (opslagstad) in Hamburg is de grootste historische pakhuiswijk ter wereld."
     ],
     englishFunFacts: [
-      "Antwerp processes over 80% of the world's rough diamonds.",
-      "The Port of Antwerp is the second largest in Europe (after Rotterdam).",
-      "Painter Peter Paul Rubens lived and worked in Antwerp in the 17th century.",
-      "In the Middle Ages, Antwerp was the richest trading city in Europe.",
-      "Antwerp's Central Station is nicknamed the 'Railway Cathedral'."
+      "Hamburg has the third-largest port in Europe.",
+      "The city has more bridges than Venice, Amsterdam, and London combined.",
+      "The Beatles began their career in the clubs of Hamburg.",
+      "Hamburg has more millionaires per capita than any other city in Germany.",
+      "The Speicherstadt (warehouse city) in Hamburg is the largest historic warehouse district in the world."
     ]
   },
   {
-    id: "glasgow",
+    id: "cologne",
     category: "city",
-    dutchName: "Glasgow",
-    englishName: "Glasgow",
-    emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-    coordinates: [-4.25, 55.87],
-    countryId: "uk",
-    description: "De grootste stad van Schotland, vroeger een wereldcentrum van scheepsbouw en staalindustrie.",
+    dutchName: "Keulen",
+    englishName: "Cologne",
+    emoji: "⛪",
+    coordinates: [6.96, 50.93],
+    countryId: "germany",
+    description: "Een grote stad aan de Rijn, thuisbasis van de beroemde gotische Keulse Dom.",
     funFacts: [
-      "Glasgow is de grootste stad van Schotland — groter dan de hoofdstad Edinburgh.",
-      "De naam Glasgow komt van het Oud-Welsh 'Glasgu', wat 'lieve groene plek' betekent.",
-      "Glasgow was in de 19e eeuw een van de belangrijkste scheepsbouwsteden ter wereld.",
-      "De stad organiseerde de Commonwealth Games in 2014.",
-      "Glasgow heeft het grootste Victoriaans gotische gebouw buiten Westminster: de universiteitsgebouwen."
+      "De Keulse Dom werd begonnen in 1248 en duurde 632 jaar om te bouwen (klaar in 1880).",
+      "Eau de Cologne is vernoemd naar de stad Keulen (Köln in het Duits).",
+      "Keulen is de vierde grootste stad van Duitsland.",
+      "De stad werd tijdens WO2 voor 90% verwoest maar de Dom bleef staan.",
+      "Keulen heeft een van de grootste carnavalsfeesten ter wereld."
     ],
     englishFunFacts: [
-      "Glasgow is Scotland's largest city — bigger than the capital Edinburgh.",
-      "The name Glasgow comes from Old Welsh 'Glasgu', meaning 'dear green place'.",
-      "Glasgow was one of the world's most important shipbuilding cities in the 19th century.",
-      "The city hosted the Commonwealth Games in 2014.",
-      "Glasgow has the largest Victorian Gothic building outside Westminster: its university buildings."
+      "Cologne Cathedral was begun in 1248 and took 632 years to build (completed 1880).",
+      "Eau de Cologne is named after the city of Cologne (Köln in German).",
+      "Cologne is the fourth-largest city in Germany.",
+      "The city was 90% destroyed in WW2 but the Cathedral remained standing.",
+      "Cologne has one of the largest carnival celebrations in the world."
     ]
   },
   {
-    id: "liverpool",
+    id: "bordeaux",
     category: "city",
-    dutchName: "Liverpool",
-    englishName: "Liverpool",
-    emoji: "🎸",
-    coordinates: [-2.99, 53.41],
-    countryId: "uk",
-    description: "Een havenstad in Noordwest-Engeland, wereldberoemd als geboorteplaats van The Beatles.",
+    dutchName: "Bordeaux",
+    englishName: "Bordeaux",
+    emoji: "🍷",
+    coordinates: [-0.58, 44.84],
+    countryId: "france",
+    description: "Een havenstad in Zuid-Frankrijk, wereldberoemd als centrum van de wijnproductie.",
     funFacts: [
-      "Liverpool is de geboorteplaats van The Beatles — John, Paul, George en Ringo kwamen er allemaal vandaan.",
-      "Liverpool FC en Everton FC zijn twee van de meest succesvolle voetbalclubs van Engeland.",
-      "Liverpool was in de 18e en 19e eeuw een van de drukste havens van het Britse Rijk.",
-      "De stad heeft meer museums en galeries dan welke Engelse stad ook, na Londen.",
-      "Liverpool heeft de op één na grootste Chinatown van Groot-Brittannië."
+      "Bordeaux is de wijnhoofdstad van de wereld: de regio produceert 700 miljoen flessen per jaar.",
+      "De binnenstad van Bordeaux staat op de UNESCO Werelderfgoedlijst.",
+      "Bordeaux heeft de grootste verzameling 18e-eeuwse architectuur in Europa na Parijs.",
+      "De stad ligt aan de Gironde-estuarium, op 100 km van de Atlantische Oceaan.",
+      "Bordeaux heeft de grootste stadstram buiten Parijs in Frankrijk."
     ],
     englishFunFacts: [
-      "Liverpool is the birthplace of The Beatles — John, Paul, George and Ringo all came from there.",
-      "Liverpool FC and Everton FC are two of England's most successful football clubs.",
-      "Liverpool was one of the busiest ports of the British Empire in the 18th and 19th centuries.",
-      "The city has more museums and galleries than any English city outside London.",
-      "Liverpool has the second largest Chinatown in Great Britain."
+      "Bordeaux is the wine capital of the world: the region produces 700 million bottles per year.",
+      "The city centre of Bordeaux is on the UNESCO World Heritage List.",
+      "Bordeaux has the largest collection of 18th-century architecture in Europe after Paris.",
+      "The city lies on the Gironde estuary, 100 km from the Atlantic Ocean.",
+      "Bordeaux has the largest city tram outside Paris in France."
+    ]
+  },
+  {
+    id: "lyon",
+    category: "city",
+    dutchName: "Lyon",
+    englishName: "Lyon",
+    emoji: "🦁",
+    coordinates: [4.83, 45.74],
+    countryId: "france",
+    description: "De gastronomische hoofdstad van Frankrijk, gelegen aan de samenvloeiing van de Rhône en de Saône.",
+    funFacts: [
+      "Lyon wordt beschouwd als de gastronomische hoofdstad van Frankrijk.",
+      "De Lumièrebrothers, uitvinders van de film, werden geboren in Lyon.",
+      "De historische binnenstad van Lyon staat op de UNESCO Werelderfgoedlijst.",
+      "Lyon had 's nachts 's werelds eerste elektrische straatverlichting (1857).",
+      "De stad is het centrum van de zijde-industrie in Europa geweest."
+    ],
+    englishFunFacts: [
+      "Lyon is considered the gastronomic capital of France.",
+      "The Lumière brothers, inventors of cinema, were born in Lyon.",
+      "The historic city centre of Lyon is on the UNESCO World Heritage List.",
+      "Lyon had the world's first electric street lighting at night (1857).",
+      "The city has been the centre of the silk industry in Europe."
+    ]
+  },
+  {
+    id: "geneva",
+    category: "city",
+    dutchName: "Genève",
+    englishName: "Geneva",
+    emoji: "🕊️",
+    coordinates: [6.15, 46.2],
+    countryId: "switzerland",
+    description: "Een internationaal centrum voor diplomatie aan het meer van Genève, aan de voet van de Alpen.",
+    funFacts: [
+      "Genève herbergt meer dan 40 internationale organisaties, waaronder de VN en het Rode Kruis.",
+      "Het Meer van Genève is het grootste meer van West-Europa.",
+      "De Jet d'Eau, de fontein in het meer, spuit water 140 meter omhoog.",
+      "CERN, het grootste deeltjesversnellerlaboratorium ter wereld, ligt bij Genève.",
+      "Genève geldt als de duurste stad om in te leven ter wereld."
+    ],
+    englishFunFacts: [
+      "Geneva is home to over 40 international organisations, including the UN and the Red Cross.",
+      "Lake Geneva is the largest lake in Western Europe.",
+      "The Jet d'Eau, the fountain in the lake, shoots water 140 metres into the air.",
+      "CERN, the world's largest particle accelerator laboratory, is located near Geneva.",
+      "Geneva is considered the most expensive city to live in the world."
+    ]
+  },
+  {
+    id: "marseille",
+    category: "city",
+    dutchName: "Marseille",
+    englishName: "Marseille",
+    emoji: "⛵",
+    coordinates: [5.37, 43.3],
+    countryId: "france",
+    description: "De grootste havenstad van Frankrijk, gelegen aan de Middellandse Zee, met een rijke mediterrane cultuur.",
+    funFacts: [
+      "Marseille is de oudste stad van Frankrijk, gesticht door Griekse kolonisten rond 600 v.Chr.",
+      "De haven van Marseille is de grootste van Frankrijk en een van de grootste van Europa.",
+      "De bouillabaisse, een beroemde vissoep, stamt oorspronkelijk uit Marseille.",
+      "Marseille is de tweede grootste stad van Frankrijk na Parijs.",
+      "De kathedraal La Major van Marseille is een van de grootste kerken van Europa."
+    ],
+    englishFunFacts: [
+      "Marseille is the oldest city in France, founded by Greek colonists around 600 BC.",
+      "The port of Marseille is the largest in France and one of the largest in Europe.",
+      "Bouillabaisse, a famous fish stew, originally comes from Marseille.",
+      "Marseille is the second largest city in France after Paris.",
+      "The La Major cathedral in Marseille is one of the largest churches in Europe."
+    ]
+  },
+  {
+    id: "munich",
+    category: "city",
+    dutchName: "München",
+    englishName: "Munich",
+    emoji: "🍺",
+    coordinates: [11.58, 48.14],
+    countryId: "germany",
+    description: "De hoofdstad van de deelstaat Beieren, bekend om Oktoberfest, kunst en de Beierse cultuur.",
+    funFacts: [
+      "Het Oktoberfest in München is het grootste volksfeest ter wereld, met 6 miljoen bezoekers per jaar.",
+      "München heeft drie van de tien beste universiteiten van Duitsland.",
+      "BMW (Bayerische Motoren Werke) werd opgericht in München in 1916.",
+      "De stad ligt op 530 meter hoogte en heeft prachtig uitzicht op de Alpen.",
+      "De Hofbräuhaus in München is een van de bekendste bierhallen ter wereld."
+    ],
+    englishFunFacts: [
+      "Oktoberfest in Munich is the world's largest folk festival, attracting 6 million visitors per year.",
+      "Munich has three of the top ten universities in Germany.",
+      "BMW (Bayerische Motoren Werke) was founded in Munich in 1916.",
+      "The city sits at 530 metres altitude and has a beautiful view of the Alps.",
+      "The Hofbräuhaus in Munich is one of the most famous beer halls in the world."
     ]
   },
 
   // --- WATEREN ---
   {
-    id: "north_sea",
+    id: "mediterranean",
     category: "water",
-    dutchName: "Noordzee",
-    englishName: "North Sea",
+    dutchName: "Middellandse Zee",
+    englishName: "Mediterranean Sea",
     emoji: "🌊",
-    coordinates: [3.0, 56.0],
-    description: "Een zijzee van de Atlantische Oceaan tussen Groot-Brittannië, Scandinavië en de Benelux.",
+    coordinates: [15.0, 37.0],
+    description: "Een bijna geheel ingesloten zee tussen Europa, Afrika en Azië, het hart van de westerse beschaving.",
     funFacts: [
-      "De Noordzee is een van de drukste scheepvaartroutes ter wereld.",
-      "Er liggen duizenden scheepswrakken op de bodem van de Noordzee.",
-      "Doggersbank, een ondiepe zandbank in de Noordzee, was vroeger een landbrug waar mammoeten liepen.",
-      "Onder de Noordzee liggen grote aardgasreserves die door Nederland en het VK worden gewonnen.",
-      "De Noordzee is relatief ondiep — gemiddeld slechts 95 meter."
+      "De Middellandse Zee beslaat een oppervlakte van 2,5 miljoen km².",
+      "Rondom de Middellandse Zee zijn de culturen van Griekenland, Rome en Egypte ontstaan.",
+      "Het water is zouter en warmer dan de Atlantische Oceaan.",
+      "Meer dan 450 miljoen mensen wonen langs de kusten van de Middellandse Zee.",
+      "De Straat van Gibraltar is de smalle verbinding met de Atlantische Oceaan."
     ],
     englishFunFacts: [
-      "The North Sea is one of the world's busiest shipping routes.",
-      "Thousands of shipwrecks lie on the bottom of the North Sea.",
-      "Dogger Bank, a shallow sandbank in the North Sea, was once a land bridge where mammoths roamed.",
-      "Large natural gas reserves beneath the North Sea are extracted by the Netherlands and the UK.",
-      "The North Sea is relatively shallow — averaging only 95 metres deep."
-    ]
-  },
-  {
-    id: "baltic_sea",
-    category: "water",
-    dutchName: "Oostzee",
-    englishName: "Baltic Sea",
-    emoji: "🧊",
-    coordinates: [18.0, 58.5],
-    description: "Een ingesloten zee in Noord-Europa, omgeven door Scandinavië, Finland, de Baltische staten en Duitsland.",
-    funFacts: [
-      "Het water van de Oostzee is veel minder zout dan andere zeeën (brak water).",
-      "In strenge winters bevriest een groot deel van de Oostzee.",
-      "Barnsteen (versteend hars) spoelt hier regelmatig aan op de stranden.",
-      "De Oostzee is een van de drukst bevaren binnenzeeën ter wereld.",
-      "De Oostzee is pas 10.000 tot 15.000 jaar geleden ontstaan na het smelten van het landijs."
-    ],
-    englishFunFacts: [
-      "The Baltic Sea's water is much less salty than other seas (brackish water).",
-      "In harsh winters, a large part of the Baltic Sea freezes over.",
-      "Amber (fossilised resin) regularly washes up on Baltic beaches.",
-      "The Baltic Sea is one of the world's busiest inland seas.",
-      "The Baltic Sea only formed 10,000 to 15,000 years ago after the melting of the ice sheet."
+      "The Mediterranean Sea covers an area of 2.5 million km².",
+      "The civilisations of Greece, Rome, and Egypt arose around the Mediterranean.",
+      "The water is saltier and warmer than the Atlantic Ocean.",
+      "Over 450 million people live along the shores of the Mediterranean.",
+      "The Strait of Gibraltar is the narrow connection to the Atlantic Ocean."
     ]
   },
   {
@@ -587,17 +451,17 @@ export const europeData: GeoItem[] = [
     dutchName: "Het Kanaal",
     englishName: "English Channel",
     emoji: "⛴️",
-    coordinates: [-0.5, 50.5],
+    coordinates: [-1.5, 50.5],
     description: "Het water dat Zuid-Engeland scheidt van Noord-Frankrijk, de drukste scheepvaartroute ter wereld.",
     funFacts: [
-      "Onder Het Kanaal loopt de Eurotunnel (Chunnel), waarmee je in 35 minuten per trein reist.",
+      "Onder Het Kanaal loopt de Eurotunnel, waarmee je in 35 minuten per trein reist.",
       "Het Kanaal is de drukste scheepvaartroute ter wereld: dagelijks varen er meer dan 500 schepen doorheen.",
       "De eerste persoon die Het Kanaal overzwom was Matthew Webb in 1875.",
       "Op het smalste punt is Het Kanaal slechts 34 kilometer breed (Nauw van Calais).",
       "Het Kanaal ontstond circa 8.000 jaar geleden toen de zeespiegel steeg na de ijstijd."
     ],
     englishFunFacts: [
-      "Beneath the Channel runs the Eurotunnel (Channel Tunnel), connecting England and France by train in 35 minutes.",
+      "Beneath the Channel runs the Eurotunnel, connecting England and France by train in 35 minutes.",
       "The English Channel is the world's busiest shipping lane: over 500 ships pass through daily.",
       "The first person to swim the Channel was Matthew Webb in 1875.",
       "At its narrowest point, the Channel is only 34 kilometres wide (Strait of Dover).",
@@ -605,191 +469,168 @@ export const europeData: GeoItem[] = [
     ]
   },
   {
-    id: "scheldt",
+    id: "rhone",
     category: "water",
-    dutchName: "Schelde",
-    englishName: "Scheldt River",
-    emoji: "🚢",
-    coordinates: [4.0, 51.15],
-    description: "Een rivier die door Noord-Frankrijk, West-België en Zuidwest-Nederland stroomt naar de Noordzee.",
+    dutchName: "Rhône",
+    englishName: "Rhône",
+    emoji: "🏞️",
+    coordinates: [4.8, 44.5],
+    description: "Een rivier die ontspringt in de Zwitserse Alpen en uitmondt in de Middellandse Zee.",
     funFacts: [
-      "De Schelde is al eeuwenlang de levensader van de haven van Antwerpen.",
-      "Tijdens oorlogen werd de Schelde regelmatig geblokkeerd om vijanden te stoppen.",
-      "De houting, een zeldzame vissoort, keert terug in de Schelde dankzij beter waterkwaliteitsbeleid.",
-      "De rivier is 350 kilometer lang en mondt uit in de Westerschelde in Nederland.",
-      "In WO2 was de bevrijding van de Schelde cruciaal om de haven van Antwerpen te gebruiken."
+      "De Rhône is 812 kilometer lang en stroomt door Zwitserland en Frankrijk.",
+      "De Rhône-vallei is een van de beroemdste wijnregio's van Frankrijk.",
+      "Bij Lyon splitst de Rhône zich en vormt samen met de Saône de stad.",
+      "De rivier levert elektriciteit via meerdere stuwdammen.",
+      "Het meer van Genève wordt gevoed door de Rhône."
     ],
     englishFunFacts: [
-      "The Scheldt has been the lifeline of the Port of Antwerp for centuries.",
-      "During wars, the Scheldt was regularly blocked to stop enemies.",
-      "The houting, a rare fish species, is returning to the Scheldt thanks to better water quality policies.",
-      "The river is 350 kilometres long and flows into the Western Scheldt in the Netherlands.",
-      "In WW2, liberating the Scheldt was crucial to using the Port of Antwerp."
+      "The Rhône is 812 kilometres long and flows through Switzerland and France.",
+      "The Rhône Valley is one of France's most famous wine regions.",
+      "At Lyon the Rhône merges with the Saône to shape the city.",
+      "The river generates electricity via several dams.",
+      "Lake Geneva is fed by the Rhône."
     ]
   },
   {
-    id: "thames",
+    id: "seine",
     category: "water",
-    dutchName: "Theems",
-    englishName: "River Thames",
+    dutchName: "Seine",
+    englishName: "Seine",
     emoji: "🌉",
-    coordinates: [-0.5, 51.48],
-    description: "De belangrijkste rivier van Engeland, die dwars door het hart van Londen stroomt.",
+    coordinates: [2.5, 49.0],
+    description: "De rivier die door het hart van Parijs stroomt en uitmondt in het Kanaal bij Normandië.",
     funFacts: [
-      "Meer dan 200 bruggen kruisen de Theems.",
-      "Vroeger vroor de Theems dicht in strenge winters en hielden ze 'Frost Fairs' op het ijs.",
-      "Er worden soms zeehonden en zelfs bruinvissen de Theems op gespot.",
-      "De Theems is 346 kilometer lang — de langste rivier die volledig in Engeland ligt.",
-      "Rond 1858 stonk de Theems zo erg door vervuiling dat dit de 'Grote Stank' (Great Stink) werd genoemd."
+      "De Seine is 775 kilometer lang.",
+      "Parijs is gebouwd op een eiland in de Seine: het Île de la Cité.",
+      "Langs de Seine liggen meer dan 37 bruggen in Parijs.",
+      "De kades van de Seine in Parijs staan op de UNESCO Werelderfgoedlijst.",
+      "De Normandische stranden, bron van D-Day in 1944, liggen bij de monding van de Seine."
     ],
     englishFunFacts: [
-      "Over 200 bridges cross the Thames.",
-      "In harsh winters the Thames used to freeze over and people held 'Frost Fairs' on the ice.",
-      "Seals and even porpoises are occasionally spotted swimming up the Thames.",
-      "The Thames is 346 kilometres long — the longest river lying entirely within England.",
-      "Around 1858 the Thames smelled so bad from pollution that the event was called the 'Great Stink'."
+      "The Seine is 775 kilometres long.",
+      "Paris was built on an island in the Seine: the Île de la Cité.",
+      "Over 37 bridges span the Seine in Paris.",
+      "The banks of the Seine in Paris are on the UNESCO World Heritage List.",
+      "The Normandy beaches, site of D-Day in 1944, are near the mouth of the Seine."
     ]
   },
-
-  // --- GEBERGTEN ---
   {
-    id: "ardennes",
-    category: "mountain",
-    dutchName: "Ardennen",
-    englishName: "Ardennes",
-    emoji: "🌲",
-    coordinates: [5.8, 50.2],
-    description: "Een bosrijk heuvelgebied dat zich uitstrekt over België, Luxemburg en een deel van Duitsland.",
+    id: "danube",
+    category: "water",
+    dutchName: "Donau",
+    englishName: "Danube",
+    emoji: "💙",
+    coordinates: [17.0, 47.8],
+    description: "De op één na langste rivier van Europa, die door tien landen stroomt van Duitsland tot de Zwarte Zee.",
     funFacts: [
-      "De Ardennen waren het toneel van zware gevechten in beide Wereldoorlogen.",
-      "De Slag om de Ardennen (december 1944 – januari 1945) was een van de grootste slagen van de Tweede Wereldoorlog.",
-      "Het gebied staat bekend om zijn dichte bossen, wildrijke natuur en pittoreske dorpjes.",
-      "De Ardennen zijn geliefd bij mountainbikers, wandelaars en kajakkers.",
-      "De hoogste punt van België, de Signal de Botrange (694 m), ligt in de Ardennen."
+      "De Donau stroomt door meer landen dan welke andere rivier ter wereld: 10 landen.",
+      "De rivier is 2.860 kilometer lang.",
+      "Wenen, Boedapest en Belgrado liggen alle drie aan de Donau.",
+      "De beroemde wals 'De Blauwe Donau' van Johann Strauss is geïnspireerd op deze rivier.",
+      "De Donau mondt uit in de Zwarte Zee in Roemenië."
     ],
     englishFunFacts: [
-      "The Ardennes were the site of heavy fighting in both World Wars.",
-      "The Battle of the Bulge (December 1944 – January 1945) was one of the largest battles of World War II.",
-      "The area is known for its dense forests, abundant wildlife, and picturesque villages.",
-      "The Ardennes are popular with mountain bikers, hikers, and kayakers.",
-      "Belgium's highest point, the Signal de Botrange (694 m), is located in the Ardennes."
+      "The Danube flows through more countries than any other river in the world: 10 countries.",
+      "The river is 2,860 kilometres long.",
+      "Vienna, Budapest, and Belgrade all lie on the Danube.",
+      "The famous waltz 'The Blue Danube' by Johann Strauss was inspired by this river.",
+      "The Danube flows into the Black Sea in Romania."
+    ]
+  },
+  {
+    id: "rhine",
+    category: "water",
+    dutchName: "Rijn",
+    englishName: "Rhine",
+    emoji: "🚢",
+    coordinates: [7.5, 50.5],
+    description: "Een van de belangrijkste rivieren van Europa, die ontspringt in de Alpen en uitmondt in de Noordzee.",
+    funFacts: [
+      "De Rijn is 1.230 kilometer lang en stroomt door Zwitserland, Duitsland en Nederland.",
+      "Het Rijnland is een van de dichtst bevolkte en industrieel meest actieve gebieden van Europa.",
+      "De Lorelei is een beroemde rots langs de Rijn in Duitsland, omgeven door legendes.",
+      "De Rijn is een van de drukstbevaren rivieren ter wereld.",
+      "Via de Rijn zijn Rotterdam en de rest van Europa verbonden met het achterland."
+    ],
+    englishFunFacts: [
+      "The Rhine is 1,230 kilometres long and flows through Switzerland, Germany, and the Netherlands.",
+      "The Rhine Valley is one of Europe's most densely populated and industrially active areas.",
+      "The Lorelei is a famous rock along the Rhine in Germany, surrounded by legends.",
+      "The Rhine is one of the most heavily trafficked rivers in the world.",
+      "Via the Rhine, Rotterdam and the rest of Europe are connected to the hinterland."
     ]
   },
 
   // --- REGIO'S ---
   {
-    id: "england",
+    id: "ruhrgebiet",
     category: "region",
-    dutchName: "Engeland",
-    englishName: "England",
-    emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-    coordinates: [-1.5, 52.5],
-    description: "Het grootste en volkrijkste deel van het Verenigd Koninkrijk, gelegen in het zuiden van het eiland Groot-Brittannië.",
+    dutchName: "Ruhrgebied",
+    englishName: "Ruhr Area",
+    emoji: "🏭",
+    coordinates: [7.2, 51.5],
+    description: "Het grootste stedelijke en industriële gebied van Duitsland, gelegen langs de rivier de Ruhr.",
     funFacts: [
-      "Voetbal (soccer) werd in Engeland uitgevonden — de eerste officiële regels werden in 1863 opgesteld.",
-      "Engeland heeft geen officiële taal vastgelegd in de wet, maar Engels is de taal van het dagelijks leven.",
-      "De industrie van Engeland leidde de Industriële Revolutie (18e-19e eeuw), die de wereld veranderde.",
-      "De universiteiten van Oxford en Cambridge zijn twee van de oudste ter wereld.",
-      "Engeland grenst aan Schotland in het noorden en Wales in het westen."
+      "Het Ruhrgebied was in de 19e en 20e eeuw het industriële hart van Europa.",
+      "De regio telt meer dan 5 miljoen inwoners in steden als Essen, Dortmund en Bochum.",
+      "Ooit waren er meer dan 200 actieve kolenmijnen in het Ruhrgebied.",
+      "De regio ondergaat nu een grote transformatie van industrie naar cultuur en technologie.",
+      "De Zeche Zollverein, een voormalige kolenmijn in Essen, staat op de UNESCO Werelderfgoedlijst."
     ],
     englishFunFacts: [
-      "Football (soccer) was invented in England — the first official rules were drawn up in 1863.",
-      "England has no official language enshrined in law, but English is the everyday language.",
-      "English industry led the Industrial Revolution (18th-19th century), which changed the world.",
-      "The Universities of Oxford and Cambridge are two of the oldest in the world.",
-      "England borders Scotland to the north and Wales to the west."
+      "The Ruhr Area was the industrial heart of Europe in the 19th and 20th century.",
+      "The region has over 5 million inhabitants in cities such as Essen, Dortmund, and Bochum.",
+      "There were once over 200 active coal mines in the Ruhr Area.",
+      "The region is now undergoing a major transformation from industry to culture and technology.",
+      "The Zeche Zollverein, a former coal mine in Essen, is on the UNESCO World Heritage List."
+    ]
+  },
+
+  // --- GEBERGTEN ---
+  {
+    id: "pyrenees",
+    category: "mountain",
+    dutchName: "Pyreneeën",
+    englishName: "Pyrenees",
+    emoji: "🏔️",
+    coordinates: [0.5, 42.7],
+    description: "Een bergketen die de grens vormt tussen Frankrijk en Spanje, van de Atlantische Oceaan tot de Middellandse Zee.",
+    funFacts: [
+      "De Pyreneeën strekken zich over 430 kilometer uit van de Atlantische Oceaan tot de Middellandse Zee.",
+      "De hoogste top is de Pico de Aneto in Spanje, op 3.404 meter.",
+      "Andorra, een van de kleinste landen ter wereld, ligt verscholen in de Pyreneeën.",
+      "De Pyreneeën vormen een natuurlijke grens tussen Frankrijk en Spanje.",
+      "De Tour de France trekt elk jaar over de beklimmingen van de Pyreneeën."
+    ],
+    englishFunFacts: [
+      "The Pyrenees stretch over 430 kilometres from the Atlantic Ocean to the Mediterranean Sea.",
+      "The highest peak is the Pico de Aneto in Spain, at 3,404 metres.",
+      "Andorra, one of the smallest countries in the world, is tucked away in the Pyrenees.",
+      "The Pyrenees form a natural border between France and Spain.",
+      "The Tour de France crosses the climbs of the Pyrenees every year."
     ]
   },
   {
-    id: "scotland",
-    category: "region",
-    dutchName: "Schotland",
-    englishName: "Scotland",
-    emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-    coordinates: [-4.2, 57.0],
-    description: "Het noordelijke deel van het eiland Groot-Brittannië, bekend om zijn hooglanden, kastelen en whisky.",
+    id: "alps",
+    category: "mountain",
+    dutchName: "Alpen",
+    englishName: "Alps",
+    emoji: "⛰️",
+    coordinates: [10.0, 46.5],
+    description: "Het grootste gebergte van Europa, dat zich uitstrekt over acht landen in het hart van Europa.",
     funFacts: [
-      "Schotland heeft zijn eigen parlement (devolved parliament) in Edinburgh sinds 1999.",
-      "De legende van het monster van Loch Ness ('Nessie') trekt elk jaar miljoenen toeristen.",
-      "Scotch whisky is een van de meest geëxporteerde producten van Schotland.",
-      "In Schotland is het wettelijk toegestaan om overal in de natuur te wandelen (right to roam).",
-      "Het nationale dier van Schotland is de eenhoorn."
+      "De Alpen strekken zich over 1.200 kilometer uit door acht landen.",
+      "De Mont Blanc (4.808 m) is de hoogste berg van de Alpen en van geheel West-Europa.",
+      "Meer dan 150 miljoen toeristen bezoeken de Alpen elk jaar.",
+      "De Alpen zijn de bron van grote rivieren als de Rijn, Rhône, Po en Donau.",
+      "De Alpen werden gevormd door de botsing van de Afrikaanse en Euraziatische tektonische platen."
     ],
     englishFunFacts: [
-      "Scotland has its own parliament (devolved parliament) in Edinburgh since 1999.",
-      "The legend of the Loch Ness Monster ('Nessie') attracts millions of tourists every year.",
-      "Scotch whisky is one of Scotland's most exported products.",
-      "In Scotland it is legally permitted to walk anywhere in nature (right to roam).",
-      "The national animal of Scotland is the unicorn."
-    ]
-  },
-  {
-    id: "flanders",
-    category: "region",
-    dutchName: "Vlaanderen",
-    englishName: "Flanders",
-    emoji: "🦁",
-    coordinates: [3.7, 51.0],
-    description: "De Nederlandstalige noordelijke regio van België, met steden als Brugge, Gent en Antwerpen.",
-    funFacts: [
-      "Vlaanderen was het toneel van intense gevechten tijdens de Eerste Wereldoorlog ('In Flanders Fields').",
-      "Brugge in Vlaanderen staat bekend als het 'Venetië van het Noorden' door zijn grachten.",
-      "De Vlaamse Primitieven (zoals Jan van Eyck) revolutioneerden de Europese schilderkunst in de 15e eeuw.",
-      "Het Vlaamse Gewest heeft een eigen parlement en regering.",
-      "Gent was in de Middeleeuwen een van de grootste steden van Noord-Europa."
-    ],
-    englishFunFacts: [
-      "Flanders was the site of intense fighting during World War I ('In Flanders Fields').",
-      "Bruges in Flanders is known as the 'Venice of the North' for its canals.",
-      "The Flemish Primitives (such as Jan van Eyck) revolutionised European painting in the 15th century.",
-      "The Flemish Region has its own parliament and government.",
-      "Ghent was one of the largest cities in Northern Europe during the Middle Ages."
-    ]
-  },
-  {
-    id: "wallonia",
-    category: "region",
-    dutchName: "Wallonië",
-    englishName: "Wallonia",
-    emoji: "🐓",
-    coordinates: [5.1, 50.3],
-    description: "De Franstalige zuidelijke regio van België, met de Ardennen en een rijke industriële geschiedenis.",
-    funFacts: [
-      "Wallonië was in de 19e en vroege 20e eeuw een van de meest geïndustrialiseerde regio's ter wereld.",
-      "De steenkoolmijnen en staalfabrieken van Luik (Liège) en Charleroi maakten de regio wereldberoemd.",
-      "Het Ardennenwoud — het grootste aaneengesloten bos van Wallonië — is een paradijs voor wandelaars.",
-      "Wallonië is groter dan Vlaanderen maar heeft veel minder inwoners.",
-      "Het dialect Waals (Wallon) is een Romaanse taal die nog steeds door enkele tienduizenden mensen wordt gesproken."
-    ],
-    englishFunFacts: [
-      "Wallonia was one of the most industrialised regions in the world in the 19th and early 20th century.",
-      "The coal mines and steel factories of Liège and Charleroi made the region world-famous.",
-      "The Ardennes forest — the largest continuous forest in Wallonia — is a paradise for hikers.",
-      "Wallonia is larger than Flanders but has far fewer inhabitants.",
-      "The Walloon dialect is a Romance language still spoken by tens of thousands of people."
-    ]
-  },
-  {
-    id: "scandinavia",
-    category: "region",
-    dutchName: "Scandinavië",
-    englishName: "Scandinavia",
-    emoji: "🌍",
-    coordinates: [13.0, 63.5],
-    description: "Een geografische en culturele regio in Noord-Europa, bestaande uit Noorwegen, Zweden en Denemarken.",
-    funFacts: [
-      "De Vikingen kwamen uit Scandinavië en verkenden vanuit hier in de middeleeuwen heel de wereld.",
-      "Scandinavische landen bezetten elk jaar de top van de VN's ranglijst voor menselijke ontwikkeling.",
-      "Het woord 'Scandinavia' stamt waarschijnlijk af van het Germaanse 'Scadin-awjo' (gevaarlijk eiland).",
-      "Alle drie de Scandinavische landen hebben een rode vlag met een kruis (het Scandinavisch kruis).",
-      "Finland en IJsland zijn geografisch onderdeel van de regio, maar worden cultureel soms apart beschouwd."
-    ],
-    englishFunFacts: [
-      "The Vikings came from Scandinavia and from here explored the entire world in the Middle Ages.",
-      "Scandinavian countries occupy the top of the UN's Human Development Index every year.",
-      "The word 'Scandinavia' likely derives from the Germanic 'Scadin-awjo' (dangerous island).",
-      "All three Scandinavian countries have a red flag with a cross (the Scandinavian Cross).",
-      "Finland and Iceland are geographically part of the region but are sometimes culturally considered separate."
+      "The Alps stretch over 1,200 kilometres through eight countries.",
+      "Mont Blanc (4,808 m) is the highest mountain in the Alps and in all of Western Europe.",
+      "Over 150 million tourists visit the Alps every year.",
+      "The Alps are the source of major rivers such as the Rhine, Rhône, Po, and Danube.",
+      "The Alps were formed by the collision of the African and Eurasian tectonic plates."
     ]
   },
 ];
@@ -822,37 +663,30 @@ export const getCountryForCapital = (capitalId: string): GeoItem | undefined => 
 
 // Wikipedia zoektermen voor disambiguatie
 export const wikiSearchTerms: Record<string, { nl: string; en: string }> = {
-  netherlands: { nl: 'Nederland (land)', en: 'Netherlands' },
-  belgium: { nl: 'België (land)', en: 'Belgium' },
-  denmark: { nl: 'Denemarken', en: 'Denmark' },
-  estonia: { nl: 'Estland', en: 'Estonia' },
-  finland: { nl: 'Finland (land)', en: 'Finland' },
-  ireland: { nl: 'Ierland (land)', en: 'Republic of Ireland' },
-  iceland: { nl: 'IJsland (land)', en: 'Iceland' },
-  latvia: { nl: 'Letland', en: 'Latvia' },
-  lithuania: { nl: 'Litouwen', en: 'Lithuania' },
-  norway: { nl: 'Noorwegen (land)', en: 'Norway' },
-  uk: { nl: 'Verenigd Koninkrijk', en: 'United Kingdom' },
-  sweden: { nl: 'Zweden (land)', en: 'Sweden' },
-  brussels: { nl: 'Brussel (stad)', en: 'Brussels' },
-  dublin: { nl: 'Dublin (stad)', en: 'Dublin' },
-  helsinki: { nl: 'Helsinki (stad)', en: 'Helsinki' },
-  copenhagen: { nl: 'Kopenhagen', en: 'Copenhagen' },
-  london: { nl: 'Londen (stad)', en: 'London' },
-  oslo: { nl: 'Oslo (stad)', en: 'Oslo' },
-  stockholm: { nl: 'Stockholm (stad)', en: 'Stockholm' },
-  antwerp: { nl: 'Antwerpen (stad)', en: 'Antwerp' },
-  glasgow: { nl: 'Glasgow (stad)', en: 'Glasgow' },
-  liverpool: { nl: 'Liverpool (stad)', en: 'Liverpool' },
-  north_sea: { nl: 'Noordzee', en: 'North Sea' },
-  baltic_sea: { nl: 'Oostzee', en: 'Baltic Sea' },
+  germany: { nl: 'Duitsland', en: 'Germany' },
+  luxembourg: { nl: 'Luxemburg (land)', en: 'Luxembourg' },
+  france: { nl: 'Frankrijk', en: 'France' },
+  switzerland: { nl: 'Zwitserland', en: 'Switzerland' },
+  austria: { nl: 'Oostenrijk (land)', en: 'Austria' },
+  berlin: { nl: 'Berlijn (stad)', en: 'Berlin' },
+  luxembourg_city: { nl: 'Luxemburg (stad)', en: 'Luxembourg City' },
+  paris: { nl: 'Parijs (stad)', en: 'Paris' },
+  bern: { nl: 'Bern (stad)', en: 'Bern' },
+  vienna: { nl: 'Wenen', en: 'Vienna' },
+  hamburg: { nl: 'Hamburg (stad)', en: 'Hamburg' },
+  cologne: { nl: 'Keulen', en: 'Cologne' },
+  bordeaux: { nl: 'Bordeaux (stad)', en: 'Bordeaux' },
+  lyon: { nl: 'Lyon (stad)', en: 'Lyon' },
+  geneva: { nl: 'Genève (stad)', en: 'Geneva' },
+  marseille: { nl: 'Marseille (stad)', en: 'Marseille' },
+  munich: { nl: 'München', en: 'Munich' },
+  mediterranean: { nl: 'Middellandse Zee', en: 'Mediterranean Sea' },
   english_channel: { nl: 'Het Kanaal (zeestraat)', en: 'English Channel' },
-  scheldt: { nl: 'Schelde (rivier)', en: 'Scheldt' },
-  thames: { nl: 'Theems', en: 'River Thames' },
-  ardennes: { nl: 'Ardennen', en: 'Ardennes' },
-  england: { nl: 'Engeland (regio)', en: 'England' },
-  scotland: { nl: 'Schotland', en: 'Scotland' },
-  flanders: { nl: 'Vlaanderen', en: 'Flanders' },
-  wallonia: { nl: 'Wallonië', en: 'Wallonia' },
-  scandinavia: { nl: 'Scandinavië', en: 'Scandinavia' },
+  rhone: { nl: 'Rhône (rivier)', en: 'Rhône' },
+  seine: { nl: 'Seine (rivier)', en: 'Seine' },
+  danube: { nl: 'Donau (rivier)', en: 'Danube' },
+  rhine: { nl: 'Rijn (rivier)', en: 'Rhine' },
+  ruhrgebiet: { nl: 'Ruhrgebied', en: 'Ruhr Area' },
+  pyrenees: { nl: 'Pyreneeën', en: 'Pyrenees' },
+  alps: { nl: 'Alpen', en: 'Alps' },
 };
